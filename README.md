@@ -1,6 +1,16 @@
 # MFT Documentation Site
 
+[![Deployed with Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black.svg)](https://vercel.com/new?utm_source=github&utm_medium=repository)
+
 Official documentation for MFT (Modern File Transfer).
+
+**Status**: 🚧 Setup in progress - GitHub Actions deployment requires manual token configuration
+
+## Quick Setup
+
+1. **Create Vercel token**: Visit [vercel.com/account/tokens](https://vercel.com/account/tokens) and create a classic token
+2. **Add to GitHub secrets**: Run `gh secret set VERCEL_TOKEN --body "<your-token>"` in this repo
+3. **Push changes**: Deployments will start automatically
 
 ## Local Development
 
@@ -18,20 +28,37 @@ npm run docs:build
 npm run docs:preview
 ```
 
+## Live Site
+
+🔗 **Production**: https://mft-docs.vercel.app *(pending deployment)*
+
+🔗 **Repository**: https://github.com/ZeroClue/mft-docs
+
 ## Deployment
 
-This site is automatically deployed to Vercel:
+This site is deployed to Vercel (project: `zeroclues-projects/mft-docs`)
 
+**GitHub Actions CI/CD**:
 - **Production**: Deployed on push to `main` branch
-- **Preview**: Deployed on pull requests
+- **Preview**: Deployed on pull requests with auto-comment
 
-### Required Secrets
+### Setup Required
 
-Configure these in your repository settings:
+**Configure GitHub secrets** (one-time setup):
 
-- `VERCEL_TOKEN` - Vercel authentication token
-- `VERCEL_ORG_ID` - Vercel organization ID
-- `VERCEL_PROJECT_ID` - Vercel project ID
+```bash
+# Create token at https://vercel.com/account/tokens
+# Then add to repository:
+gh secret set VERCEL_TOKEN --body "<your-token>"
+```
+
+**Already configured**:
+- ✅ `VERCEL_ORG_ID`: `team_u3uhzaLubKDWuug7PIjGgr8T`
+- ✅ `VERCEL_PROJECT_ID`: `prj_rwWXF0dJRgZVNWxlYJq2jIEp5AuZ`
+
+### Vercel Dashboard
+
+Alternatively, deploy directly from [Vercel dashboard](https://vercel.com/dashboard) after connecting the GitHub repository.
 
 ## Documentation Structure
 
