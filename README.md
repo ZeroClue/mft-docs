@@ -73,9 +73,7 @@ MFTPlus is the first file transfer tool built for DevOps workflows—lightweight
 ## Links
 
 - **Website**: [https://MFTPlus.co.za](https://MFTPlus.co.za)
-- **Source Code**: [https://github.com/ZeroClue/MFTxyz](https://github.com/ZeroClue/MFTxyz)
-- **Issues**: [GitHub Issues](https://github.com/ZeroClue/MFTxyz/issues)
 
 ## License
 
-Copyright © 2026 MFTxyz Project. All rights reserved.
+Copyright © 2026 MFTPlus. All rights reserved.
