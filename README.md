@@ -1,16 +1,6 @@
 # MFTPlus Documentation
 
-[![Deployed with Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black.svg)](https://vercel.com/new?utm_source=github&utm_medium=repository)
-
 Official documentation for **MFTPlus** — Managed File Transfer, reimagined for modern teams.
-
-**Status**: ✅ Live and operational
-
-## Quick Setup
-
-1. **Create Vercel token**: Visit [vercel.com/account/tokens](https://vercel.com/account/tokens) and create a classic token
-2. **Add to GitHub secrets**: Run `gh secret set VERCEL_TOKEN --body "<your-token>"` in this repo
-3. **Push changes**: Deployments will start automatically
 
 ## Local Development
 
@@ -30,16 +20,8 @@ npm run docs:preview
 
 ## Live Site
 
-🔗 **Production**: https://docs.mftplus.co.za ✅
+🔗 **Production**: https://docs.mftplus.co.za
 🔗 **Repository**: https://github.com/ZeroClue/mft-docs
-
-## Deployment
-
-This site is deployed to Vercel (project: `mft-docs`)
-
-**GitHub Actions CI/CD**:
-- **Production**: Deployed on push to `main` branch
-- **Preview**: Deployed on pull requests with auto-comment
 
 ## Documentation Structure
 
@@ -66,9 +48,8 @@ MFTPlus is the first file transfer tool built for DevOps workflows—lightweight
 ## Contributing
 
 1. Edit documentation in `docs/` directory
-2. Run `npm run docs:dev` to preview changes
+2. Run `npm run docs:dev` to preview changes locally
 3. Create a pull request for review
-4. Preview deployment will be created automatically
 
 ## Links
 
