@@ -7,7 +7,7 @@ Welcome to **MFTPlus** — Managed File Transfer, reimagined for modern DevOps w
 MFTPlus is the first file transfer tool built specifically for DevOps workflows. Unlike legacy MFT solutions that require expensive central servers, MFTPlus runs as a standalone desktop agent that gives you enterprise-grade features in a ~5MB package.
 
 - **Lightweight**: No central server required. Runs on Windows, macOS, and Linux.
-- **Secure**: AES-256-GCM encryption with OS keychain integration.
+- **Secure**: AES-256-GCM encryption with restrictive file permissions.
 - **Scheduled**: Cron-based job scheduling for automated transfers.
 - **Audit-Ready**: Built-in SQLite logging for compliance requirements.
 - **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers.
@@ -28,7 +28,7 @@ Set up automated file transfer jobs using familiar cron syntax. Full execution h
 
 ### Enterprise Security
 
-Your encryption keys are stored securely in the OS keychain (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux). Keys never leave your machine.
+Your encryption keys are stored in protected files at `~/.config/mft-agent/certificates/` with restrictive permissions (600). Keys never leave your machine.
 
 ### Built-in Audit Trail
 

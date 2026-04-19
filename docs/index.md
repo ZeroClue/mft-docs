@@ -21,7 +21,7 @@ features:
   - title: Scheduled Transfers
     details: Cron-based scheduling for automated, reliable file transfer jobs with full execution history.
   - title: Enterprise Security
-    details: AES-256-GCM encryption with OS keychain integration. Your keys never leave your machine.
+    details: AES-256-GCM encryption with restrictive file permissions. Your keys never leave your machine.
   - title: Built-in Audit Trail
     details: SQLite-based logging for compliance requirements. Full transfer history with SHA-256 checksums.
   - title: Cross-Platform

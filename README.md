@@ -42,7 +42,7 @@ MFTPlus is the first file transfer tool built for DevOps workflows—lightweight
 - **Desktop Agent**: Standalone ~5MB agent, no central server required
 - **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers
 - **Scheduled Jobs**: Cron-based scheduling with reliable execution
-- **Security**: AES-256-GCM encryption with OS keychain integration
+- **Security**: AES-256-GCM encryption with restrictive file permissions
 - **Audit Trail**: Built-in SQLite logging for compliance requirements
 
 ## Contributing
