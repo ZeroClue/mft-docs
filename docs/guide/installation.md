@@ -1,75 +1,106 @@
 # Installation
 
-Install MFT using your preferred method.
+Install MFTPlus using your preferred method.
 
 ## Prerequisites
 
-- **Operating System**: Linux, macOS, or Windows
-- **Go**: 1.21 or later (for building from source)
-- **Rust**: 1.70 or later (for agent components)
+- **Operating System**: Windows 10+, macOS 10.15+, or Linux (glibc 2.17+)
+- **Desktop Environment**: Required (GUI-based application)
 
-## Install via Package Manager
+## Download Installers
 
-### macOS (Homebrew)
+Download the latest installer for your platform from [GitHub Releases](https://github.com/ZeroClue/MFTxyz/releases).
 
-```bash
-brew tap mft-project/mft
-brew install mft
-```
+### Windows
 
-### Linux (DEB/RPM)
+1. Download `MFTPlus-setup-x.x.x.exe` or `MFTPlus-x.x.x-x64_64.msi`
+2. Run the installer
+3. Follow the installation wizard
 
-```bash
-# Debian/Ubuntu
-curl -fsSL https://get.mft.io/deb | sudo sh
+### macOS
 
-# RHEL/CentOS/Fedora
-curl -fsSL https://get.mft.io/rpm | sudo sh
-```
+1. Download `MFTPlus-x.x.x-x86_64.dmg` (Intel) or `MFTPlus-x.x.x-aarch64.dmg` (Apple Silicon)
+2. Open the DMG file
+3. Drag MFTPlus to Applications
 
-## Install from Binary
+### Linux
 
-Download the latest release from [GitHub Releases](https://github.com/your-org/mft/releases).
+#### Debian/Ubuntu
 
 ```bash
-# Download
-curl -LO https://github.com/your-org/mft/releases/latest/download/mft-linux-amd64.tar.gz
-
-# Extract
-tar xzf mft-linux-amd64.tar.gz
+# Download .deb package
+wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/mftplus_amd64.deb
 
 # Install
-sudo mv mft /usr/local/bin/
+sudo dpkg -i mftplus_amd64.deb
+```
+
+#### RHEL/CentOS/Fedora
+
+```bash
+# Download .rpm package
+wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/mftplus-x86_64.rpm
+
+# Install
+sudo rpm -i mftplus-x86_64.rpm
+```
+
+#### AppImage (Universal)
+
+```bash
+# Download AppImage
+wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/MFTPlus-x86_64.AppImage
+
+# Make executable
+chmod +x MFTPlus-x86_64.AppImage
+
+# Run
+./MFTPlus-x86_64.AppImage
 ```
 
 ## Build from Source
 
+### Prerequisites
+
+- **Node.js** 20+ and **pnpm** 8+
+- **Rust** stable toolchain
+
+### Build Steps
+
 ```bash
 # Clone repository
-git clone https://github.com/your-org/mft.git
-cd mft
+git clone https://github.com/ZeroClue/MFTxyz.git
+cd MFTxyz/agent
 
-# Build
-go build -o mft ./cmd/mft
+# Install dependencies
+pnpm install
 
-# Install
-sudo mv mft /usr/local/bin/
+# Build for development
+pnpm dev
+
+# Build for production
+pnpm build
 ```
+
+Production builds are output to `src-tauri/target/release/`.
 
 ## Verify Installation
 
+Launch MFTPlus from your applications menu or run:
+
 ```bash
-mft version
+# Linux
+mftplus
+
+# Windows
+MFTPlus.exe
+
+# macOS
+open /Applications/MFTPlus.app
 ```
 
-You should see output like:
-
-```
-MFT version 1.0.0
-Build: abc123def
-Date: 2024-04-18T12:00:00Z
-```
+You should see the MFTPlus dashboard window appear.
 
 ## Next Steps
 
-- [Quick Start](./quick-start) - Start using MFT
+- [Quick Start](./quick-start) - Start using MFTPlus

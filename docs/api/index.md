@@ -1,58 +1,55 @@
 # API Reference
 
-Complete reference for MFT APIs and interfaces.
+Complete reference for MFTPlus APIs and interfaces.
 
 ## Overview
 
-MFT provides multiple interfaces:
+MFTPlus provides multiple interfaces:
 
-- **CLI API**: Command-line interface for direct usage
-- **Go SDK**: Native Go library for integration
-- **REST API**: HTTP interface for web applications
-- **Plugin API**: Extend MFT functionality
+- **Desktop UI**: Graphical interface for file transfer operations
+- **REST API**: HTTP interface for dashboard integration
+- **mftctl CLI**: Command-line interface for automation
 
 ## Quick Reference
 
-### CLI Commands
+### mftctl CLI
+
+The `mftctl` command-line tool provides programmatic access to MFTPlus functionality.
 
 ```bash
-# Transfer operations
-mftctl send <file> <recipient>
-mftctl receive [options]
-mftctl status <transfer-id>
+# Agent management
+mftctl agents list
+mftctl agents transfers <agent-id>
 
-# Configuration
-mftctl config init
-mftctl config set <key> <value>
-mftctl config get <key>
+# Job management
+mftctl jobs create --agent <id> --source /path --dest /path --schedule "0 2 * * *"
+mftctl jobs list
+mftctl jobs delete <job-id>
 
-# Certificates
-mftctl certificates issue
-mftctl certificates renew
-mftctl certificates list
+# Plugin management
+mftctl plugin list
+mftctl plugin install <name>
+mftctl plugin remove <name>
 ```
 
-### Go SDK
+### REST API
 
-```go
-package main
+The MFTPlus Dashboard exposes a REST API for programmatic access.
 
-import "github.com/your-org/mft/sdk"
+```bash
+# List agents (requires admin API key)
+curl -H "X-Admin-API-Key: your-key" \
+  https://dashboard.mftplus.co.za/api/agents
 
-func main() {
-    client := mft.NewClient("https://mft.example.com")
-    
-    transfer, err := client.Send(mft.SendRequest{
-        File:      "./myfile.txt",
-        Recipient: "recipient@example.com",
-    })
-    
-    if err != nil {
-        panic(err)
-    }
-    
-    fmt.Println("Transfer ID:", transfer.ID)
-}
+# Create transfer (agent auth required)
+curl -X POST https://dashboard.mftplus.co.za/api/transfers \
+  -H "Authorization: Bearer <agent-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": "/local/file.txt",
+    "destination": "sftp://server/remote/file.txt",
+    "protocol": "sftp"
+  }'
 ```
 
 ## Next Steps

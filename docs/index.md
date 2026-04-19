@@ -2,24 +2,28 @@
 layout: home
 
 hero:
-  name: "MFT"
-  text: "Modern File Transfer"
-  tagline: "Fast, secure, and reliable file transfers for modern infrastructure"
+  name: "MFTPlus"
+  text: "Managed File Transfer, Reimagined"
+  tagline: "Lightweight, secure, and audit-ready file transfers for DevOps workflows—without the enterprise baggage"
   actions:
     - theme: brand
       text: Get Started
       link: /guide/introduction
     - theme: alt
       text: View on GitHub
-      link: https://github.com/your-org/mft
+      link: https://github.com/ZeroClue/MFTxyz
 
 features:
-  - title: Lightning Fast
-    details: Optimized transfer protocol for maximum throughput and minimal latency.
-  - title: Secure by Default
-    details: End-to-end encryption with mTLS support for enterprise security requirements.
-  - title: Plugin Ecosystem
-    details: Extensible architecture with a powerful plugin system for custom integrations.
-  - title: Production Ready
-    details: Battle-tested infrastructure with comprehensive monitoring and observability.
+  - title: Lightweight Agent
+    details: Standalone ~5MB desktop agent. No central server required. Deploy in minutes, not months.
+  - title: Multi-Protocol Support
+    details: SFTP, FTP, FTPS, and local file transfers with unified interface and consistent behavior.
+  - title: Scheduled Transfers
+    details: Cron-based scheduling for automated, reliable file transfer jobs with full execution history.
+  - title: Enterprise Security
+    details: AES-256-GCM encryption with OS keychain integration. Your keys never leave your machine.
+  - title: Built-in Audit Trail
+    details: SQLite-based logging for compliance requirements. Full transfer history with SHA-256 checksums.
+  - title: Cross-Platform
+    details: Native performance on Windows, macOS, and Linux. Built with Tauri and Rust for speed.
 ---

@@ -1,20 +1,20 @@
 # Configuration
 
-MFT configuration options and environment variables.
+MFTPlus configuration options and environment variables.
 
 ## Config File Location
 
 Default configuration file location:
 
-- **Linux/macOS**: `~/.config/mft/config.yaml`
-- **Windows**: `%APPDATA%\mft\config.yaml`
+- **Linux/macOS**: `~/.config/mftplus/config.yaml`
+- **Windows**: `%APPDATA%\mftplus\config.yaml`
 
 ## Configuration Structure
 
 ```yaml
-# Server configuration
+# Dashboard server configuration
 server:
-  url: https://mft.example.com
+  url: https://dashboard.mftplus.co.za
   timeout: 30s
 
 # Transfer settings
@@ -41,14 +41,14 @@ certificates:
 logging:
   level: info
   format: text
-  file: /var/log/mft/mft.log
+  file: /var/log/mftplus/mftplus.log
 
 # Plugins
 plugins:
   enabled:
     - s3-storage
     - auth-oidc
-  directory: /usr/local/lib/mft/plugins
+  directory: /usr/local/lib/mftplus/plugins
 ```
 
 ## Environment Variables
@@ -57,26 +57,26 @@ Environment variables override config file settings:
 
 ```bash
 # Server
-MFT_SERVER_URL=https://mft.example.com
-MFT_SERVER_TIMEOUT=30s
+MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
+MFTPLUS_SERVER_TIMEOUT=30s
 
 # Transfer
-MFT_TRANSFER_TIMEOUT=5m
-MFT_CHUNK_SIZE=10MB
-MFT_RETRY_COUNT=3
-MFT_COMPRESS=true
+MFTPLUS_TRANSFER_TIMEOUT=5m
+MFTPLUS_CHUNK_SIZE=10MB
+MFTPLUS_RETRY_COUNT=3
+MFTPLUS_COMPRESS=true
 
 # Connection
-MFT_CONNECTION_MODE=direct
-MFT_PARALLEL=4
+MFTPLUS_CONNECTION_MODE=direct
+MFTPLUS_PARALLEL=4
 
 # Certificates
-MFT_CA_URL=https://ca.example.com
-MFT_AUTO_RENEW=true
+MFTPLUS_CA_URL=https://ca.example.com
+MFTPLUS_AUTO_RENEW=true
 
 # Logging
-MFT_LOG_LEVEL=debug
-MFT_LOG_FILE=/var/log/mft/mft.log
+MFTPLUS_LOG_LEVEL=debug
+MFTPLUS_LOG_FILE=/var/log/mftplus/mftplus.log
 ```
 
 ## Configuration Priority
@@ -108,7 +108,7 @@ logging:
 
 ```yaml
 server:
-  url: https://mft.example.com
+  url: https://dashboard.mftplus.co.za
   timeout: 60s
 
 transfer:
@@ -121,7 +121,7 @@ certificates:
 
 logging:
   level: info
-  file: /var/log/mft/mft.log
+  file: /var/log/mftplus/mftplus.log
 ```
 
 ### High-Latency Network

@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'MFT Documentation',
-  description: 'Modern File Transfer - Product Documentation',
+  title: 'MFTPlus Documentation',
+  description: 'MFTPlus - Managed File Transfer, Reimagined for Modern Teams',
   lang: 'en-US',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }]
@@ -56,7 +56,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/your-org/mft-docs' }
+      { icon: 'github', link: 'https://github.com/ZeroClue/MFTxyz' }
     ],
 
     search: {

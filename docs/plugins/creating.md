@@ -1,6 +1,6 @@
 # Creating Plugins
 
-Build custom plugins to extend MFT functionality.
+Build custom plugins to extend MFTPlus functionality.
 
 ## Plugin Structure
 
@@ -21,7 +21,7 @@ my-plugin/
 ```yaml
 name: my-plugin
 version: 1.0.0
-description: My custom MFT plugin
+description: My custom MFTPlus plugin
 type: storage
 author: Your Name <you@example.com>
 license: MIT
@@ -37,8 +37,8 @@ package main
 import (
     "context"
     "io"
-    
-    "github.com/your-org/mft/plugin"
+
+    "github.com/ZeroClue/MFTxyz/plugin"
 )
 
 type MyStorage struct {
@@ -127,7 +127,7 @@ Publish your plugin:
 
 1. Push to GitHub
 2. Release with compiled binaries
-3. Submit to plugin registry
+3. Submit for inclusion in the plugin registry
 
 ## Next Steps
 

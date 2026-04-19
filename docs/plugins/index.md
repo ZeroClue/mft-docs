@@ -1,10 +1,10 @@
 # Plugin System
 
-Extend MFT functionality with plugins.
+Extend MFTPlus functionality with plugins.
 
 ## Overview
 
-The MFT plugin system allows you to:
+The MFTPlus plugin system allows you to:
 
 - Add custom authentication providers
 - Integrate with storage backends
@@ -58,7 +58,7 @@ List available plugins:
 mftctl plugin list
 ```
 
-Plugin repository: [mft-plugins](https://github.com/your-org/mft-plugins)
+Visit [docs.mftplus.co.za/plugins](https://docs.mftplus.co.za/plugins) for the full plugin catalog.
 
 ## Next Steps
 

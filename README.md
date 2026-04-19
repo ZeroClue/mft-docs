@@ -1,8 +1,8 @@
-# MFT Documentation Site
+# MFTPlus Documentation
 
 [![Deployed with Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black.svg)](https://vercel.com/new?utm_source=github&utm_medium=repository)
 
-Official documentation for MFT (Modern File Transfer).
+Official documentation for **MFTPlus** — Managed File Transfer, reimagined for modern teams.
 
 **Status**: ✅ Live and operational
 
@@ -30,12 +30,12 @@ npm run docs:preview
 
 ## Live Site
 
-🔗 **Production**: https://mft-docs.vercel.app ✅
+🔗 **Production**: https://docs.mftplus.co.za ✅
 🔗 **Repository**: https://github.com/ZeroClue/mft-docs
 
 ## Deployment
 
-This site is deployed to Vercel (project: `zeroclues-projects/mft-docs`)
+This site is deployed to Vercel (project: `mft-docs`)
 
 **GitHub Actions CI/CD**:
 - **Production**: Deployed on push to `main` branch
@@ -53,6 +53,16 @@ docs/
 └── index.md          # Homepage
 ```
 
+## About MFTPlus
+
+MFTPlus is the first file transfer tool built for DevOps workflows—lightweight, secure, and audit-ready without the enterprise baggage.
+
+- **Desktop Agent**: Standalone ~5MB agent, no central server required
+- **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers
+- **Scheduled Jobs**: Cron-based scheduling with reliable execution
+- **Security**: AES-256-GCM encryption with OS keychain integration
+- **Audit Trail**: Built-in SQLite logging for compliance requirements
+
 ## Contributing
 
 1. Edit documentation in `docs/` directory
@@ -60,6 +70,12 @@ docs/
 3. Create a pull request for review
 4. Preview deployment will be created automatically
 
+## Links
+
+- **Website**: [https://MFTPlus.co.za](https://MFTPlus.co.za)
+- **Source Code**: [https://github.com/ZeroClue/MFTxyz](https://github.com/ZeroClue/MFTxyz)
+- **Issues**: [GitHub Issues](https://github.com/ZeroClue/MFTxyz/issues)
+
 ## License
 
-MIT
+Copyright © 2026 MFTxyz Project. All rights reserved.

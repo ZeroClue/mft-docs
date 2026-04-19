@@ -1,48 +1,51 @@
 # Introduction
 
-Welcome to MFT (Modern File Transfer) - the next generation file transfer solution designed for modern infrastructure.
+Welcome to **MFTPlus** — Managed File Transfer, reimagined for modern DevOps workflows. Lightweight, secure, and audit-ready without the enterprise baggage.
 
-## What is MFT?
+## What is MFTPlus?
 
-MFT is a high-performance file transfer system that provides:
+MFTPlus is the first file transfer tool built specifically for DevOps workflows. Unlike legacy MFT solutions that require expensive central servers, MFTPlus runs as a standalone desktop agent that gives you enterprise-grade features in a ~5MB package.
 
-- **Speed**: Optimized protocol for maximum throughput
-- **Security**: End-to-end encryption with mTLS support
-- **Reliability**: Automatic retry and resume capabilities
-- **Extensibility**: Plugin system for custom integrations
+- **Lightweight**: No central server required. Runs on Windows, macOS, and Linux.
+- **Secure**: AES-256-GCM encryption with OS keychain integration.
+- **Scheduled**: Cron-based job scheduling for automated transfers.
+- **Audit-Ready**: Built-in SQLite logging for compliance requirements.
+- **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers.
 
 ## Key Features
 
-### Lightning Fast Transfers
+### Desktop Agent, Not Server
 
-Our custom transfer protocol is optimized for modern networks, delivering maximum throughput while maintaining minimal latency.
+Unlike traditional MFT solutions that require a complex central server deployment, MFTPlus runs as a lightweight desktop agent. Deploy in minutes, not months.
+
+### Multi-Protocol Support
+
+Transfer files using SFTP, FTP, FTPS, or local filesystem operations — all from a unified interface.
+
+### Scheduled Transfers
+
+Set up automated file transfer jobs using familiar cron syntax. Full execution history and retry logic included.
 
 ### Enterprise Security
 
-Built with security-first architecture, featuring:
-- End-to-end encryption
-- mTLS authentication support
-- Zero-trust security model
-- Comprehensive audit logging
+Your encryption keys are stored securely in the OS keychain (Keychain on macOS, Credential Manager on Windows, Secret Service on Linux). Keys never leave your machine.
 
-### Plugin Ecosystem
+### Built-in Audit Trail
 
-Extend MFT functionality with plugins:
-- Custom authentication providers
-- Third-party storage integrations
-- Custom transfer protocols
-- Monitoring and observability
+Every transfer is logged to a local SQLite database with SHA-256 checksums. Perfect for compliance audits and troubleshooting.
 
-### Production Ready
+### Cross-Platform
 
-Battle-tested features for production deployments:
-- Automatic failover
-- Progress monitoring
-- Transfer resumption
-- Comprehensive metrics
+Built with Tauri and Rust for native performance on all major platforms. No JVM, no Electron bloat.
+
+## Who Uses MFTPlus?
+
+- **DevOps/SRE Teams**: Manage CI/CD artifacts, backups, and data pipeline transfers
+- **MSPs**: Lightweight file transfer solution for client environments
+- **Regulated Industries**: Built-in audit trails for SOC 2, HIPAA, PCI compliance
 
 ## Next Steps
 
-- [Installation](./installation) - Get MFT installed on your system
+- [Installation](./installation) - Get MFTPlus installed on your system
 - [Quick Start](./quick-start) - Start transferring files in minutes
-- [Architecture](./architecture) - Understand how MFT works
+- [Architecture](./architecture) - Understand how MFTPlus works

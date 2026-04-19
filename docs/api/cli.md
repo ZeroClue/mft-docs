@@ -8,7 +8,7 @@ Complete reference for `mftctl` command-line interface.
 mftctl [global-options] <command> [command-options]
 
 Global Options:
-  --config <path>      Config file path (default: ~/.config/mft/config.yaml)
+  --config <path>      Config file path (default: ~/.config/mftplus/config.yaml)
   --debug              Enable debug logging
   --quiet              Suppress output except errors
   --help               Show help
@@ -82,7 +82,7 @@ Initialize configuration.
 ```bash
 mftctl config init
 
-Creates: ~/.config/mft/config.yaml
+Creates: ~/.config/mftplus/config.yaml
 ```
 
 ### config set
@@ -93,7 +93,7 @@ Set configuration value.
 mftctl config set <key> <value>
 
 Examples:
-  mftctl config set server.url https://mft.example.com
+  mftctl config set server.url https://dashboard.mftplus.co.za
   mftctl config set transfer.timeout 10m
 ```
 
