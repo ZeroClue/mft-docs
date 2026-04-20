@@ -9,7 +9,7 @@ Install MFTPlus using your preferred method.
 
 ## Download Installers
 
-Download the latest installer for your platform from [GitHub Releases](https://github.com/ZeroClue/MFTxyz/releases).
+Download the latest installer for your platform by contacting us for access to the design partner program.
 
 ### Windows
 
@@ -28,8 +28,8 @@ Download the latest installer for your platform from [GitHub Releases](https://g
 #### Debian/Ubuntu
 
 ```bash
-# Download .deb package
-wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/mftplus_amd64.deb
+# Download .deb package (provided during onboarding)
+wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
 
 # Install
 sudo dpkg -i mftplus_amd64.deb
@@ -38,8 +38,8 @@ sudo dpkg -i mftplus_amd64.deb
 #### RHEL/CentOS/Fedora
 
 ```bash
-# Download .rpm package
-wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/mftplus-x86_64.rpm
+# Download .rpm package (provided during onboarding)
+wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
 
 # Install
 sudo rpm -i mftplus-x86_64.rpm
@@ -48,8 +48,8 @@ sudo rpm -i mftplus-x86_64.rpm
 #### AppImage (Universal)
 
 ```bash
-# Download AppImage
-wget https://github.com/ZeroClue/MFTxyz/releases/latest/download/MFTPlus-x86_64.AppImage
+# Download AppImage (provided during onboarding)
+wget https://releases.mftplus.co.za/latest/MFTPlus-x86_64.AppImage
 
 # Make executable
 chmod +x MFTPlus-x86_64.AppImage
@@ -68,9 +68,9 @@ chmod +x MFTPlus-x86_64.AppImage
 ### Build Steps
 
 ```bash
-# Clone repository
-git clone https://github.com/ZeroClue/MFTxyz.git
-cd MFTxyz/agent
+# Clone repository (access provided during onboarding)
+git clone https://github.com/ZeroClue/mftplus.git
+cd mftplus/agent
 
 # Install dependencies
 pnpm install

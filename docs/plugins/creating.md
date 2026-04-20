@@ -38,7 +38,7 @@ import (
     "context"
     "io"
 
-    "github.com/ZeroClue/MFTxyz/plugin"
+    "github.com/zeroclue/mftplus/plugin"
 )
 
 type MyStorage struct {
