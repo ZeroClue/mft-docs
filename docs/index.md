@@ -2,28 +2,31 @@
 layout: home
 
 hero:
-  name: "MFTPlus"
-  text: "Managed File Transfer, Reimagined"
-  tagline: "Lightweight, secure, and audit-ready file transfers for DevOps workflows—without the enterprise baggage"
+  name: "MFTxyz"
+  text: "MFT for the Cloud-Native Era"
+  tagline: "Managed File Transfer that developers actually want to use. CLI-first, API-first, deployed in hours."
   actions:
     - theme: brand
-      text: Get Started
-      link: /guide/introduction
+      text: Apply for Design Partner Program
+      link: /design-partners
     - theme: alt
-      text: View on GitHub
-      link: https://github.com/ZeroClue/MFTxyz
+      text: Read the Documentation
+      link: /guide/introduction
+  image:
+    src: /hero-terminal.png
+    alt: Terminal showing mftctl workflow
 
 features:
-  - title: Lightweight Agent
-    details: Standalone ~5MB desktop agent. No central server required. Deploy in minutes, not months.
-  - title: Multi-Protocol Support
-    details: SFTP, FTP, FTPS, and local file transfers with unified interface and consistent behavior.
-  - title: Scheduled Transfers
-    details: Cron-based scheduling for automated, reliable file transfer jobs with full execution history.
+  - title: CLI-First
+    details: Work from the terminal like you already do. Scriptable workflows with shell completion.
+  - title: API-First
+    details: Automate everything, integrate with anything. REST API with webhooks for every event.
+  - title: Deploy in Hours
+    details: Single binary installation. Terraform provider and Helm charts included.
   - title: Enterprise Security
-    details: AES-256-GCM encryption with restrictive file permissions. Your keys never leave your machine.
-  - title: Built-in Audit Trail
-    details: SQLite-based logging for compliance requirements. Full transfer history with SHA-256 checksums.
+    details: Encryption at rest and in transit. SOC2-compatible architecture with audit trails.
   - title: Cross-Platform
-    details: Native performance on Windows, macOS, and Linux. Built with Tauri and Rust for speed.
+    details: Native agents for Linux, macOS, and Windows. Container-ready deployment.
+  - title: Built to Scale
+    details: Handle 10 transfers or 10 million. Automatic retry with exponential backoff.
 ---

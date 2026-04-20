@@ -1,39 +1,47 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'MFTPlus Documentation',
-  description: 'MFTPlus - Managed File Transfer, Reimagined for Modern Teams',
+  title: 'MFTxyz | Modern Managed File Transfer for DevOps',
+  description: 'MFT for the cloud-native era. CLI-first, API-first, deployed in hours. The modern alternative to legacy MFT solutions.',
   lang: 'en-US',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['meta', { name: 'keywords', content: 'managed file transfer, MFT, secure file transfer, B2B file transfer, DevOps file transfer, API-first MFT, CLI file transfer' }],
+    ['meta', { property: 'og:title', content: 'MFTxyz | Modern Managed File Transfer for DevOps' }],
+    ['meta', { property: 'og:description', content: 'MFT for the cloud-native era. CLI-first, API-first, deployed in hours.' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
   ],
 
   themeConfig: {
     nav: [
+      { text: 'Product', link: '/product' },
+      { text: 'Design Partners', link: '/design-partners' },
+      { text: 'Pricing', link: '/pricing' },
       { text: 'Guide', link: '/guide/' },
-      { text: 'API Reference', link: '/api/' },
-      { text: 'Plugins', link: '/plugins/' }
+      { text: 'API Reference', link: '/api/' }
     ],
 
     sidebar: {
-      '/guide/': [
+      '/': [
         {
-          text: 'Getting Started',
+          text: 'Product',
           items: [
-            { text: 'Introduction', link: '/guide/introduction' },
-            { text: 'Installation', link: '/guide/installation' },
-            { text: 'Quick Start', link: '/guide/quick-start' }
+            { text: 'Overview', link: '/product' },
+            { text: 'Design Partner Program', link: '/design-partners' },
+            { text: 'Pricing', link: '/pricing' }
           ]
         },
         {
-          text: 'Core Concepts',
+          text: 'Documentation',
           items: [
+            { text: 'Introduction', link: '/guide/introduction' },
+            { text: 'Installation', link: '/guide/installation' },
+            { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' }
           ]
-        }
-      ],
-      '/api/': [
+        },
         {
           text: 'API Reference',
           items: [
@@ -41,9 +49,7 @@ export default defineConfig({
             { text: 'CLI Commands', link: '/api/cli' },
             { text: 'Configuration', link: '/api/config' }
           ]
-        }
-      ],
-      '/plugins/': [
+        },
         {
           text: 'Plugin System',
           items: [
