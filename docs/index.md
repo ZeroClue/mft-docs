@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "MFTxyz"
+  name: "MFTPlus"
   text: "MFT for the Cloud-Native Era"
   tagline: "Managed File Transfer that developers actually want to use. CLI-first, API-first, deployed in hours."
   actions:

@@ -14,7 +14,7 @@ We're looking for 3-5 design partners for our initial cohort. Direct roadmap inf
 ## What You Get
 
 **Free Access**
-- Full MFTxyz access during 6-month partnership period
+- Full MFTPlus access during 6-month partnership period
 - No license fees, no usage limits
 
 **Roadmap Influence**
@@ -77,7 +77,7 @@ We're looking for 3-5 design partners for our initial cohort. Direct roadmap inf
 
 **Step 2:** Discovery call (30 min)
 - We learn about your needs
-- You learn about MFTxyz
+- You learn about MFTPlus
 - Mutual fit assessment
 
 **Step 3:** Onboarding
@@ -98,7 +98,7 @@ You get exclusive partnership pricing on all tiers. No obligation to continue.
 **How much engineering time is required?**
 Minimal. We handle the heavy lifting. Most partners spend 2-4 hours monthly on feedback calls.
 
-**What if MFTxyz doesn't work for us?**
+**What if MFTPlus doesn't work for us?**
 Let us know. We want honest feedback and won't lock you in.
 
 **Can we be anonymous?**

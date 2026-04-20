@@ -6,7 +6,7 @@
 
 ## Overview
 
-MFTxyz is the first Managed File Transfer platform built for the cloud-native era. CLI-first, API-first, deployed in hours.
+MFTPlus is the first Managed File Transfer platform built for the cloud-native era. CLI-first, API-first, deployed in hours.
 
 ---
 
