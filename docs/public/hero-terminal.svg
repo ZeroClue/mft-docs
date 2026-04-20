@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Terminal Window Background -->
+  <rect x="0" y="0" width="800" height="500" fill="#1e1e2e" rx="12"/>
+
+  <!-- Title Bar -->
+  <rect x="0" y="0" width="800" height="44" fill="#313244" rx="12"/>
+  <rect x="0" y="32" width="800" height="20" fill="#313244"/>
+
+  <!-- Traffic Light Buttons -->
+  <circle cx="28" cy="22" r="8" fill="#f38ba8"/>
+  <circle cx="52" cy="22" r="8" fill="#fab387"/>
+  <circle cx="76" cy="22" r="8" fill="#a6e3a1"/>
+
+  <!-- Terminal Title -->
+  <text x="400" y="28" font-family="'SF Mono', 'Fira Code', monospace" font-size="13" fill="#cdd6f4" text-anchor="middle">mftctl</text>
+
+  <!-- Terminal Content -->
+  <g font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace" font-size="14">
+
+    <!-- Prompt 1 -->
+    <text x="24" y="80" fill="#a6e3a1">➜</text>
+    <text x="44" y="80" fill="#89b4fa">~</text>
+    <text x="60" y="80" fill="#cdd6f4">mftctl init my-transfer</text>
+
+    <!-- Output 1 -->
+    <text x="24" y="110" fill="#a6e3a1">✓</text>
+    <text x="44" y="110" fill="#cdd6f4">Created transfer configuration</text>
+    <text x="60" y="130" fill="#cdd6f4">  Source: s3://my-bucket/uploads/</text>
+    <text x="60" y="150" fill="#cdd6f4">  Destination: ftp://partner.example.com/incoming/</text>
+
+    <!-- Prompt 2 -->
+    <text x="24" y="190" fill="#a6e3a1">➜</text>
+    <text x="44" y="190" fill="#89b4fa">~</text>
+    <text x="60" y="190" fill="#cdd6f4">mftctl validate</text>
+
+    <!-- Output 2 -->
+    <text x="24" y="220" fill="#a6e3a1">✓</text>
+    <text x="44" y="220" fill="#cdd6f4">Configuration valid</text>
+
+    <!-- Prompt 3 -->
+    <text x="24" y="260" fill="#a6e3a1">➜</text>
+    <text x="44" y="260" fill="#89b4fa">~</text>
+    <text x="60" y="260" fill="#cdd6f4">mftctl apply --watch</text>
+
+    <!-- Output 3 -->
+    <text x="24" y="290" fill="#a6e3a1">●</text>
+    <text x="44" y="290" fill="#f9e2af">Watching for changes...</text>
+
+    <!-- Animated Progress Bar -->
+    <rect x="24" y="315" width="200" height="8" fill="#313244" rx="4"/>
+    <rect x="24" y="315" width="140" height="8" fill="#89b4fa" rx="4"/>
+
+    <!-- Transfer Stats -->
+    <text x="24" y="350" fill="#89b4fa" font-weight="bold">Transferring:</text>
+    <text x="130" y="350" fill="#cdd6f4">report_2024_q1.csv</text>
+    <text x="400" y="350" fill="#a6e3a1">70%</text>
+
+    <text x="24" y="375" fill="#89b4fa" font-weight="bold">Speed:</text>
+    <text x="80" y="375" fill="#cdd6f4">45.2 MB/s</text>
+
+    <text x="24" y="400" fill="#89b4fa" font-weight="bold">ETA:</text>
+    <text x="60" y="400" fill="#cdd6f4">2m 14s</text>
+
+    <!-- Prompt 4 (blinking cursor) -->
+    <text x="24" y="450" fill="#a6e3a1">➜</text>
+    <text x="44" y="450" fill="#89b4fa">~</text>
+    <rect x="60" y="438" width="10" height="18" fill="#cdd6f4">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <!-- Subtle glow effect -->
+  <rect x="0" y="0" width="800" height="500" fill="none" stroke="#89b4fa" stroke-width="2" rx="12" opacity="0.3"/>
+</svg>
