@@ -13,7 +13,7 @@ hero:
       text: Read the Documentation
       link: /guide/introduction
   image:
-    src: /hero-terminal.png
+    src: /hero-terminal.svg
     alt: Terminal showing mftctl workflow
 
 features:
