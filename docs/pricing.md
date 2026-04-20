@@ -20,22 +20,33 @@
 
 ## Post-Launch Pricing (Coming Soon)
 
-**Starter — $500/month**
-- Up to 10K transfers/month
-- 1 agent
+**Community — $0/month**
+- Core file transfer
+- Single agent
 - Community support
+- CLI access
+
+**Starter — $150/month**
+- Multi-agent workflows
+- Up to 5 agents
+- Basic dashboard
+- Email support
 - CLI + API access
 
-**Pro — $2,000/month**
-- Up to 100K transfers/month
-- 5 agents
-- Email support
+**Pro — $499/month**
+- Unlimited agents
+- Advanced dashboard
+- Priority support
+- SLA management
+- Plugin marketplace
 - CLI + API + Web UI
 
 **Enterprise — Custom**
-- Unlimited transfers
-- Unlimited agents
+- On-premise deployment
+- SSO/SAML
 - Dedicated support
+- Custom integrations
+- SLA guarantees
 - CLI + API + Web UI + SSO
 
 ---
@@ -83,7 +94,7 @@ We'll notify you at 80% and 100%. You can upgrade or purchase additional transfe
 Design partners get free access. Post-launch, we offer a 14-day trial with 100 transfers.
 
 **What payment methods?**
-Credit card (Starter, Pro) and invoice (Enterprise).
+Credit card (Starter, Pro) and invoice (Enterprise). Community is free.
 
 ---
 
