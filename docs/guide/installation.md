@@ -69,7 +69,7 @@ chmod +x MFTPlus-x86_64.AppImage
 
 ```bash
 # Clone repository (access provided during onboarding)
-git clone <repository-url>  # Private repository URL provided during design partner onboarding
+git clone <repository-url>
 cd mftplus/agent
 
 # Install dependencies

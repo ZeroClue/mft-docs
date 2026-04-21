@@ -58,7 +58,7 @@ List available plugins:
 mftctl plugin list
 ```
 
-Contact us for access to the full plugin catalog during design partner onboarding.
+Visit [docs.mftplus.co.za/plugins](https://docs.mftplus.co.za/plugins) for the full plugin catalog.
 
 ## Next Steps
 
