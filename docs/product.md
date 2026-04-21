@@ -87,16 +87,25 @@ Built for 2026. Not 2006.
 **Components:**
 - **mftctl CLI**: Command-line interface for all operations
 - **mftd agent**: Lightweight agent that runs on your infrastructure
-- **Cloud backend**: Coordination, observability, and management
+- **MFTPlus Server**: Central coordination, dashboard, and management
+- **Web Dashboard**: Monitor all transfers, agents, and schedules from one interface
 
 **Data Flow:**
 ```
 ┌─────────────┐      ┌─────────────┐      ┌──────────────┐
-│  mftctl CLI │ ────▶ │  mftd agent │ ────▶ │ Cloud Backend │
+│  mftctl CLI │ ────▶ │  mftd agent │ ────▶ │ MFTPlus Server│
 │             │      │             │      │              │
 │  Initiate   │      │  Execute    │      │  Coordinate  │
 │  Monitor    │      │  Transfer   │      │  Observe     │
 └─────────────┘      └─────────────┘      └──────────────┘
+                                                    │
+                                                    ▼
+                                          ┌────────────────┐
+                                          │ Web Dashboard  │
+                                          │                │
+                                          │ Monitor All    │
+                                          │ Transfers      │
+                                          └────────────────┘
 ```
 
 ---
@@ -125,7 +134,7 @@ Plays well with your existing stack.
 
 ## Next Steps
 
-- [Apply for Design Partner Program](/design-partners)
+- [Get Started Free](/pricing)
 - [Read the Documentation](/guide/introduction)
 - [CLI Reference](/api/cli)
 - [API Reference](/api/)
