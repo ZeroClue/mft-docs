@@ -58,8 +58,6 @@ List available plugins:
 mftctl plugin list
 ```
 
-Visit [docs.mftplus.co.za/plugins](https://docs.mftplus.co.za/plugins) for the full plugin catalog.
-
 ## Next Steps
 
 - [Creating Plugins](./creating) - Build your own plugin
