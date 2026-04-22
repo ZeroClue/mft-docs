@@ -9,11 +9,20 @@ Install MFTPlus using your preferred method.
 
 ## Download Installers
 
-Download the latest installer for your platform by contacting us for access to the design partner program.
+Get started with the Community tier — free access with core features. Download the latest installer for your platform:
+
+- **Windows**: [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi)
+- **macOS (Intel)**: [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg)
+- **macOS (Apple Silicon)**: [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg)
+- **Linux (Debian/Ubuntu)**: [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb)
+- **Linux (RHEL/CentOS/Fedora)**: [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm)
+- **Linux (AppImage)**: [MFTPlus-x86_64.AppImage](https://releases.mftplus.co.za/latest/MFTPlus-x86_64.AppImage)
+
+For Starter, Pro, and Enterprise tiers, download links are provided after signup.
 
 ### Windows
 
-1. Download `MFTPlus-setup-x.x.x.exe` or `MFTPlus-x.x.x-x64_64.msi`
+1. Download `MFTPlus-x.x.x-x64_64.msi`
 2. Run the installer
 3. Follow the installation wizard
 
@@ -28,61 +37,27 @@ Download the latest installer for your platform by contacting us for access to t
 #### Debian/Ubuntu
 
 ```bash
-# Download .deb package (provided during onboarding)
+# Download and install
 wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
-
-# Install
 sudo dpkg -i mftplus_amd64.deb
 ```
 
 #### RHEL/CentOS/Fedora
 
 ```bash
-# Download .rpm package (provided during onboarding)
+# Download and install
 wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
-
-# Install
 sudo rpm -i mftplus-x86_64.rpm
 ```
 
 #### AppImage (Universal)
 
 ```bash
-# Download AppImage (provided during onboarding)
+# Download, make executable, and run
 wget https://releases.mftplus.co.za/latest/MFTPlus-x86_64.AppImage
-
-# Make executable
 chmod +x MFTPlus-x86_64.AppImage
-
-# Run
 ./MFTPlus-x86_64.AppImage
 ```
-
-## Build from Source
-
-### Prerequisites
-
-- **Node.js** 20+ and **pnpm** 8+
-- **Rust** stable toolchain
-
-### Build Steps
-
-```bash
-# Clone repository (access provided during onboarding)
-git clone <repository-url>
-cd mftplus/agent
-
-# Install dependencies
-pnpm install
-
-# Build for development
-pnpm dev
-
-# Build for production
-pnpm build
-```
-
-Production builds are output to `src-tauri/target/release/`.
 
 ## Verify Installation
 
