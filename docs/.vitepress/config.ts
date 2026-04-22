@@ -16,7 +16,6 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Product', link: '/product' },
-      { text: 'Design Partners', link: '/design-partners' },
       { text: 'Pricing', link: '/pricing' },
       { text: 'Guide', link: '/guide/' },
       { text: 'API Reference', link: '/api/' }
@@ -28,7 +27,6 @@ export default defineConfig({
           text: 'Product',
           items: [
             { text: 'Overview', link: '/product' },
-            { text: 'Design Partner Program', link: '/design-partners' },
             { text: 'Pricing', link: '/pricing' }
           ]
         },
