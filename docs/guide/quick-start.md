@@ -8,10 +8,10 @@ The simplest way to transfer a file:
 
 ```bash
 # Send a file
-mft send ./myfile.txt recipient@example.com
+mftctl send ./myfile.txt recipient@example.com
 
 # Receive a file
-mft receive
+mftctl receive
 ```
 
 ## Transfer with Progress
@@ -19,7 +19,7 @@ mft receive
 Monitor your transfer progress:
 
 ```bash
-mft send --progress ./large-file.tar.gz recipient@example.com
+mftctl send --progress ./large-file.tar.gz recipient@example.com
 ```
 
 ## Transfer to Multiple Recipients
@@ -27,7 +27,7 @@ mft send --progress ./large-file.tar.gz recipient@example.com
 Send to multiple recipients at once:
 
 ```bash
-mft send ./document.pdf alice@example.com,bob@example.com
+mftctl send ./document.pdf alice@example.com,bob@example.com
 ```
 
 ## Resume Interrupted Transfers
@@ -35,23 +35,23 @@ mft send ./document.pdf alice@example.com,bob@example.com
 Automatically resume failed transfers:
 
 ```bash
-mft send --resume ./large-file.tar.gz recipient@example.com
+mftctl send --resume ./large-file.tar.gz recipient@example.com
 ```
 
 ## Common Options
 
 ```bash
 # Set transfer timeout
-mft send --timeout 300s ./file.txt recipient@example.com
+mftctl send --timeout 300s ./file.txt recipient@example.com
 
 # Use specific transfer protocol
-mft send --protocol sftp ./file.txt recipient@example.com
+mftctl send --protocol sftp ./file.txt recipient@example.com
 
 # Enable compression
-mft send --compress ./file.txt recipient@example.com
+mftctl send --compress ./file.txt recipient@example.com
 
 # Set retry count
-mft send --retry 5 ./file.txt recipient@example.com
+mftctl send --retry 5 ./file.txt recipient@example.com
 ```
 
 ## Next Steps
