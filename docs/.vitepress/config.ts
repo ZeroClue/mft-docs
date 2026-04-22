@@ -15,21 +15,13 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: 'Product', link: '/product' },
-      { text: 'Pricing', link: '/pricing' },
       { text: 'Guide', link: '/guide/' },
-      { text: 'API Reference', link: '/api/' }
+      { text: 'API Reference', link: '/api/' },
+      { text: 'Plugins', link: '/plugins/' }
     ],
 
     sidebar: {
       '/': [
-        {
-          text: 'Product',
-          items: [
-            { text: 'Overview', link: '/product' },
-            { text: 'Pricing', link: '/pricing' }
-          ]
-        },
         {
           text: 'Documentation',
           items: [
