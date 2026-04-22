@@ -61,9 +61,7 @@ export default defineConfig({
       ]
     },
 
-    socialLinks: [
-      // GitHub link removed - repository is private
-    ],
+    socialLinks: [],
 
     search: {
       provider: 'local'

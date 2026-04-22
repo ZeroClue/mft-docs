@@ -67,10 +67,7 @@ chmod +x MFTPlus-x86_64.AppImage
 
 ### Build Steps
 
-```bash
-# Clone repository (access provided during onboarding)
-git clone https://github.com/ZeroClue/mftplus.git
-cd mftplus/agent
+Source code access is provided separately to design partners during onboarding. If you have been granted repository access, clone and build using the standard Rust and Node.js toolchains.
 
 # Install dependencies
 pnpm install
