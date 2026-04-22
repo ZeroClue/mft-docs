@@ -61,7 +61,7 @@ export default defineConfig({
       ]
     },
 
-    socialLinks: []
+    socialLinks: [],
 
     search: {
       provider: 'local'
