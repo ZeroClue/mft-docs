@@ -1,230 +1,163 @@
 # Quick Start
 
-Get up and running with MFTPlus in under 5 minutes. This guide will walk you through installing the CLI, authenticating with your account, and creating your first scheduled transfer.
+Get up and running with MFTPlus in under 5 minutes. This guide will walk you through downloading the agent, configuring your first scheduled transfer, and verifying it works.
 
 ## Prerequisites
 
 Before you begin, ensure you have:
-- **API Key**: Sign up at [mftplus.co.za](https://mftplus.co.za) to get your API key
-- **curl or wget**: For downloading the installer
-- **Access to source/destination**: Credentials for your SFTP, S3, or other storage systems
+- **Operating System**: Windows 10+, macOS 10.15+, or Linux (glibc 2.17+)
+- **Access credentials**: Username/password or SSH key for your SFTP/FTP server
 
-## Step 1: Install mftctl
+## Step 1: Download and Install
 
-Install the MFTPlus CLI in one command:
+Download the installer for your platform:
 
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
+| Platform | Download |
+|----------|----------|
+| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
+| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
+| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
+| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
+| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
 
-This downloads and installs the latest `mftctl` binary to `/usr/local/bin` (or `~/.local/bin` if you don't have write access to `/usr/local/bin`).
+Run the installer and launch MFTPlus from your applications menu.
 
-**Verify installation:**
-```bash
-mftctl --version
-```
+## Step 2: Configure Server URL
 
-::: tip Custom Installation Directory
-To install to a specific directory:
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh -s - -d ~/bin
-```
+On first launch, MFTPlus will prompt for your dashboard server URL.
+
+**For self-hosted deployments**, enter your server URL (e.g., `http://localhost:8080` or your company's dashboard URL).
+
+**For cloud deployments**, enter your cloud dashboard URL.
+
+This setting is stored in:
+- **Linux/macOS**: `~/.config/mft-agent/config.yaml`
+- **Windows**: `%APPDATA%\mft-agent\config.yaml`
+
+## Step 3: Register Your Agent
+
+Register your agent with the dashboard:
+
+1. Click **Register** in the MFTPlus interface
+2. Enter your registration credentials
+3. Your agent will appear in the dashboard with a unique ID
+
+::: tip Finding Your Agent ID
+Your agent ID is displayed in the MFTPlus application header and in the dashboard agents list.
 :::
 
-::: tip Windows Users
-Download the MSI installer from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) and run it.
-:::
+## Step 4: Verify Registration
 
-## Step 2: Authenticate
+Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
+- Agent hostname
+- Online status
+- Last heartbeat timestamp
 
-Connect your CLI to your MFTPlus account:
+## Step 5: Create Your First Transfer Job
 
-```bash
-mftctl login <your-api-key> --server https://dashboard.mftplus.co.za
-```
+Create a scheduled transfer job in the dashboard:
 
-::: tip Finding Your API Key
-Log in to your MFTPlus dashboard at [dashboard.mftplus.co.za](https://dashboard.mftplus.co.za) and navigate to **Settings → API Keys**.
-:::
+1. Navigate to **Jobs** → **Create Job**
+2. Configure the transfer:
+   - **Name**: `daily-sftp-sync`
+   - **Schedule**: `0 2 * * *` (daily at 2:00 AM)
+   - **Protocol**: SFTP
+   - **Source**: `/var/log/app/*.log`
+   - **Destination**: `sftp://backup.example.com/logs`
+   - **Credentials**: Select or create SFTP credentials
 
-## Step 3: Configure a Source or Destination
+3. Click **Save**
 
-Add a storage location that MFTPlus can access. For example, to add an SFTP server:
+The job will execute on your agent according to the schedule.
 
-```bash
-mftctl connections create \
-  --name partner-sftp \
-  --type sftp \
-  --host sftp.example.com \
-  --port 22 \
-  --username transfer-user \
-  --password your-password
-```
+## Step 6: Monitor Transfer Activity
 
-::: tip Supported Storage Types
-MFTPlus supports:
-- **SFTP/FTP/FTPS**: Legacy file transfer protocols
-- **Amazon S3**: S3-compatible storage
-- **Azure Blob Storage**: Microsoft's cloud storage
-- **Google Cloud Storage**: GCS buckets
-:::
+View transfer activity in the dashboard:
 
-## Step 4: Create Your First Transfer
+1. Navigate to **Jobs** → **daily-sftp-sync**
+2. View recent executions under **History**
+3. Check status, timestamps, and file counts
 
-Create a scheduled transfer between your storage locations. For example, to sync files from S3 to SFTP daily at 2 AM:
+All transfers are logged locally on your agent in SQLite format at:
+- **Linux/macOS**: `~/.config/mft-agent/transfers.db`
+- **Windows**: `%APPDATA%\mft-agent\transfers.db`
 
-```bash
-mftctl transfer create \
-  --source s3://production-data/exports \
-  --dest sftp://partner.example.com/incoming \
-  --schedule "0 2 * * *" \
-  --name daily-partner-sync \
-  --on-failure alerts@yourcompany.com
-```
+## Common Workflows
 
-**What this does:**
-- Transfers files from `s3://production-data/exports` to `sftp://partner.example.com/incoming`
-- Runs daily at 2:00 AM (cron syntax)
-- Sends an email on failure
-- Logs all transfer activity for compliance
+### Manual Transfer
 
-::: tip Cron Schedule Syntax
-The `--schedule` field uses standard cron syntax: `minute hour day month weekday`
-- `0 2 * * *` — Daily at 2:00 AM
-- `*/30 * * * *` — Every 30 minutes
-- `0 0 * * 1` — Weekly on Monday at midnight
-- `0 0 1 * *` — Monthly on the 1st at midnight
-:::
+Run a job immediately without waiting for the schedule:
 
-## Step 5: Monitor Your Transfer
+1. Navigate to **Jobs** in the dashboard
+2. Click **Run Now** on your job
+3. Monitor execution in **History**
 
-Check the status of your transfers:
+### Ad-Hoc Transfer
 
-```bash
-# List all transfers
-mftctl transfer list
+For one-time transfers, create a job with `--manual` trigger or use the agent's direct transfer interface (if available).
 
-# Check specific transfer status
-mftctl transfer status daily-partner-sync
+### Transfer History
 
-# Watch transfer activity in real-time
-mftctl transfer logs --follow daily-partner-sync
-```
+View all transfer history:
 
-## Common Next Steps
+1. Navigate to **Transfers** in the dashboard
+2. Filter by agent, job, or date range
+3. Export for compliance audits
 
-### Run a Transfer Immediately
+## Supported Protocols
 
-Skip the schedule and run now:
+MFTPlus supports the following transfer protocols:
 
-```bash
-mftctl transfer run --name daily-partner-sync
-```
-
-### Enable Automatic Retry
-
-Make transfers resilient to transient failures:
-
-```bash
-mftctl transfer update daily-partner-sync \
-  --retry-count 3 \
-  --retry-backoff 30s
-```
-
-### Set Up Notifications
-
-Get alerted on success or failure:
-
-```bash
-mftctl transfer update daily-partner-sync \
-  --on-success ops@yourcompany.com \
-  --on-failure alerts@yourcompany.com
-```
-
-### Enable Encryption
-
-Encrypt files in transit:
-
-```bash
-mftctl transfer update daily-partner-sync \
-  --encryption aes256
-```
-
-## Example Workflows
-
-### Daily Customer Exports
-
-```bash
-# Create the transfer
-mftctl transfer create \
-  --source s3://customer-data/daily-exports \
-  --dest sftp://customer-partner.com/dropzone \
-  --schedule "0 3 * * *" \
-  --name customer-daily-export \
-  --on-success ops@yourcompany.com
-
-# Verify it's scheduled
-mftctl transfer list --filter name=customer-daily-export
-```
-
-### Hourly Log Sync
-
-```bash
-# Create the transfer
-mftctl transfer create \
-  --source /var/log/app \
-  --dest s3://company-backups/app-logs \
-  --schedule "10 * * * *" \
-  --name hourly-log-sync \
-  --compression true
-
-# Run immediately to test
-mftctl transfer run --name hourly-log-sync
-```
-
-### Compliance Archive
-
-```bash
-# Create the transfer
-mftctl transfer create \
-  --source s3://transactions \
-  --dest glacier://compliance-archive \
-  --schedule "0 0 1 * *" \
-  --name monthly-compliance-archive \
-  --retention 7y
-```
+| Protocol | Description |
+|----------|-------------|
+| **SFTP** | SSH File Transfer Protocol (recommended) |
+| **FTP** | File Transfer Protocol |
+| **FTPS** | FTP over TLS/SSL |
+| **Local** | Local filesystem operations |
 
 ## Troubleshooting
 
-### Connection Test
+### Agent Not Appearing in Dashboard
 
-Test a connection before creating a transfer:
+1. Verify server URL in agent configuration
+2. Check network connectivity to dashboard
+3. Review agent logs for errors:
+   - **Linux/macOS**: `~/.config/mft-agent/logs/`
+   - **Windows**: `%APPDATA%\mft-agent\logs\`
 
-```bash
-mftctl connections test partner-sftp
-```
+### Transfer Job Not Running
 
-### Debug Mode
+1. Verify schedule syntax (cron format)
+2. Check agent is online in dashboard
+3. Review job history for error messages
+4. Test credentials with a manual transfer
 
-Enable verbose logging:
+### Connection Refused
 
-```bash
-mftctl --debug transfer logs --name daily-partner-sync
-```
+1. Verify target server hostname and port
+2. Check firewall rules allow outbound connections
+3. Confirm credentials are correct
+4. Test connectivity: `telnet sftp.example.com 22`
 
-### Common Issues
+### Permission Denied
 
-| Issue | Solution |
-|-------|----------|
-| `mftctl: command not found` | Ensure `~/.local/bin` is in your PATH: `export PATH="$HOME/.local/bin:$PATH"` |
-| `Authentication failed` | Verify your API key in the dashboard. Generate a new one if needed. |
-| `Connection timeout` | Check firewall rules and ensure the destination host is reachable from your network. |
-| `Permission denied` | Verify the credentials have read access to the source and write access to the destination. |
+1. Verify source directory is readable by agent user
+2. Verify destination directory is writable
+3. Check SSH key permissions (if using key-based auth)
+4. Confirm user has necessary permissions on target server
+
+## Security
+
+MFTPlus encrypts all sensitive data:
+
+- **Encryption**: AES-256-GCM for all file transfers
+- **Credentials**: Stored in protected files with restrictive permissions (600)
+- **Certificates**: Located at `~/.config/mft-agent/certificates/` (never leave your machine)
+- **Logging**: SHA-256 checksums for all transferred files
 
 ## Next Steps
 
 - [Installation](./installation) - Detailed installation options
-- [CLI Reference](../api/cli) - Complete command documentation
 - [Architecture](./architecture) - Learn how MFTPlus works
 - [Transfer Protocol](./protocol) - Understand transfer behavior
 
@@ -232,4 +165,3 @@ mftctl --debug transfer logs --name daily-partner-sync
 
 - **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
 - **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)
-- **Community**: [github.com/ZeroClue/mft-docs/issues](https://github.com/ZeroClue/mft-docs/issues)

@@ -1,248 +1,244 @@
 # Installation
 
-Install `mftctl`, the MFTPlus command-line interface, on your system.
+Install the MFTPlus desktop agent on your system.
 
-## Quick Install (Recommended)
+## Download Installers
 
-The fastest way to install mftctl on Linux or macOS:
+Download the latest installer for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
 
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
-
-This installs the latest version to `/usr/local/bin` (requires sudo) or `~/.local/bin` (fallback).
-
-::: verify Verifying Installation
-```bash
-mftctl --version
-```
-:::
-
-## Installation Options
-
-### Custom Directory
-
-Install to a specific directory:
-
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh -s - -d ~/bin
-```
-
-### Specific Version
-
-Install a specific version:
-
-```bash
-MFTCTL_VERSION=1.0.0 curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
-
-### Manual Download
-
-Download the binary directly from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
-
-| Platform | Binary |
-|----------|--------|
-| Linux (amd64) | `mftctl-linux-amd64` |
-| Linux (arm64) | `mftctl-linux-arm64` |
-| macOS (Intel) | `mftctl-macos-amd64` |
-| macOS (Apple Silicon) | `mftctl-macos-arm64` |
-| Windows (amd64) | `mftctl-windows-amd64.exe` |
-
-```bash
-# Download
-wget https://releases.mftplus.co.za/latest/mftctl-linux-amd64
-
-# Make executable
-chmod +x mftctl-linux-amd64
-
-# Move to PATH
-sudo mv mftctl-linux-amd64 /usr/local/bin/mftctl
-```
+| Platform | Download |
+|----------|----------|
+| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
+| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
+| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
+| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
+| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
 
 ## Platform-Specific Instructions
 
-### Linux
+### Windows
 
-**Debian/Ubuntu:**
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
+1. Download `MFTPlus-x.x.x-x64_64.msi`
+2. Double-click the installer
+3. Follow the installation wizard
+4. Launch MFTPlus from the Start Menu
 
-**RHEL/CentOS/Fedora:**
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
+**Verify installation:**
+```powershell
+# Check application directory
+dir "C:\Program Files\MFTPlus"
 
-**NixOS:**
-```bash
-nix-env -iA nixpkgs.mftctl
+# View version
+fileversioninfo "C:\Program Files\MFTPlus\MFTPlus.exe"
 ```
 
 ### macOS
 
-**Homebrew:**
-```bash
-brew install mftplus/tap/mftctl
-```
+1. Download the appropriate DMG for your architecture:
+   - **Intel**: `MFTPlus-x.x.x-x86_64.dmg`
+   - **Apple Silicon**: `MFTPlus-x.x.x-aarch64.dmg`
 
-**Manual Install:**
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
-
-### Windows
-
-**PowerShell (One-line):**
-```powershell
-iwr https://docs.mftplus.co.za/install.ps1 | iex
-```
-
-**Manual Download:**
-1. Download [`mftplus-x64_64.msi`](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi)
-2. Run the installer
-3. Restart your terminal
+2. Open the DMG file
+3. Drag MFTPlus to Applications
+4. Launch MFTPlus from Applications
 
 **Verify installation:**
-```powershell
-mftctl --version
-```
-
-### Docker
-
-Run mftctl in a Docker container:
-
 ```bash
-docker run --rm -it \
-  -v ~/.config/mftplus:/root/.config/mftplus \
-  mftplus/mftctl:latest \
-  --version
+# Check application
+ls /Applications/MFTPlus.app
+
+# View version info
+defaults read /Applications/MFTPlus.app/Contents/Info.plist CFBundleShortVersionString
 ```
 
-::: tip Persistent Configuration
-Mounting `~/.config/mftplus` ensures your authentication and configuration persist between container runs.
+::: tip Apple Silicon
+To check your Mac architecture:
+```bash
+uname -m
+# x86_64 = Intel
+# arm64 = Apple Silicon
+```
 :::
 
-## Configuration
+### Linux
 
-After installation, create your configuration file:
-
-```bash
-mftctl config init
-```
-
-This creates `~/.config/mftplus/config.yaml`:
-
-```yaml
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 30s
-
-transfer:
-  default-retry-count: 3
-  default-timeout: 5m
-  compression: true
-
-logging:
-  level: info
-  format: text
-```
-
-## Authentication
-
-Authenticate with your MFTPlus account:
+#### Debian/Ubuntu
 
 ```bash
-mftctl login <your-api-key>
+# Download and install
+wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
+sudo dpkg -i mftplus_amd64.deb
+
+# Launch
+mftplus
 ```
 
-Your API key is available in the [MFTPlus Dashboard](https://dashboard.mftplus.co.za) under **Settings → API Keys**.
-
-## Upgrading
-
-Upgrade to the latest version:
+#### RHEL/CentOS/Fedora
 
 ```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
+# Download and install
+wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
+sudo rpm -i mftplus-x86_64.rpm
+
+# Launch
+mftplus
 ```
 
-The installer will automatically replace the existing version.
-
-## Uninstalling
-
-Remove mftctl from your system:
-
+::: tip Missing Dependencies
+If you see dependency errors, install missing packages:
 ```bash
-# Remove binary
-sudo rm /usr/local/bin/mftctl
+# Debian/Ubuntu
+sudo apt-get install -f
 
-# Or if installed to ~/.local/bin
-rm ~/.local/bin/mftctl
-
-# Remove configuration (optional)
-rm -rf ~/.config/mftplus
+# RHEL/CentOS/Fedora
+sudo yum install missing-package-name
 ```
+:::
 
 ## Requirements
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
-| **OS** | Linux kernel 3.10+, macOS 10.15+, Windows 10+ | Latest LTS versions |
-| **Architecture** | amd64, arm64 | amd64 |
-| **Memory** | 50 MB RAM | 100 MB RAM |
+| **OS** | Windows 10+, macOS 10.15+, Linux kernel 3.10+ | Latest LTS versions |
+| **Architecture** | x86_64 (amd64), ARM64 (aarch64) | x86_64 |
+| **Memory** | 100 MB RAM | 200 MB RAM |
 | **Disk** | 50 MB free space | 100 MB free space |
-| **Network** | HTTPS access to dashboard.mftplus.co.za | Stable internet connection |
+| **Network** | HTTPS access to dashboard | Stable internet connection |
+
+## Configuration Directory
+
+MFTPlus stores configuration and data in:
+
+- **Linux**: `~/.config/mft-agent/`
+- **macOS**: `~/Library/Application Support/mft-agent/`
+- **Windows**: `%APPDATA%\mft-agent\`
+
+**Directory contents:**
+- `config.yaml` - Server URL and agent settings
+- `certificates/` - Encryption keys (permissions: 600)
+- `transfers.db` - SQLite transfer log
+- `logs/` - Application logs
+
+## Server URL Configuration
+
+On first launch, MFTPlus prompts for your dashboard server URL.
+
+**For local development:**
+```
+http://localhost:8080
+```
+
+**For production deployments:**
+```
+https://dashboard.yourcompany.com
+```
+
+Edit manually:
+```yaml
+# ~/.config/mft-agent/config.yaml
+server:
+  url: http://localhost:8080
+  timeout: 30s
+```
+
+## Upgrading
+
+Download and run the latest installer. The new version will replace the existing one while preserving your configuration and transfer history.
+
+::: warning Configuration Compatibility
+Major version updates may require configuration changes. Review the release notes before upgrading.
+:::
+
+## Uninstalling
+
+### Windows
+
+1. Open **Settings** → **Apps**
+2. Find **MFTPlus**
+3. Click **Uninstall**
+4. Optionally remove `%APPDATA%\mft-agent` to delete configuration
+
+### macOS
+
+```bash
+# Remove application
+rm -rf /Applications/MFTPlus.app
+
+# Optionally remove configuration
+rm -rf ~/Library/Application Support/mft-agent
+```
+
+### Linux
+
+```bash
+# Debian/Ubuntu
+sudo apt-get remove mftplus
+
+# RHEL/CentOS/Fedora
+sudo yum remove mftplus
+
+# Optionally remove configuration
+rm -rf ~/.config/mft-agent
+```
 
 ## Troubleshooting
 
-### Command Not Found
+### Application Won't Launch
 
-If `mftctl` is not found after installation:
-
+**Linux:**
 ```bash
-# Check if ~/.local/bin is in your PATH
-echo $PATH | grep ~/.local/bin
+# Check for missing libraries
+ldd /usr/bin/mftplus
 
-# Add to PATH if missing (for bash)
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-
-# Or for zsh
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-source ~/.zshrc
+# View detailed logs
+mftplus --verbose
 ```
 
-### Permission Denied
+**Windows:**
+- Check Event Viewer for application errors
+- Run as administrator if permission errors occur
 
-If you can't write to `/usr/local/bin`:
+**macOS:**
+- Verify Gatekeeper allows the app: `xattr -d com.apple.quarantine /Applications/MFTPlus.app`
+- Check Console.app for crash logs
+
+### Permission Errors
+
+Ensure the agent process has read/write access to:
+- Configuration directory (`~/.config/mft-agent/` or equivalent)
+- Certificate directory (`~/.config/mft-agent/certificates/`)
+- Transfer log database (`~/.config/mft-agent/transfers.db`)
+
+### Network Connectivity
+
+Verify the agent can reach the dashboard:
 
 ```bash
-# Install to user directory instead
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh -s - -d ~/.local/bin
+# Test dashboard connectivity
+curl -v http://localhost:8080/health
+
+# Check firewall rules
+sudo ufw status  # Linux
+netsh advfirewall show allprofiles  # Windows
 ```
 
-### Checksum Verification Failed
+## Data Directories
 
-If checksum verification fails, you can skip it (not recommended):
-
-```bash
-MFTCTL_SKIP_VERIFY=1 curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
-
-### Firewall Issues
-
-If you're behind a firewall, ensure outbound access to:
-- `docs.mftplus.co.za` (installer)
-- `releases.mftplus.co.za` (downloads)
-- `dashboard.mftplus.co.za` (API)
+| Directory | Purpose |
+|-----------|---------|
+| `config.yaml` | Agent configuration |
+| `certificates/` | Encryption keys (600 permissions) |
+| `transfers.db` | SQLite transfer log |
+| `logs/` | Application logs |
+| `jobs/` | Scheduled job definitions |
 
 ## Next Steps
 
 - [Quick Start](./quick-start) - Create your first transfer
-- [CLI Reference](../api/cli) - Complete command documentation
+- [Architecture](./architecture) - Learn how MFTPlus works
 - [Configuration](../api/config) - Configuration options
 
 ## Need Help?
 
 - **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
 - **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)
-- **Issues**: [github.com/ZeroClue/mft-docs/issues](https://github.com/ZeroClue/mft-docs/issues)

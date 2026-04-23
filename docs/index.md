@@ -14,7 +14,7 @@ hero:
       link: /guide/introduction
   image:
     src: /hero-terminal.png
-    alt: MFTPlus dashboard and CLI workflow
+    alt: MFTPlus dashboard and agent workflow
 
 features:
   - title: "Your Files. Scheduled. Delivered."
@@ -22,18 +22,19 @@ features:
   - title: "Every Transfer, Accounted For"
     details: "Complete audit trails for SOC2, HIPAA, and GDPR. Know exactly who moved what, when, and where—down to the individual file."
   - title: "Security Without Compromise"
-    details: "AES-256 encryption everywhere. mTLS for agent communication. Role-based access control. SSO integration. Built for security teams, approved by compliance."
+    details: "AES-256-GCM encryption everywhere. Role-based access control. Built for security teams, approved by compliance."
   - title: "Connect Anything"
-    details: "SFTP, FTP, FTPS, S3, Azure Blob, Google Cloud Storage. One unified interface for all your file transfer needs—no more protocol spaghetti."
-  - title: "From One to Millions"
-    details: "Start small, scale without friction. Handle 10 transfers or 10 million with the same platform. Horizontal scaling built in from day one."
-  - title: "Deploy Anywhere"
-    details: "Run agents in your cloud, on-premises, or at the edge. All managed centrally through a single web dashboard. CLI-first, API-complete."
+    details: "SFTP, FTP, FTPS, and local filesystem transfers. One unified interface for all your file transfer needs—no more protocol spaghetti."
+  - title: "Desktop Agent, Not Server"
+    details: "Lightweight ~5MB agent runs on Windows, macOS, and Linux. No complex server deployment required. Up and running in minutes."
+  - title: "Simple and Powerful"
+    details: "Manage everything through a web dashboard. Create scheduled jobs, monitor transfers, and view audit logs from one place."
+
 ---
 
 ## The Problem with File Transfers Today
 
-Your team handles file transfers every day. Customer data exports. Partner SFTP dropzones. Compliance archives. Cloud migrations.
+Your team handles file transfers every day. Customer data exports. Partner SFTP dropzones. Compliance archives. Log aggregation.
 
 And you're doing it with **fragile cron jobs**, **hand-rolled scripts**, or **legacy MFT platforms** built before cloud-native was a thing.
 
@@ -46,43 +47,42 @@ The result:
 
 ## There's a Better Way
 
-**MFTPlus** gives you enterprise-grade managed file transfers with the developer experience of a modern CLI tool.
+**MFTPlus** gives you enterprise-grade managed file transfers with a lightweight desktop agent and centralized dashboard.
 
 ### What Makes MFTPlus Different
 
-**Born in the cloud, not retrofitted**
-- Cloud-native architecture from day one
-- Deploy via Docker in under 5 minutes
-- Terraform provider included—infrastructure as code
-- Observability built in (structured logs, metrics, tracing)
+**Lightweight, not bloated**
+- ~5MB desktop agent, not a massive server deployment
+- Runs on Windows, macOS, and Linux
+- Install in minutes, not months
 
 **DevOps-friendly, not DevOps-hostile**
-- CLI-first workflow (`mftctl`) that you'll actually enjoy using
-- Full API coverage—automate everything
-- Web dashboard for when you need visual oversight
-- No GUI lock-in—script everything
+- Dashboard for visual management
+- Cron-based job scheduling
+- Full audit logging for compliance
 
 **Compliance-ready, not compliance-later**
 - Complete audit trails by default
 - SOC2-compatible logging and reporting
-- Encryption at rest and in transit
-- Role-based access control and SSO
+- AES-256-GCM encryption at rest and in transit
 
 ## Quick Start
 
-```bash
-# Install in 30 seconds
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
+**1. Download and install the agent**
 
-# Create your first scheduled transfer
-mftctl transfer create \
-  --source s3://production-data/exports \
-  --dest sftp://partner.example.com/incoming \
-  --schedule "0 2 * * *" \
-  --on-failure alert@yourcompany.com
-```
+Windows, macOS, or Linux — get up and running in under 5 minutes.
 
-That's it. Your transfer is scheduled, monitored, and logged.
+[:arrow_forward: Download Installer](/guide/installation)
+
+**2. Configure and register**
+
+Set your dashboard URL and register your agent. Your agent appears in the dashboard with online status.
+
+**3. Create your first scheduled job**
+
+Schedule transfers using familiar cron syntax. Monitor execution in real-time.
+
+[:book: Read the Quick Start Guide](/guide/quick-start)
 
 ## Real Problems, Solved
 
@@ -96,13 +96,13 @@ That's it. Your transfer is scheduled, monitored, and logged.
 
 **Before:** Frantically grep through logs across 20 servers. Hope nothing was deleted. Cross your fingers.
 
-**With MFTPlus:** Run one export command. Get a complete, audit-ready report. Every file, every transfer, every timestamp.
+**With MFTPlus:** Query the local SQLite database. Get a complete, audit-ready report. Every file, every transfer, every timestamp.
 
 ### "Our legacy MFT platform is a pain to use and costs a fortune"
 
 **Before:** Wait weeks for vendor support. GUI-heavy workflows you can't automate. Five-figure annual contracts.
 
-**With MFTPlus:** Start free today. Scale as you grow. Get up and running in an afternoon. Plans from $0 to custom enterprise.
+**With MFTPlus:** Lightweight agent, simple dashboard. Get up and running in an afternoon. Plans from $0 to custom enterprise.
 
 ## Pricing That Makes Sense
 
@@ -123,7 +123,7 @@ That's it. Your transfer is scheduled, monitored, and logged.
 > "SOC2 auditors actually complimented our file transfer audit trails. That's never happened before."
 > — CTO, Healthcare SaaS
 
-> "The CLI is exactly what I wanted from [legacy MFT vendor] but never got. It's like they designed it for people who use terminals."
+> "Finally, an MFT tool that doesn't require a dedicated server team to manage."
 > — Senior Engineer, E-commerce Platform
 
 ## Ready to Stop Worrying About File Transfers?
