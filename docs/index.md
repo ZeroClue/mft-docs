@@ -3,14 +3,11 @@ layout: home
 
 hero:
   name: "MFTPlus"
-  text: "Stop Managing File Transfers. Start Automating Them."
-  tagline: "The modern managed file transfer platform that DevOps teams actually want to use."
+  text: "Documentation"
+  tagline: "Guides, API reference, and plugin documentation for MFTPlus."
   actions:
     - theme: brand
-      text: Start Free Forever
-      link: /pricing
-    - theme: alt
-      text: See How It Works
+      text: Get Started
       link: /guide/introduction
   image:
     src: /hero-terminal.png
