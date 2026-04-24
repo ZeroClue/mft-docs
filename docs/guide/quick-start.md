@@ -12,7 +12,7 @@ Transfer your first file with MFTPlus in under 5 minutes.
 ## Option A: One-Line Install (macOS/Linux)
 
 ```bash
-curl -fsSL https://releases.mftplus.co.za/latest/install.sh | sh
+curl -fsSL https://docs.mftplus.co.za/install.sh | sh
 ```
 
 This installs `mftctl` — the MFTPlus command-line interface.
@@ -55,6 +55,10 @@ Launch MFTPlus from your applications menu.
 1. Click **Register** in the MFTPlus interface
 2. Enter your registration credentials
 3. Verify your agent appears in the dashboard under **Agents**
+
+::: info Registration Credentials
+New users receive registration credentials via email after signing up at [mftplus.co.za](https://mftplus.co.za). Contact your account owner if you don't have credentials.
+:::
 
 ::: tip
 Your agent ID is shown in the app header and dashboard agents list.
@@ -126,6 +130,12 @@ Or view in the dashboard under **Jobs** → **History**.
 - Verify source directory is readable
 - Verify destination directory is writable
 - Check SSH key permissions (if using key auth)
+
+---
+
+## Security
+
+MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used for securing classified information. Credentials are stored locally with restrictive permissions (600) and never leave your machine unencrypted.
 
 ---
 

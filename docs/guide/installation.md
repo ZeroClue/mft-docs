@@ -7,7 +7,7 @@ Install MFTPlus on your system.
 **macOS / Linux:**
 
 ```bash
-curl -fsSL https://releases.mftplus.co.za/latest/install.sh | sh
+curl -fsSL https://docs.mftplus.co.za/install.sh | sh
 ```
 
 This installs `mftctl` — the MFTPlus command-line interface — to `/usr/local/bin/`.
