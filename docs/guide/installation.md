@@ -1,8 +1,27 @@
 # Installation
 
-Install the MFTPlus desktop agent on your system.
+Install MFTPlus on your system.
 
-## Download Installers
+## Quick Install (One-Line)
+
+**macOS / Linux:**
+
+```bash
+curl -fsSL https://releases.mftplus.co.za/latest/install.sh | sh
+```
+
+This installs `mftctl` — the MFTPlus command-line interface — to `/usr/local/bin/`.
+
+::: tip
+After installing, initialize your configuration:
+```bash
+mftctl config init
+```
+:::
+
+---
+
+## Desktop Agent Installers
 
 Download the latest installer for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
 
@@ -234,9 +253,10 @@ netsh advfirewall show allprofiles  # Windows
 
 ## Next Steps
 
-- [Quick Start](./quick-start) - Create your first transfer
-- [Architecture](./architecture) - Learn how MFTPlus works
-- [Configuration](../api/config) - Configuration options
+- [Quick Start](./quick-start) — Transfer your first file in 5 minutes
+- [CLI Reference](../api/cli) — Complete `mftctl` command reference
+- [Architecture](./architecture) — Learn how MFTPlus works
+- [Configuration](../api/config) — Configuration options
 
 ## Need Help?
 
