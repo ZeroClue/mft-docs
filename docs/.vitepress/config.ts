@@ -64,5 +64,9 @@ export default defineConfig({
 
   markdown: {
     lineNumbers: true
+  },
+
+  sitemap: {
+    hostname: 'https://docs.mftplus.co.za'
   }
 })
