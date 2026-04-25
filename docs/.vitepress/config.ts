@@ -2,6 +2,9 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'MFTPlus | Modern Managed File Transfer for DevOps',
+  ignoreDeadLinks: [
+    /^http:\/\/localhost/
+  ],
   description: 'MFT for the cloud-native era. CLI-first, API-first, deployed in hours. The modern alternative to legacy MFT solutions.',
   lang: 'en-US',
   head: [
@@ -16,7 +19,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/' },
-      { text: 'API Reference', link: '/api/' },
+      { text: 'API Reference', link: '/api/openapi-reference' },
       { text: 'Plugins', link: '/plugins/' }
     ],
 
@@ -36,6 +39,7 @@ export default defineConfig({
           text: 'API Reference',
           items: [
             { text: 'Overview', link: '/api/' },
+            { text: 'REST API', link: '/api/openapi-reference' },
             { text: 'CLI Commands', link: '/api/cli' },
             { text: 'Configuration', link: '/api/config' }
           ]

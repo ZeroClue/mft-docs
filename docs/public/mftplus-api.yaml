@@ -1,0 +1,1442 @@
+openapi: 3.1.0
+info:
+  title: MFTPlus API
+  description: |
+    MFTPlus REST API for managing agents, transfers, jobs, and pipelines.
+
+    **Authentication**
+
+    Most endpoints require authentication. MFTPlus supports two authentication methods:
+
+    - **API Key Auth**: For agent-to-server communication. Include the API key in the `X-API-Key` header.
+    - **JWT Bearer Auth**: For admin/customer access. Include the JWT token in the `Authorization: Bearer <token>` header.
+
+    **Base URL**
+
+    Production: `https://api.mftplus.co.za`
+  version: 0.1.0
+  contact:
+    name: MFTPlus Support
+    url: https://mftplus.co.za
+    email: support@mftplus.co.za
+  license:
+    name: Proprietary
+    url: https://mftplus.co.za/terms
+
+servers:
+  - url: https://api.mftplus.co.za
+    description: Production server (Coming Soon)
+
+tags:
+  - name: Agents
+    description: Agent registration and management
+  - name: Transfers
+    description: File transfer operations
+  - name: Jobs
+    description: Scheduled job management
+  - name: Pipelines
+    description: Pipeline workflow management
+  - name: Health
+    description: Health check endpoints
+
+paths:
+  /api/health:
+    get:
+      tags: [Health]
+      summary: Health check
+      description: Returns the current health status of the API server
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                  uptime:
+                    type: number
+                    description: Server uptime in seconds
+
+  /api/agents/register:
+    post:
+      tags: [Agents]
+      summary: Register a new agent
+      description: |
+        Register a new agent with the MFTPlus server.
+
+        **Authentication**: Customer JWT token OR customerIdentifier in request body
+
+        The registration process returns:
+        - The agent's unique ID
+        - A generated API key for authentication
+        - An mTLS CSR template for secure certificate setup
+      operationId: registerAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [hostname, os]
+              properties:
+                name:
+                  type: string
+                  description: Human-readable name for the agent
+                  example: production-server-1
+                hostname:
+                  type: string
+                  description: Agent's hostname
+                  example: server1.example.com
+                os:
+                  type: string
+                  description: Operating system
+                  example: linux
+                  enum: [linux, windows, darwin]
+                version:
+                  type: string
+                  description: Agent version
+                  example: 0.1.0
+                customerIdentifier:
+                  type: string
+                  description: Customer identifier (legacy, use JWT instead)
+                  example: customer-abc-123
+      responses:
+        '201':
+          description: Agent registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      agent:
+                        $ref: '#/components/schemas/Agent'
+                      apiKey:
+                        type: string
+                        description: Store this API key securely - it won't be shown again
+                        example: mft_ak_xxxxxxxxxxxxxxxxxxxx
+                      mtls:
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                            example: true
+                          csrTemplate:
+                            type: string
+                            description: CSR template for mTLS certificate generation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/agents/heartbeat:
+    post:
+      tags: [Agents]
+      summary: Send agent heartbeat
+      description: |
+        Agents send heartbeats to indicate they are online and operational.
+
+        **Authentication**: Required (API Key)
+
+        Heartbeats should be sent every 30-60 seconds to maintain the agent's online status.
+      operationId: sendHeartbeat
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: Agent status
+                  example: online
+                  enum: [online, offline, busy, error]
+                load:
+                  type: number
+                  description: Current CPU load (0-1)
+                  example: 0.45
+                memory:
+                  type: number
+                  description: Memory usage in MB
+                  example: 512
+      responses:
+        '200':
+          description: Heartbeat recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      agent:
+                        $ref: '#/components/schemas/Agent'
+
+  /api/agents:
+    get:
+      tags: [Agents]
+      summary: List agents
+      description: |
+        Get a list of all agents.
+
+        **Authentication**: Required (Admin or Customer JWT)
+
+        - Admin: See all agents across all customers
+        - Customer: See only their own agents
+      operationId: listAgents
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of agents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      agents:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Agent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/agents/{id}:
+    get:
+      tags: [Agents]
+      summary: Get agent details
+      description: |
+        Get detailed information about a specific agent.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: getAgent
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      responses:
+        '200':
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      agent:
+                        $ref: '#/components/schemas/AgentFull'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/agents/{id}/transfers:
+    get:
+      tags: [Agents]
+      summary: Get agent transfers
+      description: |
+        Get transfers associated with a specific agent.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: getAgentTransfers
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [queued, running, completed, failed, cancelled]
+          description: Filter by transfer status
+      responses:
+        '200':
+          description: List of transfers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transfers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Transfer'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /api/transfers:
+    post:
+      tags: [Transfers]
+      summary: Create a transfer
+      description: |
+        Create a new file transfer operation.
+
+        **Authentication**: Required (API Key)
+
+        Agents use this endpoint to report transfers they are executing.
+      operationId: createTransfer
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agentId, sourceUrl, destinationPath, direction, protocol]
+              properties:
+                agentId:
+                  type: string
+                  format: uuid
+                  description: ID of the agent performing the transfer
+                sourceUrl:
+                  type: string
+                  description: Source URL or path
+                  example: sftp://ftp.example.com/files/data.csv
+                destinationPath:
+                  type: string
+                  description: Destination path
+                  example: /local/data/files/data.csv
+                direction:
+                  type: string
+                  enum: [pull, push]
+                  description: Transfer direction (pull = download, push = upload)
+                protocol:
+                  type: string
+                  enum: [sftp, ftp, ftps, local]
+                  description: Transfer protocol
+                size:
+                  type: integer
+                  description: Expected file size in bytes
+                  example: 1048576
+      responses:
+        '201':
+          description: Transfer created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transfer:
+                        $ref: '#/components/schemas/Transfer'
+
+    get:
+      tags: [Transfers]
+      summary: List transfers
+      description: |
+        Get a list of all transfers.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: listTransfers
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: Filter by status
+        - in: query
+          name: agentId
+          schema:
+            type: string
+            format: uuid
+          description: Filter by agent
+      responses:
+        '200':
+          description: List of transfers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transfers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Transfer'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /api/transfers/{id}:
+    get:
+      tags: [Transfers]
+      summary: Get transfer details
+      description: Get detailed information about a specific transfer
+      operationId: getTransfer
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TransferId'
+      responses:
+        '200':
+          description: Transfer details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transfer:
+                        $ref: '#/components/schemas/Transfer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      tags: [Transfers]
+      summary: Update transfer progress
+      description: |
+        Update transfer status and progress.
+
+        **Authentication**: Required (API Key)
+
+        Agents use this endpoint to report transfer progress.
+      operationId: updateTransfer
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TransferId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [queued, running, completed, failed, cancelled]
+                progress:
+                  type: number
+                  minimum: 0
+                  maximum: 100
+                  description: Progress percentage
+                bytesTransferred:
+                  type: integer
+                  description: Number of bytes transferred
+                speed:
+                  type: number
+                  description: Transfer speed in bytes/second
+                error:
+                  type: string
+                  description: Error message if transfer failed
+                throughputMbps:
+                  type: number
+                  description: Measured throughput in Mbps
+                latencyMs:
+                  type: number
+                  description: Network latency in milliseconds
+                packetLossPercent:
+                  type: number
+                  description: Packet loss percentage
+      responses:
+        '200':
+          description: Transfer updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transfer:
+                        $ref: '#/components/schemas/Transfer'
+
+  /api/jobs:
+    post:
+      tags: [Jobs]
+      summary: Create a job
+      description: |
+        Create a new scheduled transfer job.
+
+        **Authentication**: Required (Admin JWT)
+      operationId: createJob
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agentId, name, sourcePath, destinationPath, schedule, protocol, direction]
+              properties:
+                agentId:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                  description: Job name
+                  example: Daily backup
+                sourcePath:
+                  type: string
+                  description: Source file or directory path
+                destinationPath:
+                  type: string
+                  description: Destination path
+                schedule:
+                  type: string
+                  description: Cron schedule expression
+                  example: "0 2 * * *"
+                protocol:
+                  type: string
+                  enum: [sftp, ftp, ftps, local]
+                direction:
+                  type: string
+                  enum: [pull, push]
+                enabled:
+                  type: boolean
+                  description: Whether the job is enabled
+                  default: true
+      responses:
+        '201':
+          description: Job created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      job:
+                        $ref: '#/components/schemas/Job'
+
+    get:
+      tags: [Jobs]
+      summary: List jobs
+      description: |
+        Get a list of all jobs.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: listJobs
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: agentId
+          schema:
+            type: string
+            format: uuid
+          description: Filter by agent
+        - in: query
+          name: enabled
+          schema:
+            type: boolean
+          description: Filter by enabled status
+      responses:
+        '200':
+          description: List of jobs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      jobs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Job'
+
+  /api/jobs/{id}:
+    get:
+      tags: [Jobs]
+      summary: Get job details
+      description: Get detailed information about a specific job
+      operationId: getJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job details
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      tags: [Jobs]
+      summary: Update a job
+      description: Update job properties
+      operationId: updateJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                schedule:
+                  type: string
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Job updated
+
+    delete:
+      tags: [Jobs]
+      summary: Delete a job
+      description: Delete a job permanently
+      operationId: deleteJob
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Job deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      deleted:
+                        type: boolean
+                        example: true
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/jobs/{id}/runs:
+    get:
+      tags: [Jobs]
+      summary: Get job runs
+      description: Get execution history for a job
+      operationId: getJobRuns
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+        - $ref: '#/components/parameters/Limit'
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of job runs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      runs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/JobRun'
+
+    post:
+      tags: [Jobs]
+      summary: Start a job run
+      description: |
+        Create a new job run and start execution.
+
+        **Authentication**: Required (API Key)
+
+        Agents use this endpoint to report job execution starts.
+      operationId: startJobRun
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '201':
+          description: Job run created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      run:
+                        $ref: '#/components/schemas/JobRun'
+
+  /api/pipelines:
+    post:
+      tags: [Pipelines]
+      summary: Create a pipeline
+      description: |
+        Create a new pipeline from YAML definition.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: createPipeline
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, name, yaml]
+              properties:
+                identifier:
+                  type: string
+                  description: Unique pipeline identifier (lowercase, alphanumeric, hyphens)
+                  pattern: '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$'
+                  example: daily-etl-pipeline
+                name:
+                  type: string
+                  description: Human-readable pipeline name
+                  example: Daily ETL Pipeline
+                description:
+                  type: string
+                  description: Pipeline description
+                  maxLength: 500
+                yaml:
+                  type: string
+                  description: Pipeline YAML definition
+                enabled:
+                  type: boolean
+                  default: true
+      responses:
+        '201':
+          description: Pipeline created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      pipeline:
+                        $ref: '#/components/schemas/Pipeline'
+
+    get:
+      tags: [Pipelines]
+      summary: List pipelines
+      description: |
+        Get a list of all pipelines.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: listPipelines
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - in: query
+          name: enabled
+          schema:
+            type: boolean
+          description: Filter by enabled status
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search in identifier, name, description
+      responses:
+        '200':
+          description: List of pipelines
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      pipelines:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Pipeline'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /api/pipelines/schema:
+    get:
+      tags: [Pipelines]
+      summary: Get pipeline JSON schema
+      description: Get the JSON schema for pipeline validation
+      operationId: getPipelineSchema
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Pipeline schema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      schema:
+                        type: object
+                        description: JSON Schema for pipeline validation
+
+  /api/pipelines/dry-run:
+    post:
+      tags: [Pipelines]
+      summary: Validate a pipeline
+      description: |
+        Validate a pipeline YAML without saving it.
+
+        **Authentication**: Required (Admin or Customer JWT)
+      operationId: validatePipeline
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [yaml]
+              properties:
+                yaml:
+                  type: string
+                  description: Pipeline YAML to validate
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      valid:
+                        type: boolean
+                      errors:
+                        type: array
+                        items:
+                          type: string
+                      warnings:
+                        type: array
+                        items:
+                          type: string
+                      ast:
+                        type: object
+                        description: Abstract syntax tree of the pipeline
+
+  /api/pipelines/{id}:
+    get:
+      tags: [Pipelines]
+      summary: Get pipeline details
+      description: Get detailed information about a specific pipeline
+      operationId: getPipeline
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      responses:
+        '200':
+          description: Pipeline details
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      tags: [Pipelines]
+      summary: Update pipeline metadata
+      description: Update pipeline metadata (not YAML)
+      operationId: updatePipeline
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Pipeline updated
+
+    delete:
+      tags: [Pipelines]
+      summary: Delete a pipeline
+      description: Delete a pipeline permanently
+      operationId: deletePipeline
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      responses:
+        '200':
+          description: Pipeline deleted
+
+  /api/pipelines/{id}/yaml:
+    get:
+      tags: [Pipelines]
+      summary: Export pipeline as YAML
+      description: Export a pipeline definition as YAML file
+      operationId: exportPipelineYaml
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      responses:
+        '200':
+          description: Pipeline YAML file
+          content:
+            text/yaml:
+              schema:
+                type: string
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: File attachment header
+
+    put:
+      tags: [Pipelines]
+      summary: Update pipeline from YAML
+      description: |
+        Update a pipeline from new YAML definition.
+
+        Creates a new version automatically.
+      operationId: updatePipelineYaml
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [yaml]
+              properties:
+                yaml:
+                  type: string
+      responses:
+        '200':
+          description: Pipeline updated
+        '400':
+          description: Invalid YAML or validation failed
+
+  /api/pipelines/{id}/runs:
+    get:
+      tags: [Pipelines]
+      summary: Get pipeline runs
+      description: Get execution history for a pipeline
+      operationId: getPipelineRuns
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of pipeline runs
+
+    post:
+      tags: [Pipelines]
+      summary: Start a pipeline run
+      description: Trigger execution of a pipeline
+      operationId: startPipelineRun
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+      responses:
+        '201':
+          description: Pipeline run created
+        '400':
+          description: Pipeline is disabled
+
+  /api/pipelines/{id}/versions:
+    get:
+      tags: [Pipelines]
+      summary: Get pipeline versions
+      description: Get version history for a pipeline
+      operationId: getPipelineVersions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PipelineId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: List of pipeline versions
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key authentication for agents
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT authentication for admins and customers
+
+  parameters:
+    AgentId:
+      name: id
+      in: path
+      required: true
+      description: Agent UUID
+      schema:
+        type: string
+        format: uuid
+      example: 01234567-89ab-cdef-0123-456789abcdef
+
+    TransferId:
+      name: id
+      in: path
+      required: true
+      description: Transfer UUID
+      schema:
+        type: string
+        format: uuid
+
+    JobId:
+      name: id
+      in: path
+      required: true
+      description: Job UUID
+      schema:
+        type: string
+        format: uuid
+
+    PipelineId:
+      name: id
+      in: path
+      required: true
+      description: Pipeline UUID
+      schema:
+        type: string
+        format: uuid
+
+    Page:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    Limit:
+      name: limit
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  schemas:
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique agent identifier
+        name:
+          type: string
+          nullable: true
+          description: Human-readable agent name
+        hostname:
+          type: string
+          description: Agent's hostname
+        os:
+          type: string
+          description: Operating system
+        version:
+          type: string
+          nullable: true
+          description: Agent software version
+        status:
+          type: string
+          enum: [online, offline, busy, error]
+          description: Current agent status
+        lastHeartbeat:
+          type: string
+          format: date-time
+          description: Last heartbeat timestamp
+        ipAddress:
+          type: string
+          nullable: true
+          description: Last known IP address
+        createdAt:
+          type: string
+          format: date-time
+          description: Registration timestamp
+
+    AgentFull:
+      allOf:
+        - $ref: '#/components/schemas/Agent'
+        - type: object
+          properties:
+            transfers:
+              type: array
+              items:
+                $ref: '#/components/schemas/Transfer'
+            jobs:
+              type: array
+              items:
+                $ref: '#/components/schemas/Job'
+
+    Transfer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        agentId:
+          type: string
+          format: uuid
+        source:
+          type: string
+          description: Source URL or path
+        destination:
+          type: string
+          description: Destination path
+        protocol:
+          type: string
+          enum: [sftp, ftp, ftps, local]
+        status:
+          type: string
+          enum: [queued, running, completed, failed, cancelled]
+        progress:
+          type: number
+          minimum: 0
+          maximum: 100
+        bytesTotal:
+          type: integer
+          description: Total bytes to transfer
+        bytesTransferred:
+          type: integer
+          description: Bytes transferred so far
+        speed:
+          type: number
+          description: Transfer speed (bytes/second)
+        errorMessage:
+          type: string
+          nullable: true
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        agent:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            hostname:
+              type: string
+
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        agentId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Job name
+        source:
+          type: string
+          description: Source path
+        destination:
+          type: string
+          description: Destination path
+        schedule:
+          type: string
+          description: Cron expression
+        protocol:
+          type: string
+          enum: [sftp, ftp, ftps, local]
+        direction:
+          type: string
+          enum: [pull, push]
+        enabled:
+          type: boolean
+          description: Whether job is enabled
+        lastRunAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        agent:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            hostname:
+              type: string
+
+    JobRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [running, completed, failed, cancelled]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+        bytesTransferred:
+          type: integer
+          nullable: true
+
+    Pipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        identifier:
+          type: string
+          description: Unique pipeline identifier
+        name:
+          type: string
+          description: Human-readable name
+        description:
+          type: string
+          nullable: true
+        yaml:
+          type: string
+          description: Pipeline YAML definition
+        enabled:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: integer
+              createdAt:
+                type: string
+                format: date-time
+              gitSha:
+                type: string
+                nullable: true
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page number
+        limit:
+          type: integer
+          description: Items per page
+        total:
+          type: integer
+          description: Total number of items
+        pages:
+          type: integer
+          description: Total number of pages
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+        details:
+          type: object
+          nullable: true
+          description: Additional error details
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Invalid input
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Authentication required
+
+    Forbidden:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Access denied
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Resource not found
+
+    RateLimited:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Rate limit exceeded
