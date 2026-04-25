@@ -1,3 +1,9 @@
+---
+title: Quick Start - MFTPlus Documentation
+description: Transfer your first file with MFTPlus in under 5 minutes. Step-by-step guide to install, configure, and run your first file transfer job.
+keywords: MFTPlus quick start, file transfer tutorial, install mftctl, SFTP automation guide, first file transfer
+---
+
 # Quick Start
 
 Transfer your first file with MFTPlus in under 5 minutes.

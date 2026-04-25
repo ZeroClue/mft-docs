@@ -1,3 +1,9 @@
+---
+title: CLI Commands Reference - MFTPlus Documentation
+description: Complete reference for mftctl command-line interface. All commands, options, and examples for managing file transfers.
+keywords: mftctl commands, MFTPlus CLI, file transfer CLI, command line reference, automation commands
+---
+
 # CLI Commands
 
 Complete reference for `mftctl` command-line interface.

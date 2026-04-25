@@ -1,3 +1,9 @@
+---
+title: Architecture - MFTPlus Documentation
+description: Understanding MFTPlus architecture. Learn about the CLI, daemon, dashboard, and how components work together.
+keywords: MFTPlus architecture, system design, mftctl CLI, daemon, dashboard, component overview
+---
+
 # Architecture
 
 Understanding MFT's architecture will help you make the most of its capabilities.

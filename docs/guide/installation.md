@@ -1,3 +1,9 @@
+---
+title: Installation Guide - MFTPlus Documentation
+description: Install MFTPlus on Windows, macOS, or Linux. One-line install script or desktop installers. Get up and running in minutes.
+keywords: MFTPlus installation, install mftctl, file transfer agent setup, SFTP client install, Windows macOS Linux
+---
+
 # Installation
 
 Install MFTPlus on your system.

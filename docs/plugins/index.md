@@ -1,3 +1,9 @@
+---
+title: Plugin System - MFTPlus Documentation
+description: Extend MFTPlus functionality with plugins. Create custom authentication providers, storage backends, and transfer protocols.
+keywords: MFTPlus plugins, plugin development, custom authentication, storage plugins, protocol extensions
+---
+
 # Plugin System
 
 Extend MFTPlus functionality with plugins.

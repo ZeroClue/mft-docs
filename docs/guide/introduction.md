@@ -1,3 +1,9 @@
+---
+title: Introduction - MFTPlus Documentation
+description: Welcome to MFTPlus - modern managed file transfer for DevOps. Learn about our lightweight, secure, and audit-ready file transfer solution.
+keywords: MFTPlus introduction, what is MFT, managed file transfer overview, DevOps file transfer, secure file transfer
+---
+
 # Introduction
 
 Welcome to **MFTPlus** — Managed File Transfer, reimagined for modern DevOps workflows. Lightweight, secure, and audit-ready without the enterprise baggage.

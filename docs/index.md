@@ -1,5 +1,9 @@
 ---
 layout: home
+title: MFTPlus Documentation | Modern Managed File Transfer
+description: Official documentation for MFTPlus. Learn how to install, configure, and use our modern managed file transfer solution for DevOps teams.
+keywords: MFTPlus documentation, managed file transfer docs, DevOps file transfer, SFTP automation, secure file transfer
+image: https://docs.mftplus.co.za/og-image.png
 
 hero:
   name: "MFTPlus"
@@ -110,7 +114,7 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 | **Pro** | $499/month | Companies with compliance requirements |
 | **Enterprise** | Custom | Large-scale deployments with SLA needs |
 
-[See Full Comparison →](/pricing)
+[See Full Comparison →](https://mftplus.co.za/pricing)
 
 ## What Our Users Say
 
@@ -127,4 +131,4 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 
 **Start free in under 5 minutes.** No credit card required. Scale when you need to.
 
-[:star: Start Free Forever](/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)
+[:star: Start Free Forever](https://mftplus.co.za/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)

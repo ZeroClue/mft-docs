@@ -1,3 +1,9 @@
+---
+title: Configuration - MFTPlus Documentation
+description: MFTPlus configuration options, environment variables, and config file reference. Customize your file transfer setup.
+keywords: MFTPlus config, configuration file, environment variables, YAML config, server settings
+---
+
 # Configuration
 
 MFTPlus configuration options and environment variables.

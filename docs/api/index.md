@@ -1,3 +1,9 @@
+---
+title: API Reference - MFTPlus Documentation
+description: Complete API reference for MFTPlus. CLI commands, REST API, configuration options, and plugin development.
+keywords: MFTPlus API, mftctl CLI, REST API, file transfer commands, automation API
+---
+
 # API Reference
 
 Complete reference for MFTPlus APIs and interfaces.
