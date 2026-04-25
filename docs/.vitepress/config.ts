@@ -3,8 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'MFTPlus | Modern Managed File Transfer for DevOps',
   ignoreDeadLinks: [
-    /^http:\/\/localhost/,
-    /^\/pricing/
+    /^http:\/\/localhost/
   ],
   description: 'MFT for the cloud-native era. CLI-first, API-first, deployed in hours. The modern alternative to legacy MFT solutions.',
   lang: 'en-US',

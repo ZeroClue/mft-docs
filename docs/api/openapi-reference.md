@@ -1,5 +1,9 @@
 # REST API Reference
 
+::: warning API Preview
+The MFTPlus API is currently in preview and coming soon. The endpoints and features described here are subject to change before general availability.
+:::
+
 Welcome to the MFTPlus REST API documentation.
 
 ## Overview
@@ -39,8 +43,7 @@ Authorization: Bearer <your-jwt-token>
 
 | Environment | URL |
 |-------------|-----|
-| Production | https://api.mftplus.co.za |
-| Development | http://localhost:3001 |
+| Production | https://api.mftplus.co.za (Coming Soon) |
 
 ## Response Format
 
