@@ -1,4 +1,9 @@
-# Installation
+---
+title: Installation Guide - MFTPlus Documentation
+description: Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes.
+---
+
+# Installing MFTPlus
 
 Install MFTPlus on your system.
 
@@ -259,7 +264,7 @@ netsh advfirewall show allprofiles  # Windows
 - [Production Deployment](./deployment) — Deploy MFTPlus with Docker in production
 - [CLI Reference](../api/cli) — Complete `mftctl` command reference
 - [Architecture](./architecture) — Learn how MFTPlus works
-- [Configuration](../api/config) — Configuration options
+- [Configuration](../api/config) — Advanced configuration options for production
 - [Security & Authentication](./security) — Secure your deployment
 
 ## Need Help?

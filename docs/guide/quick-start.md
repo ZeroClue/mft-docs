@@ -1,4 +1,9 @@
-# Quick Start
+---
+title: Quick Start Guide - Transfer Files in 5 Minutes | MFTPlus
+description: Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job.
+---
+
+# Quick Start: Your First Transfer in 5 Minutes
 
 Transfer your first file with MFTPlus in under 5 minutes.
 
@@ -144,7 +149,7 @@ MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used 
 ## Next Steps
 
 - [Installation](./installation) — Detailed install options
-- [CLI Reference](../api/cli) — Complete `mftctl` command reference
+- [CLI Reference](../api/cli) — Complete `mftctl` command reference for job management
 - [Configuration](../api/config) — Advanced configuration options
 
 ## Need Help?

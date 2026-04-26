@@ -1,4 +1,9 @@
-# CLI Commands
+---
+title: CLI Commands (mftctl) - Complete Reference | MFTPlus
+description: Complete reference for `mftctl` - the MFTPlus command-line interface. All commands for job management, configuration, and monitoring file transfers.
+---
+
+# mftctl CLI Commands
 
 Complete reference for `mftctl` command-line interface.
 
@@ -198,3 +203,4 @@ Examples:
 
 - [Configuration](./config) - Configuration options
 - [Plugin API](../plugins/api) - Plugin development
+- [Quick Start](../guide/quick-start) - See practical usage examples

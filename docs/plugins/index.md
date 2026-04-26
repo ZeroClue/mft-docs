@@ -1,4 +1,9 @@
-# Plugin System
+---
+title: Plugins - Extend MFTPlus | MFTPlus Documentation
+description: Extend MFTPlus with plugins. Learn about the plugin system, create custom transfer handlers, and integrate with your existing tools and workflows.
+---
+
+# MFTPlus Plugin System
 
 Extend MFTPlus functionality with plugins.
 
