@@ -254,6 +254,7 @@ netsh advfirewall show allprofiles  # Windows
 ## Next Steps
 
 - [Quick Start](./quick-start) — Transfer your first file in 5 minutes
+- [Production Deployment](./deployment) — Deploy MFTPlus with Docker in production
 - [CLI Reference](../api/cli) — Complete `mftctl` command reference
 - [Architecture](./architecture) — Learn how MFTPlus works
 - [Configuration](../api/config) — Configuration options
