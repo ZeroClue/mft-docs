@@ -2,6 +2,9 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'MFTPlus Documentation - Complete Guides, API Reference & Tutorials',
+  ignoreDeadLinks: [
+    /^http:\/\/localhost/
+  ],
   description: 'Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.',
   lang: 'en-US',
   head: [
@@ -24,7 +27,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/' },
-      { text: 'API Reference', link: '/api/' },
+      { text: 'API Reference', link: '/api/openapi-reference' },
       { text: 'Plugins', link: '/plugins/' }
     ],
 
@@ -36,14 +39,18 @@ export default defineConfig({
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
+            { text: 'Production Deployment', link: '/guide/deployment' },
             { text: 'Architecture', link: '/guide/architecture' },
-            { text: 'Transfer Protocol', link: '/guide/protocol' }
+            { text: 'Transfer Protocol', link: '/guide/protocol' },
+            { text: 'Security & Authentication', link: '/guide/security' },
+            { text: 'Troubleshooting', link: '/guide/troubleshooting' }
           ]
         },
         {
           text: 'API Reference',
           items: [
             { text: 'Overview', link: '/api/' },
+            { text: 'REST API', link: '/api/openapi-reference' },
             { text: 'CLI Commands', link: '/api/cli' },
             { text: 'Configuration', link: '/api/config' }
           ]

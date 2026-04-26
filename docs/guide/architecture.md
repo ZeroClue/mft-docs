@@ -81,8 +81,13 @@ mftctl certificates issue --ca-url https://ca.example.com
 mftctl certificates renew --auto
 ```
 
+::: tip Security Configuration
+For detailed security and authentication setup, see [Security & Authentication](./security).
+:::
+
 ## Next Steps
 
 - [Transfer Protocol](./protocol) - Deep dive into the protocol
+- [Security & Authentication](./security) - Configure auth, encryption, and access control
 - [API Reference](../api/) - Explore the API
 - [Plugin System](../plugins/) - Extend MFTPlus with custom plugins
