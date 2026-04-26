@@ -1,6 +1,6 @@
 ---
 title: CLI Commands (mftctl) - Complete Reference | MFTPlus
-description: Complete reference for `mftctl` - the MFTPlus command-line interface. All commands for job management, configuration, and monitoring file transfers.
+description: "Complete reference for `mftctl` - the MFTPlus command-line interface. All commands for job management, configuration, and monitoring file transfers."
 ---
 
 # mftctl CLI Commands

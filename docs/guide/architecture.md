@@ -1,6 +1,6 @@
 ---
 title: Architecture - How MFTPlus Works | MFTPlus Documentation
-description: Understand MFTPlus architecture: lightweight desktop agent, centralized dashboard, SQLite audit database, and cron-based scheduling. Built for cloud-native DevOps.
+description: "Understand MFTPlus architecture: lightweight desktop agent, centralized dashboard, SQLite audit database, and cron-based scheduling. Built for cloud-native DevOps."
 ---
 
 # MFTPlus Architecture

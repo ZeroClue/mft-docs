@@ -1,6 +1,6 @@
 ---
 title: Transfer Protocol - SFTP, FTP, FTPS Support | MFTPlus
-description: Learn about MFTPlus protocol support: SFTP for secure transfers, FTP for legacy systems, FTPS for TLS/SSL, and local filesystem operations.
+description: "Learn about MFTPlus protocol support: SFTP for secure transfers, FTP for legacy systems, FTPS for TLS/SSL, and local filesystem operations."
 ---
 
 # Transfer Protocol Support

@@ -1,6 +1,6 @@
 ---
 title: Plugin API Reference - MFTPlus Documentation
-description: API reference for MFTPlus plugins. Interfaces, hooks, and patterns for building custom transfer handlers and extending platform functionality.
+description: "API reference for MFTPlus plugins. Interfaces, hooks, and patterns for building custom transfer handlers and extending platform functionality."
 ---
 
 # MFTPlus Plugin API

@@ -1,6 +1,6 @@
 ---
 title: Introduction to MFTPlus - Modern Managed File Transfer for DevOps
-description: Learn what MFTPlus is and how it replaces legacy MFT servers with a lightweight desktop agent. Perfect for DevOps teams automating file transfers without the complexity.
+description: "Learn what MFTPlus is and how it replaces legacy MFT servers with a lightweight desktop agent. Perfect for DevOps teams automating file transfers without the complexity."
 ---
 
 # What is MFTPlus?
