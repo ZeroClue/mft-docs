@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 80" width="400" height="80">
+  <defs>
+    <linearGradient id="goldGradientFullDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&amp;display=swap');
+      .mft-text { font-family: 'Source Serif 4', Georgia, serif; font-weight: 700; fill: #FAF8F5; }
+      .plus-text { font-family: 'Source Serif 4', Georgia, serif; font-weight: 400; fill: #B8860B; }
+    </style>
+  </defs>
+
+  <!-- Background for dark variant (transparent in production) -->
+  <rect width="400" height="80" fill="transparent"/>
+
+  <!-- Logo mark group -->
+  <g transform="translate(40, 40)">
+    <!-- Horizontal band (back layer) -->
+    <path d="M -20 -7 L 20 -7 L 20 7 L -20 7 Z" fill="#8B4513" stroke="none"/>
+
+    <!-- Vertical band with weave - creates over-under effect -->
+    <!-- Top segment (OVER horizontal) -->
+    <path d="M -7 -20 L 7 -20 L 7 -7 L -7 -7 Z" fill="url(#goldGradientFullDark)" stroke="none"/>
+
+    <!-- Middle segment (OVER at center, UNDER at edges) -->
+    <path d="M -7 -5 L -7 5 L 7 5 L 7 -5 Z" fill="url(#goldGradientFullDark)" stroke="none"/>
+
+    <!-- Bottom segment (UNDER horizontal at top, OVER below) -->
+    <path d="M -7 7 L 7 7 L 7 20 L -7 20 Z" fill="url(#goldGradientFullDark)" stroke="none"/>
+
+    <!-- Weave shadow - horizontal over vertical ends -->
+    <path d="M -20 -7 L -7 -7 L -7 7 L -20 7 Z" fill="#7A3D10" stroke="none" opacity="0.35"/>
+    <path d="M 7 -7 L 20 -7 L 20 7 L 7 7 Z" fill="#7A3D10" stroke="none" opacity="0.35"/>
+
+    <!-- Top edge highlight -->
+    <rect x="-7" y="-20" width="14" height="2.5" fill="#D4A843" opacity="0.45" rx="1"/>
+
+    <!-- Center highlight where vertical crosses over -->
+    <rect x="-7" y="-5" width="14" height="1.5" fill="#D4A843" opacity="0.3" rx="0.75"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(80, 47)">
+    <!-- MFT - bold, ivory -->
+    <text x="0" y="0" class="mft-text" font-size="36">MFT</text>
+
+    <!-- Plus - lighter weight, goldenrod accent -->
+    <text x="68" y="0" class="plus-text" font-size="36" letter-spacing="1">Plus</text>
+
+    <!-- Small plus accent mark between MFT and Plus -->
+    <g transform="translate(58, -5)">
+      <circle r="4" fill="#B8860B" opacity="0.8"/>
+      <path d="M 0 -1.5 L 0 1.5 M -1.5 0 L 1.5 0" stroke="#FAF8F5" stroke-width="0.8" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

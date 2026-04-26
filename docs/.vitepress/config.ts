@@ -8,7 +8,10 @@ export default defineConfig({
   description: 'Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.',
   lang: 'en-US',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { href: 'https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap', rel: 'stylesheet' }],
     ['meta', { name: 'keywords', content: 'MFTPlus documentation, MFT documentation, managed file transfer docs, file transfer API, mftctl commands, SFTP automation, file transfer scheduling, MFT installation guide' }],
     ['meta', { name: 'author', content: 'MFTPlus' }],
     ['meta', { name: 'robots', content: 'index, follow' }],
@@ -25,6 +28,8 @@ export default defineConfig({
   ],
 
   themeConfig: {
+    logo: '/brand-assets/logo-full-dark.svg',
+    appearance: 'dark',
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API Reference', link: '/api/openapi-reference' },
