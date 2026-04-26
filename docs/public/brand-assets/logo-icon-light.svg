@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="goldGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C49A30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9A7208;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background for light variant -->
+  <rect width="64" height="64" fill="#FAF8F5" rx="12"/>
+
+  <!-- Woven weave mark -->
+  <g transform="translate(32, 32)">
+    <!-- Horizontal band (back layer) -->
+    <path d="M -18 -6 L 18 -6 L 18 6 L -18 6 Z" fill="#8B4513" stroke="none"/>
+
+    <!-- Vertical band with weave cutouts -->
+    <!-- Bottom segment -->
+    <path d="M -6 18 L 6 18 L 6 8 L -6 8 Z" fill="url(#goldGradientLight)" stroke="none"/>
+
+    <!-- Top segment -->
+    <path d="M -6 -18 L 6 -18 L 6 -6 L -6 -6 Z" fill="url(#goldGradientLight)" stroke="none"/>
+
+    <!-- Middle segment -->
+    <path d="M -6 -4 L -6 4 L 6 4 L 6 -4 Z" fill="url(#goldGradientLight)" stroke="none"/>
+
+    <!-- Weave shadow -->
+    <path d="M -18 -6 L -6 -6 L -6 6 L -18 6 Z" fill="#6B3510" stroke="none" opacity="0.2"/>
+    <path d="M 6 -6 L 18 -6 L 18 6 L 6 6 Z" fill="#6B3510" stroke="none" opacity="0.2"/>
+
+    <!-- Highlight -->
+    <rect x="-6" y="-18" width="12" height="2" fill="#D4A843" opacity="0.5" rx="1"/>
+  </g>
+
+  <!-- Plus sign accent -->
+  <circle cx="52" cy="12" r="6" fill="#B8860B" opacity="0.9"/>
+  <path d="M 52 9 L 52 15 M 49 12 L 55 12" stroke="#FAF8F5" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
