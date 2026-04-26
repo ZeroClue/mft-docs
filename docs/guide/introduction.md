@@ -49,3 +49,4 @@ Built with Tauri and Rust for native performance on all major platforms. No JVM,
 - [Installation](./installation) - Get MFTPlus installed on your system
 - [Quick Start](./quick-start) - Start transferring files in minutes
 - [Architecture](./architecture) - Understand how MFTPlus works
+- [Troubleshooting](./troubleshooting) - Solve common issues

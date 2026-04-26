@@ -241,6 +241,8 @@ sudo ufw status  # Linux
 netsh advfirewall show allprofiles  # Windows
 ```
 
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to installation and configuration issues.
+
 ## Data Directories
 
 | Directory | Purpose |

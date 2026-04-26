@@ -131,6 +131,8 @@ Or view in the dashboard under **Jobs** → **History**.
 - Verify destination directory is writable
 - Check SSH key permissions (if using key auth)
 
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to common issues.
+
 ---
 
 ## Security
