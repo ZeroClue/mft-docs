@@ -96,8 +96,8 @@ Check the transfer log locally:
 
 | Platform | Transfer Log |
 |----------|--------------|
-| Linux/macOS | `~/.config/mft-agent/transfers.db` |
-| Windows | `%APPDATA%\mft-agent\transfers.db` |
+| Linux/macOS | `~/.config/mftplus/transfers.db` |
+| Windows | `%APPDATA%\mftplus\transfers.db` |
 
 Or view in the dashboard under **Jobs** → **History**.
 
@@ -119,7 +119,7 @@ Or view in the dashboard under **Jobs** → **History**.
 **Agent not appearing in dashboard?**
 - Check server URL in config
 - Verify network connectivity to dashboard
-- Check logs: `~/.config/mft-agent/logs/` (or `%APPDATA%\mft-agent\logs\` on Windows)
+- Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
 
 **Connection refused?**
 - Verify hostname and port
@@ -130,6 +130,8 @@ Or view in the dashboard under **Jobs** → **History**.
 - Verify source directory is readable
 - Verify destination directory is writable
 - Check SSH key permissions (if using key auth)
+
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to common issues.
 
 ---
 
