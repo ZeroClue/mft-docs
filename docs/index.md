@@ -12,7 +12,7 @@ hero:
       text: Get Started
       link: /guide/introduction
   image:
-    src: /hero-terminal.png
+    src: /hero-terminal.svg
     alt: MFTPlus dashboard and agent workflow
 
 features:
