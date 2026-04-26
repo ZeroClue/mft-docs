@@ -1,4 +1,9 @@
-# API Reference
+---
+title: API Reference - MFTPlus Documentation
+description: Complete API reference for MFTPlus. CLI commands (`mftctl`), configuration options, and programmatic interfaces for automating file transfers.
+---
+
+# MFTPlus API Reference
 
 Complete reference for MFTPlus APIs and interfaces.
 

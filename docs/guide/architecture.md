@@ -1,4 +1,9 @@
-# Architecture
+---
+title: Architecture - How MFTPlus Works | MFTPlus Documentation
+description: Understand MFTPlus architecture: lightweight desktop agent, centralized dashboard, SQLite audit database, and cron-based scheduling. Built for cloud-native DevOps.
+---
+
+# MFTPlus Architecture
 
 Understanding MFT's architecture will help you make the most of its capabilities.
 
@@ -80,3 +85,4 @@ mftctl certificates renew --auto
 
 - [Transfer Protocol](./protocol) - Deep dive into the protocol
 - [API Reference](../api/) - Explore the API
+- [Plugin System](../plugins/) - Extend MFTPlus with custom plugins

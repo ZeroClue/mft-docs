@@ -1,4 +1,9 @@
-# Creating Plugins
+---
+title: Creating Plugins - Development Guide | MFTPlus
+description: Learn to create custom plugins for MFTPlus. Build transfer handlers, add protocol support, and integrate with external systems.
+---
+
+# Creating MFTPlus Plugins
 
 Build custom plugins to extend MFTPlus functionality.
 
@@ -132,3 +137,4 @@ Publish your plugin:
 ## Next Steps
 
 - [Plugin API](./api) - Complete API reference
+- [Architecture](../guide/architecture) - Learn about MFTPlus architecture

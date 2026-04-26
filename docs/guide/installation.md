@@ -1,4 +1,9 @@
-# Installation
+---
+title: Installation Guide - MFTPlus Documentation
+description: Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes.
+---
+
+# Installing MFTPlus
 
 Install MFTPlus on your system.
 
@@ -256,7 +261,7 @@ netsh advfirewall show allprofiles  # Windows
 - [Quick Start](./quick-start) — Transfer your first file in 5 minutes
 - [CLI Reference](../api/cli) — Complete `mftctl` command reference
 - [Architecture](./architecture) — Learn how MFTPlus works
-- [Configuration](../api/config) — Configuration options
+- [Configuration](../api/config) — Advanced configuration options for production
 
 ## Need Help?
 
