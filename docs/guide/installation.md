@@ -259,6 +259,7 @@ netsh advfirewall show allprofiles  # Windows
 - [CLI Reference](../api/cli) — Complete `mftctl` command reference
 - [Architecture](./architecture) — Learn how MFTPlus works
 - [Configuration](../api/config) — Configuration options
+- [Security & Authentication](./security) — Secure your deployment
 
 ## Need Help?
 

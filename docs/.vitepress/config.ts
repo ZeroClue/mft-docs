@@ -33,6 +33,7 @@ export default defineConfig({
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
+            { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
           ]
         },
