@@ -1,6 +1,6 @@
 ---
 title: Installation Guide - MFTPlus Documentation
-description: Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes.
+description: "Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes."
 ---
 
 # Installing MFTPlus

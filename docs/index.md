@@ -1,6 +1,6 @@
 ---
 title: MFTPlus Documentation - Complete Guides, API Reference & Tutorials
-description: Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.
+description: "Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes."
 layout: home
 
 hero:

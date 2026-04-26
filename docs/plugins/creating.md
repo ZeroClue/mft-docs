@@ -1,6 +1,6 @@
 ---
 title: Creating Plugins - Development Guide | MFTPlus
-description: Learn to create custom plugins for MFTPlus. Build transfer handlers, add protocol support, and integrate with external systems.
+description: "Learn to create custom plugins for MFTPlus. Build transfer handlers, add protocol support, and integrate with external systems."
 ---
 
 # Creating MFTPlus Plugins
@@ -26,7 +26,7 @@ my-plugin/
 ```yaml
 name: my-plugin
 version: 1.0.0
-description: My custom MFTPlus plugin
+description: "My custom MFTPlus plugin"
 type: storage
 author: Your Name <you@example.com>
 license: MIT

@@ -1,6 +1,6 @@
 ---
 title: Configuration Options - MFTPlus Documentation
-description: Configure MFTPlus agent behavior: server URLs, credentials, retry policies, logging levels, and security settings. Complete configuration reference.
+description: "Configure MFTPlus agent behavior: server URLs, credentials, retry policies, logging levels, and security settings. Complete configuration reference."
 ---
 
 # MFTPlus Configuration

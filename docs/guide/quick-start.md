@@ -1,6 +1,6 @@
 ---
 title: Quick Start Guide - Transfer Files in 5 Minutes | MFTPlus
-description: Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job.
+description: "Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job."
 ---
 
 # Quick Start: Your First Transfer in 5 Minutes
