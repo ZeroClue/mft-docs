@@ -1,18 +1,58 @@
-/* MFTPlus Brand Colors - Catppuccin Mocha Palette */
+/* MFTPlus Brand Colors - The Weave Palette */
 :root {
-  --vp-c-brand-1: #89b4fa;
-  --vp-c-brand-2: #74c7ec;
-  --vp-c-brand-3: #89dceb;
-  --vp-c-brand-soft: rgba(137, 180, 250, 0.14);
+  /* Core brand colors */
+  --vp-c-brand: #8B4513;
+  --vp-c-brand-light: #A0522D;
+  --vp-c-brand-lighter: #B8860B;
+  --vp-c-brand-dark: #6B370F;
+  --vp-c-brand-darker: #4A2509;
+
+  /* Accent color */
+  --vp-c-accent: #B8860B;
+
+  /* Background */
+  --vp-c-bg: #1F1A17;
+  --vp-c-bg-soft: #2A231E;
+
+  /* Text */
+  --vp-c-text-1: #FAF8F5;
+  --vp-c-text-2: #E8E4E0;
+  --vp-c-text-3: #D4D0CC;
+
+  /* Brand button overrides - fixes blue button issue */
+  --vp-button-brand-bg: #8B4513;
+  --vp-button-brand-hover-bg: #A0522D;
+  --vp-button-brand-active-bg: #6B370F;
+  --vp-button-brand-border: #8B4513;
+
+  /* Brand button text colors */
+  --vp-button-brand-text: #FAF8F5;
+  --vp-button-brand-hover-text: #FAF8F5;
+  --vp-button-brand-active-text: #FAF8F5;
 }
 
-/* Override VitePress brand button styles */
+/* Hero image size override */
+.VPImage.image-src {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
+/* Override VitePress brand button styles as fallback */
 .VPButton.brand {
-  background-color: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
+  background-color: var(--vp-button-brand-bg);
+  border-color: var(--vp-button-brand-border);
+  color: var(--vp-button-brand-text);
 }
 
 .VPButton.brand:hover {
-  background-color: var(--vp-c-brand-2);
-  border-color: var(--vp-c-brand-2);
+  background-color: var(--vp-button-brand-hover-bg);
+  border-color: var(--vp-button-brand-hover-bg);
+  color: var(--vp-button-brand-hover-text);
+}
+
+.VPButton.brand:active {
+  background-color: var(--vp-button-brand-active-bg);
+  border-color: var(--vp-button-brand-active-bg);
+  color: var(--vp-button-brand-active-text);
 }
