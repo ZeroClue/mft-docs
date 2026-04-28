@@ -1,4 +1,6 @@
 ---
+title: MFTPlus Documentation - Complete Guides, API Reference & Tutorials
+description: "Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes."
 layout: home
 
 hero:
@@ -10,7 +12,7 @@ hero:
       text: Get Started
       link: /guide/introduction
   image:
-    src: /hero-terminal.png
+    src: /hero-terminal.svg
     alt: MFTPlus dashboard and agent workflow
 
 features:
@@ -110,7 +112,7 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 | **Pro** | $499/month | Companies with compliance requirements |
 | **Enterprise** | Custom | Large-scale deployments with SLA needs |
 
-[See Full Comparison →](/pricing)
+[See Full Comparison →](https://www.mftplus.co.za/#pricing)
 
 ## What Our Users Say
 
@@ -127,4 +129,4 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 
 **Start free in under 5 minutes.** No credit card required. Scale when you need to.
 
-[:star: Start Free Forever](/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)
+[:star: Start Free Forever](https://www.mftplus.co.za/#pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)

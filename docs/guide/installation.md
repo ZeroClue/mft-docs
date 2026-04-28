@@ -1,8 +1,32 @@
-# Installation
+---
+title: Installation Guide - MFTPlus Documentation
+description: "Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes."
+---
 
-Install the MFTPlus desktop agent on your system.
+# Installing MFTPlus
 
-## Download Installers
+Install MFTPlus on your system.
+
+## Quick Install (One-Line)
+
+**macOS / Linux:**
+
+```bash
+curl -fsSL https://docs.mftplus.co.za/install.sh | sh
+```
+
+This installs `mftctl` — the MFTPlus command-line interface — to `/usr/local/bin/`.
+
+::: tip
+After installing, initialize your configuration:
+```bash
+mftctl config init
+```
+:::
+
+---
+
+## Desktop Agent Installers
 
 Download the latest installer for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
 
@@ -109,9 +133,9 @@ sudo yum install missing-package-name
 
 MFTPlus stores configuration and data in:
 
-- **Linux**: `~/.config/mft-agent/`
-- **macOS**: `~/Library/Application Support/mft-agent/`
-- **Windows**: `%APPDATA%\mft-agent\`
+- **Linux**: `~/.config/mftplus/`
+- **macOS**: `~/Library/Application Support/mftplus/`
+- **Windows**: `%APPDATA%\mftplus\`
 
 **Directory contents:**
 - `config.yaml` - Server URL and agent settings
@@ -135,7 +159,7 @@ https://dashboard.yourcompany.com
 
 Edit manually:
 ```yaml
-# ~/.config/mft-agent/config.yaml
+# ~/.config/mftplus/config.yaml
 server:
   url: http://localhost:8080
   timeout: 30s
@@ -156,7 +180,7 @@ Major version updates may require configuration changes. Review the release note
 1. Open **Settings** → **Apps**
 2. Find **MFTPlus**
 3. Click **Uninstall**
-4. Optionally remove `%APPDATA%\mft-agent` to delete configuration
+4. Optionally remove `%APPDATA%\mftplus` to delete configuration
 
 ### macOS
 
@@ -165,7 +189,7 @@ Major version updates may require configuration changes. Review the release note
 rm -rf /Applications/MFTPlus.app
 
 # Optionally remove configuration
-rm -rf ~/Library/Application Support/mft-agent
+rm -rf ~/Library/Application Support/mftplus
 ```
 
 ### Linux
@@ -178,7 +202,7 @@ sudo apt-get remove mftplus
 sudo yum remove mftplus
 
 # Optionally remove configuration
-rm -rf ~/.config/mft-agent
+rm -rf ~/.config/mftplus
 ```
 
 ## Troubleshooting
@@ -205,9 +229,9 @@ mftplus --verbose
 ### Permission Errors
 
 Ensure the agent process has read/write access to:
-- Configuration directory (`~/.config/mft-agent/` or equivalent)
-- Certificate directory (`~/.config/mft-agent/certificates/`)
-- Transfer log database (`~/.config/mft-agent/transfers.db`)
+- Configuration directory (`~/.config/mftplus/` or equivalent)
+- Certificate directory (`~/.config/mftplus/certificates/`)
+- Transfer log database (`~/.config/mftplus/transfers.db`)
 
 ### Network Connectivity
 
@@ -222,6 +246,8 @@ sudo ufw status  # Linux
 netsh advfirewall show allprofiles  # Windows
 ```
 
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to installation and configuration issues.
+
 ## Data Directories
 
 | Directory | Purpose |
@@ -234,9 +260,12 @@ netsh advfirewall show allprofiles  # Windows
 
 ## Next Steps
 
-- [Quick Start](./quick-start) - Create your first transfer
-- [Architecture](./architecture) - Learn how MFTPlus works
-- [Configuration](../api/config) - Configuration options
+- [Quick Start](./quick-start) — Transfer your first file in 5 minutes
+- [Production Deployment](./deployment) — Deploy MFTPlus with Docker in production
+- [CLI Reference](../api/cli) — Complete `mftctl` command reference
+- [Architecture](./architecture) — Learn how MFTPlus works
+- [Configuration](../api/config) — Advanced configuration options for production
+- [Security & Authentication](./security) — Secure your deployment
 
 ## Need Help?
 
