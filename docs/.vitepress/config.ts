@@ -4,6 +4,10 @@ export default defineConfig({
   title: 'MFTPlus | Modern Managed File Transfer for DevOps',
   description: 'MFT for the cloud-native era. CLI-first, API-first, deployed in hours. The modern alternative to legacy MFT solutions.',
   lang: 'en-US',
+
+  // Ignore external links that are intentionally on other domains
+  ignoreDeadLinks: true,
+
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'keywords', content: 'managed file transfer, MFT, secure file transfer, B2B file transfer, DevOps file transfer, API-first MFT, CLI file transfer' }],
@@ -29,7 +33,8 @@ export default defineConfig({
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Architecture', link: '/guide/architecture' },
-            { text: 'Transfer Protocol', link: '/guide/protocol' }
+            { text: 'Transfer Protocol', link: '/guide/protocol' },
+            { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' }
           ]
         },
         {
