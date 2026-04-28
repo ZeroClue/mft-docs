@@ -1,0 +1,18 @@
+/* MFTPlus Brand Colors - Catppuccin Mocha Palette */
+:root {
+  --vp-c-brand-1: #89b4fa;
+  --vp-c-brand-2: #74c7ec;
+  --vp-c-brand-3: #89dceb;
+  --vp-c-brand-soft: rgba(137, 180, 250, 0.14);
+}
+
+/* Override VitePress brand button styles */
+.VPButton.brand {
+  background-color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+}
+
+.VPButton.brand:hover {
+  background-color: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
+}
