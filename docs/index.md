@@ -112,7 +112,7 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 | **Pro** | $499/month | Companies with compliance requirements |
 | **Enterprise** | Custom | Large-scale deployments with SLA needs |
 
-[See Full Comparison →](https://www.mftplus.co.za/#pricing)
+[See Full Comparison →](https://mftplus.co.za/pricing)
 
 ## What Our Users Say
 
@@ -129,4 +129,4 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 
 **Start free in under 5 minutes.** No credit card required. Scale when you need to.
 
-[:star: Start Free Forever](https://www.mftplus.co.za/#pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)
+[:star: Start Free Forever](https://mftplus.co.za/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)
