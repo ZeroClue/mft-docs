@@ -43,6 +43,20 @@
   /* Links */
   --vp-c-brand-link: #D4A843;
   --vp-c-brand-link-hover: #E5C060;
+
+  /* VitePress brand link colors - fixes purple/blue links */
+  --vp-c-brand-1: #8B4513;
+  --vp-c-brand-2: #A0522D;
+  --vp-c-brand-3: #B8860B;
+
+  /* VitePress button colors - fixes blue buttons */
+  --vp-button-brand-bg: #8B4513;
+  --vp-button-brand-hover-bg: #A0522D;
+  --vp-button-brand-active-bg: #6B370F;
+  --vp-button-brand-border: #8B4513;
+  --vp-button-brand-text: #FAF8F5;
+  --vp-button-brand-hover-text: #FAF8F5;
+  --vp-button-brand-active-text: #FAF8F5;
 }
 
 /* Light Mode Overrides */
@@ -80,6 +94,20 @@
   /* Links */
   --vp-c-brand-link: #8B4513;
   --vp-c-brand-link-hover: #A0522D;
+
+  /* VitePress brand link colors - fixes purple/blue links */
+  --vp-c-brand-1: #8B4513;
+  --vp-c-brand-2: #A0522D;
+  --vp-c-brand-3: #B8860B;
+
+  /* VitePress button colors - fixes blue buttons */
+  --vp-button-brand-bg: #8B4513;
+  --vp-button-brand-hover-bg: #A0522D;
+  --vp-button-brand-active-bg: #6B370F;
+  --vp-button-brand-border: #8B4513;
+  --vp-button-brand-text: #1F1A17;
+  --vp-button-brand-hover-text: #1F1A17;
+  --vp-button-brand-active-text: #1F1A17;
 }
 
 /* Typography - Source Serif 4 for headings */
@@ -150,4 +178,30 @@
 .custom-block.danger {
   border-color: var(--vp-c-danger);
   background: var(--vp-c-bg-soft);
+}
+
+/* Hero image size override */
+.VPImage.image-src {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+}
+
+/* Override VitePress brand button styles as fallback */
+.VPButton.brand {
+  background-color: var(--vp-button-brand-bg);
+  border-color: var(--vp-button-brand-border);
+  color: var(--vp-button-brand-text);
+}
+
+.VPButton.brand:hover {
+  background-color: var(--vp-button-brand-hover-bg);
+  border-color: var(--vp-button-brand-hover-bg);
+  color: var(--vp-button-brand-hover-text);
+}
+
+.VPButton.brand:active {
+  background-color: var(--vp-button-brand-active-bg);
+  border-color: var(--vp-button-brand-active-bg);
+  color: var(--vp-button-brand-active-text);
 }
