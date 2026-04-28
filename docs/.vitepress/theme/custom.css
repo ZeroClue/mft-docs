@@ -29,6 +29,11 @@
   --vp-button-brand-text: #FAF8F5;
   --vp-button-brand-hover-text: #FAF8F5;
   --vp-button-brand-active-text: #FAF8F5;
+
+  /* Link color overrides - fixes purple/blue links */
+  --vp-c-brand-1: #8B4513;      /* main link color = Saddle Brown */
+  --vp-c-brand-2: #A0522D;      /* hover = Sienna */
+  --vp-c-brand-3: #B8860B;      /* active = Goldenrod */
 }
 
 /* Hero image size override */
