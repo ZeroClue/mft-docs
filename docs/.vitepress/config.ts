@@ -7,6 +7,7 @@ export default defineConfig({
   ],
   description: 'Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.',
   lang: 'en-US',
+
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
@@ -48,6 +49,7 @@ export default defineConfig({
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Security & Authentication', link: '/guide/security' },
+            { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
           ]
         },
