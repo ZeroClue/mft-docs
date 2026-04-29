@@ -47,6 +47,7 @@ export default defineConfig({
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Production Deployment', link: '/guide/deployment' },
             { text: 'Deployment Runbook', link: '/guide/deployment-runbook' },
+            { text: 'Backup and Recovery', link: '/guide/backup-and-recovery' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Monitoring & Observability', link: '/guide/monitoring' },
