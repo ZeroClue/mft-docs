@@ -50,6 +50,7 @@ export default defineConfig({
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Monitoring & Observability', link: '/guide/monitoring' },
+            { text: 'Webhooks', link: '/guide/webhooks' },
             { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
             { text: 'Admin Panel', link: '/guide/admin-panel' },
