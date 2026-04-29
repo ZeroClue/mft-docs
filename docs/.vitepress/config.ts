@@ -49,6 +49,7 @@ export default defineConfig({
             { text: 'Deployment Runbook', link: '/guide/deployment-runbook' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
+            { text: 'Monitoring & Observability', link: '/guide/monitoring' },
             { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
             { text: 'Admin Panel', link: '/guide/admin-panel' },
