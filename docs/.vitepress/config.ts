@@ -51,6 +51,7 @@ export default defineConfig({
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
+            { text: 'Admin Panel', link: '/guide/admin-panel' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
           ]
         },
