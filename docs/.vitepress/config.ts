@@ -46,6 +46,7 @@ export default defineConfig({
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Production Deployment', link: '/guide/deployment' },
+            { text: 'Deployment Runbook', link: '/guide/deployment-runbook' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Security & Authentication', link: '/guide/security' },
