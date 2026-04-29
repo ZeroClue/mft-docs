@@ -108,13 +108,11 @@ CONTAINER ID   IMAGE          STATUS                    NAMES
 abc123def456   mftplus:latest   Up 1 hour (healthy)       mftplus
 ```
 
-{% raw %}
 Inspect detailed health output:
 
 ```bash
-docker inspect --format='{{json .State.Health}}' mftplus | jq
+docker inspect mftplus | jq '.[0].State.Health'
 ```
-{% endraw %}
 
 ## Docker Compose Health Check
 
@@ -303,11 +301,9 @@ Configure alerts for:
 
 ### Container Shows Unhealthy
 
-{% raw %}
-1. Inspect health check logs: `docker inspect --format='{{json .State.Health.Log}}' mftplus | jq`
+1. Inspect health check logs: `docker inspect mftplus | jq '.[0].State.Health.Log'`
 2. Verify the service is running: `docker ps`
 3. Check if the health check endpoint is accessible
-{% endraw %}
 
 ### High Memory Usage
 
