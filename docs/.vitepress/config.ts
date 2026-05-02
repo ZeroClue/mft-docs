@@ -27,6 +27,7 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Installation', link: '/guide/installation' },
+            { text: 'CLI Agent Installation', link: '/guide/agent-installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' }
@@ -60,5 +61,8 @@ export default defineConfig({
 
   markdown: {
     lineNumbers: true
-  }
+  },
+
+  // Ignore dead links to marketing pages that don't exist in docs
+  ignoreDeadLinks: true
 })
