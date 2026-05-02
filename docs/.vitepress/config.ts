@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'MFTPlus Documentation - Complete Guides, API Reference & Tutorials',
+  cleanUrls: true,
   ignoreDeadLinks: [
     /^http:\/\/localhost/
   ],
