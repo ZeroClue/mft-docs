@@ -3,9 +3,6 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'MFTPlus Documentation - Complete Guides, API Reference & Tutorials',
   cleanUrls: true,
-  ignoreDeadLinks: [
-    /^http:\/\/localhost/
-  ],
   description: 'Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.',
   lang: 'en-US',
 
@@ -91,7 +88,7 @@ export default defineConfig({
     lineNumbers: true
   },
 
-  // Ignore dead links to marketing pages that don't exist in docs
+  // Ignore dead links (localhost, marketing pages that don't exist in docs yet)
   ignoreDeadLinks: true,
 
   sitemap: {
