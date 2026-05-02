@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'MFTPlus Documentation - Complete Guides, API Reference & Tutorials',
+  cleanUrls: true,
   description: 'Official MFTPlus documentation. Learn to set up scheduled file transfers, configure SFTP/FTP agents, use the CLI, and build plugins. Get started in 5 minutes.',
   lang: 'en-US',
 
