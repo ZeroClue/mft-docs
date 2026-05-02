@@ -44,6 +44,7 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Installation', link: '/guide/installation' },
+            { text: 'CLI Agent Installation', link: '/guide/agent-installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Production Deployment', link: '/guide/deployment' },
             { text: 'Deployment Runbook', link: '/guide/deployment-runbook' },
@@ -88,6 +89,9 @@ export default defineConfig({
   markdown: {
     lineNumbers: true
   },
+
+  // Ignore dead links to marketing pages that don't exist in docs
+  ignoreDeadLinks: true,
 
   sitemap: {
     hostname: 'https://docs.mftplus.co.za'
