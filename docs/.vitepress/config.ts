@@ -13,7 +13,7 @@ export default defineConfig({
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     ['link', { href: 'https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap', rel: 'stylesheet' }],
-    ['meta', { name: 'keywords', content: 'MFTPlus documentation, MFT documentation, managed file transfer docs, file transfer API, mftctl commands, SFTP automation, file transfer scheduling, MFT installation guide' }],
+    ['meta', { name: 'keywords', content: 'MFTPlus documentation, MFT documentation, managed file transfer docs, file transfer API, mft-agent-cli commands, SFTP automation, file transfer scheduling, MFT installation guide' }],
     ['meta', { name: 'author', content: 'MFTPlus' }],
     ['meta', { name: 'robots', content: 'index, follow' }],
     ['meta', { property: 'og:title', content: 'MFTPlus Documentation - Complete Guides, API Reference & Tutorials' }],
