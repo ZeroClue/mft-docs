@@ -1,3 +1,8 @@
+---
+title: CLI Agent Installation
+description: Install and configure the MFTPlus CLI agent (mft-agent-cli) for headless file transfer operations on Linux systems.
+---
+
 # CLI Agent Installation
 
 Install the MFTPlus CLI agent (`mft-agent-cli`) for headless, scriptable file transfer operations on Linux systems.
@@ -34,18 +39,18 @@ API keys grant full access to your MFTPlus account. Never commit them to version
 
 ## Step 3: Download the CLI Agent
 
-Download the latest release from the public download server:
+Download version 0.2.0 from the public download server:
 
 | Format | Download |
 |--------|----------|
-| **tar.gz** | [mft-agent-cli-linux-amd64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-linux-amd64.tar.gz) |
-| **DEB** | [MFT.Agent_amd64.deb](https://releases.mftplus.co.za/latest/MFT.Agent_amd64.deb) |
-| **RPM** | [MFT.Agent-x86_64.rpm](https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.rpm) |
-| **AppImage** | [MFT.Agent_amd64.AppImage](https://releases.mftplus.co.za/latest/MFT.Agent_amd64.AppImage) |
+| **tar.gz** | [mft-agent-cli_0.2.0_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.2.0/mft-agent-cli_0.2.0_linux_amd64.tar.gz) |
+| **DEB** | [MFT.Agent_0.2.0_amd64.deb](https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_amd64.deb) |
+| **RPM** | [MFT.Agent_0.2.0_x86_64.rpm](https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_x86_64.rpm) |
+| **AppImage** | [MFT.Agent_0.2.0_amd64.AppImage](https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_amd64.AppImage) |
 
 ```bash
 # Download tar.gz archive
-wget https://releases.mftplus.co.za/latest/mft-agent-cli-linux-amd64.tar.gz
+wget https://releases.mftplus.co.za/v0.2.0/mft-agent-cli_0.2.0_linux_amd64.tar.gz
 ```
 
 ## Step 4: Verify Checksum
@@ -54,11 +59,11 @@ Verify the downloaded file integrity using SHA256 checksums:
 
 ```bash
 # Download checksums
-wget https://releases.mftplus.co.za/latest/checksums.sha256
+wget https://releases.mftplus.co.za/v0.2.0/checksums.sha256
 
 # Verify the tar.gz archive
 sha256sum -c --ignore-missing checksums.sha256
-# Expected output: mft-agent-cli-linux-amd64.tar.gz: OK
+# Expected output: mft-agent-cli_0.2.0_linux_amd64.tar.gz: OK
 ```
 
 ::: danger Security Warning
@@ -75,112 +80,97 @@ Extract and install to `/usr/local/bin`:
 
 ```bash
 # Extract the archive
-tar -xzf mft-agent-cli-linux-amd64.tar.gz
+tar -xzf mft-agent-cli_0.2.0_linux_amd64.tar.gz
 
 # Install to system path
 sudo install mft-agent-cli /usr/local/bin/
 
 # Verify installation
-mft-agent-cli --version
+mft-agent-cli --help
 ```
 
 ### DEB Package (Debian/Ubuntu)
 
 ```bash
 # Download and install
-wget https://releases.mftplus.co.za/latest/MFT.Agent_amd64.deb
-sudo dpkg -i MFT.Agent_amd64.deb
+wget https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_amd64.deb
+sudo dpkg -i MFT.Agent_0.2.0_amd64.deb
 
 # Fix any missing dependencies
 sudo apt-get install -f
 
 # Verify installation
-mft-agent-cli --version
+mft-agent-cli --help
 ```
 
 ### RPM Package (RHEL/CentOS/Fedora)
 
 ```bash
 # Download and install
-wget https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.rpm
-sudo rpm -i MFT.Agent-x86_64.rpm
+wget https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_x86_64.rpm
+sudo rpm -i MFT.Agent_0.2.0_x86_64.rpm
 
 # Verify installation
-mft-agent-cli --version
+mft-agent-cli --help
 ```
 
 ### AppImage (Universal)
 
 ```bash
 # Download
-wget https://releases.mftplus.co.za/latest/MFT.Agent_amd64.AppImage
+wget https://releases.mftplus.co.za/v0.2.0/MFT.Agent_0.2.0_amd64.AppImage
 
 # Make executable
-chmod +x MFT.Agent_amd64.AppImage
+chmod +x MFT.Agent_0.2.0_amd64.AppImage
 
 # Run (add to PATH for convenience)
-sudo mv MFT.Agent_amd64.AppImage /usr/local/bin/mft-agent-cli
+sudo mv MFT.Agent_0.2.0_amd64.AppImage /usr/local/bin/mft-agent-cli
 
 # Verify installation
-mft-agent-cli --version
+mft-agent-cli --help
 ```
 
 ## Step 6: Configure the Agent
 
-Create the configuration directory and initialize the agent:
+Use the built-in `configure` command to set up your API key. This creates the configuration file automatically:
 
 ```bash
-# Create config directory
-mkdir -p ~/.config/mft-agent
-
-# Create configuration file
-cat > ~/.config/mft-agent/config.yaml << EOF
-# MFTPlus CLI Agent Configuration
-
-# Dashboard connection
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 30s
-
-# API authentication
-api_key: YOUR_API_KEY_HERE
-
-# Agent settings
-agent:
-  name: $(hostname)
-  heartbeat_interval: 60s
-
-# Transfer settings
-transfers:
-  retry_attempts: 3
-  retry_delay: 5s
-  chunk_size: 8192
-EOF
-
-# Replace YOUR_API_KEY_HERE with your actual API key
-sed -i "s/YOUR_API_KEY_HERE/$MFTPLUS_API_KEY/" ~/.config/mft-agent/config.yaml
+# Configure with your API key
+./mft-agent-cli configure --api-key YOUR_API_KEY_HERE
 ```
 
-::: tip Secure Configuration
-Set restrictive permissions on your configuration:
+The agent will create `~/.config/mft-agent/config.toml` with the following format:
+
+```toml
+dashboard_url = "https://dashboard.mftplus.co.za"
+api_key = "nyxcoolminds-xxxxxxxx"
+telemetry_enabled = true
+app_version = "0.2.0"
+```
+
+::: tip Additional Configure Options
 ```bash
-chmod 600 ~/.config/mft-agent/config.yaml
+# Specify custom dashboard URL
+./mft-agent-cli configure --dashboard-url https://custom.example.com --api-key YOUR_KEY
+
+# Disable telemetry
+./mft-agent-cli configure --api-key YOUR_KEY --enable-telemetry false
+
+# Use custom config file path
+./mft-agent-cli configure --api-key YOUR_KEY -c /path/to/config.toml
 ```
 :::
 
-## Step 7: Verify Connection
+## Step 7: Start the Agent
 
-Test that the agent can connect to the dashboard:
+Start the agent in the foreground for testing:
 
 ```bash
-# Check agent status
-mft-agent-cli status
-
-# Expected output:
-# Agent: hostname
-# Status: connected
-# Dashboard: https://dashboard.mftplus.co.za
+# Start in foreground (Ctrl+C to stop)
+mft-agent-cli start
 ```
+
+For production deployments, run as a systemd service (see below).
 
 ## Configuration Directory
 
@@ -188,10 +178,8 @@ The CLI agent stores data in:
 
 | Location | Purpose |
 |----------|---------|
-| `~/.config/mft-agent/config.yaml` | Configuration file |
-| `~/.config/mft-agent/certificates/` | Encryption keys (600 permissions) |
-| `~/.config/mft-agent/transfers.db` | SQLite transfer log |
-| `~/.config/mft-agent/logs/` | Application logs |
+| `~/.config/mft-agent/config.toml` | Configuration file (created by `configure` command) |
+| `~/.local/share/mft-agent/agent.db` | Transfer database |
 
 ## Running as a Systemd Service
 
@@ -199,7 +187,7 @@ For production deployments, run the CLI agent as a systemd service:
 
 ```bash
 # Create service file
-sudo cat > /etc/systemd/system/mft-agent.service << EOF
+sudo cat > /etc/systemd/system/mft-agent.service << 'EOF'
 [Unit]
 Description=MFTPlus CLI Agent
 After=network.target
@@ -207,7 +195,7 @@ After=network.target
 [Service]
 Type=simple
 User=$USER
-ExecStart=/usr/local/bin/mft-agent-cli daemon
+ExecStart=/usr/local/bin/mft-agent-cli start
 Restart=always
 RestartSec=10
 
@@ -224,20 +212,53 @@ sudo systemctl start mft-agent.service
 sudo systemctl status mft-agent.service
 ```
 
+## CLI Reference
+
+### Available Commands
+
+```text
+Usage: mft-agent-cli <COMMAND>
+
+Commands:
+  start           Start the agent engine (runs in foreground)
+  stop            Stop a running agent
+  status          Show current agent status
+  list-transfers  List recent transfers
+  configure       Configure initial settings
+  jobs            Manage scheduled transfer jobs
+  help            Print this message or the help of the command(s)
+```
+
+### Common Commands
+
+```bash
+# Show agent status
+mft-agent-cli status
+
+# List recent transfers
+mft-agent-cli list-transfers
+
+# Manage scheduled jobs
+mft-agent-cli jobs
+
+# Show help for a specific command
+mft-agent-cli start --help
+```
+
 ## Upgrading
 
 Download and install the new version using the same method as initial installation. Configuration and data are preserved across upgrades.
 
 ```bash
 # Download latest version
-wget https://releases.mftplus.co.za/latest/mft-agent-cli-linux-amd64.tar.gz
+wget https://releases.mftplus.co.za/v0.2.0/mft-agent-cli_0.2.0_linux_amd64.tar.gz
 
 # Verify checksums
-wget https://releases.mftplus.co.za/latest/checksums.sha256
+wget https://releases.mftplus.co.za/v0.2.0/checksums.sha256
 sha256sum -c --ignore-missing checksums.sha256
 
 # Install
-tar -xzf mft-agent-cli-linux-amd64.tar.gz
+tar -xzf mft-agent-cli_0.2.0_linux_amd64.tar.gz
 sudo install mft-agent-cli /usr/local/bin/
 
 # Restart the service (if running as systemd)
@@ -249,11 +270,16 @@ sudo systemctl restart mft-agent.service
 ### tar.gz / AppImage
 
 ```bash
+# Stop and disable service (if running)
+sudo systemctl stop mft-agent.service
+sudo systemctl disable mft-agent.service
+
 # Remove binary
 sudo rm /usr/local/bin/mft-agent-cli
 
-# Optionally remove configuration
+# Optionally remove configuration and data
 rm -rf ~/.config/mft-agent
+rm -rf ~/.local/share/mft-agent
 ```
 
 ### DEB Package
@@ -266,18 +292,6 @@ sudo apt-get remove mft-agent
 
 ```bash
 sudo yum remove mft-agent
-```
-
-### Systemd Service
-
-```bash
-# Stop and disable service
-sudo systemctl stop mft-agent.service
-sudo systemctl disable mft-agent.service
-
-# Remove service file
-sudo rm /etc/systemd/system/mft-agent.service
-sudo systemctl daemon-reload
 ```
 
 ## Troubleshooting
@@ -294,6 +308,15 @@ chmod +x /usr/local/bin/mft-agent-cli
 ls -la /usr/local/bin/mft-agent-cli
 ```
 
+### Configuration Issues
+
+To reconfigure the agent:
+
+```bash
+# Run configure again with new settings
+mft-agent-cli configure --api-key YOUR_NEW_KEY
+```
+
 ### Connection Failed
 
 If the agent cannot connect to the dashboard:
@@ -305,8 +328,8 @@ curl -v https://dashboard.mftplus.co.za
 # Check firewall rules
 sudo ufw status
 
-# Verify API key in config
-cat ~/.config/mft-agent/config.yaml | grep api_key
+# Verify configuration
+cat ~/.config/mft-agent/config.toml
 ```
 
 ### Service Not Starting
@@ -319,40 +342,9 @@ sudo journalctl -u mft-agent.service -n 50
 
 # Check service status
 sudo systemctl status mft-agent.service
-```
 
-## CLI Reference
-
-### Common Commands
-
-```bash
-# Show version
-mft-agent-cli --version
-
-# Show agent status
-mft-agent-cli status
-
-# Run transfer job
-mft-agent-cli run <job-id>
-
-# List configured jobs
-mft-agent-cli jobs
-
-# View transfer logs
-mft-agent-cli logs
-
-# Start daemon mode
-mft-agent-cli daemon
-```
-
-### Help
-
-```bash
-# Show general help
-mft-agent-cli --help
-
-# Show command-specific help
-mft-agent-cli run --help
+# Test the agent manually first
+mft-agent-cli start
 ```
 
 ## Next Steps
