@@ -1,4 +1,9 @@
-# Introduction
+---
+title: Introduction to MFTPlus - Modern Managed File Transfer for DevOps
+description: "Learn what MFTPlus is and how it replaces legacy MFT servers with a lightweight desktop agent. Perfect for DevOps teams automating file transfers without the complexity."
+---
+
+# What is MFTPlus?
 
 Welcome to **MFTPlus** — Managed File Transfer, reimagined for modern DevOps workflows. Lightweight, secure, and audit-ready without the enterprise baggage.
 
@@ -28,7 +33,7 @@ Set up automated file transfer jobs using familiar cron syntax. Full execution h
 
 ### Enterprise Security
 
-Your encryption keys are stored in protected files at `~/.config/mft-agent/certificates/` with restrictive permissions (600). Keys never leave your machine.
+Your encryption keys are stored in protected files at `~/.config/mftplus/certificates/` with restrictive permissions (600). Keys never leave your machine.
 
 ### Built-in Audit Trail
 
@@ -48,4 +53,6 @@ Built with Tauri and Rust for native performance on all major platforms. No JVM,
 
 - [Installation](./installation) - Get MFTPlus installed on your system
 - [Quick Start](./quick-start) - Start transferring files in minutes
+- [Production Deployment](./deployment) - Deploy MFTPlus with Docker in production
 - [Architecture](./architecture) - Understand how MFTPlus works
+- [Troubleshooting](./troubleshooting) - Solve common issues

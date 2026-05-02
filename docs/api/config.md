@@ -1,4 +1,9 @@
-# Configuration
+---
+title: Configuration Options - MFTPlus Documentation
+description: "Configure MFTPlus agent behavior: server URLs, credentials, retry policies, logging levels, and security settings. Complete configuration reference."
+---
+
+# MFTPlus Configuration
 
 MFTPlus configuration options and environment variables.
 
@@ -139,5 +144,6 @@ connection:
 
 ## Next Steps
 
-- [CLI Commands](./cli) - CLI reference
+- [CLI Commands](./cli) - CLI reference for managing configuration
 - [Plugin API](../plugins/api) - Plugin development
+- [Installation](../guide/installation) - Setup guide for new deployments

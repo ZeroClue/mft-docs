@@ -1,167 +1,158 @@
-# Quick Start
+---
+title: Quick Start Guide - Transfer Files in 5 Minutes | MFTPlus
+description: "Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job."
+---
 
-Get up and running with MFTPlus in under 5 minutes. This guide will walk you through downloading the agent, configuring your first scheduled transfer, and verifying it works.
+# Quick Start: Your First Transfer in 5 Minutes
+
+Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Prerequisites
 
-Before you begin, ensure you have:
-- **Operating System**: Windows 10+, macOS 10.15+, or Linux (glibc 2.17+)
-- **Access credentials**: Username/password or SSH key for your SFTP/FTP server
+- **OS**: Windows 10+, macOS 10.15+, or Linux
+- **Access**: SFTP/FTP credentials or local directory path
 
-## Step 1: Download and Install
+---
 
-Download the installer for your platform:
+## Option A: One-Line Install (macOS/Linux)
+
+```bash
+curl -fsSL https://docs.mftplus.co.za/install.sh | sh
+```
+
+This installs `mftctl` — the MFTPlus command-line interface.
+
+---
+
+## Option B: Desktop Installer
+
+Download and run the installer for your platform:
 
 | Platform | Download |
 |----------|----------|
-| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
-| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
-| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
+| Windows | [MFTPlus-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
+| macOS (Intel) | [MFTPlus-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
+| macOS (Apple Silicon) | [MFTPlus-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
 | Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
-| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
+| Linux (RHEL/CentOS) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
 
-Run the installer and launch MFTPlus from your applications menu.
+Launch MFTPlus from your applications menu.
 
-## Step 2: Configure Server URL
+---
 
-On first launch, MFTPlus will prompt for your dashboard server URL.
+## Step 1: Configure Server URL
 
-**For self-hosted deployments**, enter your server URL (e.g., `http://localhost:8080` or your company's dashboard URL).
+**First launch?** Enter your dashboard server URL when prompted.
 
-**For cloud deployments**, enter your cloud dashboard URL.
+| Deployment | Server URL |
+|------------|------------|
+| Local development | `http://localhost:8080` |
+| Cloud | Your cloud dashboard URL |
+| Self-hosted | Your company's dashboard URL |
 
-This setting is stored in:
-- **Linux/macOS**: `~/.config/mft-agent/config.yaml`
-- **Windows**: `%APPDATA%\mft-agent\config.yaml`
+**Desktop app:** This is saved automatically.
+**CLI:** Run `mftctl config init` and set with `mftctl config set server.url <url>`
 
-## Step 3: Register Your Agent
+---
 
-Register your agent with the dashboard:
+## Step 2: Register Your Agent
 
 1. Click **Register** in the MFTPlus interface
 2. Enter your registration credentials
-3. Your agent will appear in the dashboard with a unique ID
+3. Verify your agent appears in the dashboard under **Agents**
 
-::: tip Finding Your Agent ID
-Your agent ID is displayed in the MFTPlus application header and in the dashboard agents list.
+::: info Registration Credentials
+New users receive registration credentials via email after signing up at [mftplus.co.za](https://mftplus.co.za). Contact your account owner if you don't have credentials.
 :::
 
-## Step 4: Verify Registration
+::: tip
+Your agent ID is shown in the app header and dashboard agents list.
+:::
 
-Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
-- Agent hostname
-- Online status
-- Last heartbeat timestamp
+---
 
-## Step 5: Create Your First Transfer Job
+## Step 3: Create Your First Transfer Job
 
-Create a scheduled transfer job in the dashboard:
+In the dashboard:
 
 1. Navigate to **Jobs** → **Create Job**
-2. Configure the transfer:
-   - **Name**: `daily-sftp-sync`
-   - **Schedule**: `0 2 * * *` (daily at 2:00 AM)
+2. Configure:
+   - **Name**: `my-first-transfer`
+   - **Schedule**: `0 2 * * *` (daily at 2 AM)
    - **Protocol**: SFTP
-   - **Source**: `/var/log/app/*.log`
-   - **Destination**: `sftp://backup.example.com/logs`
-   - **Credentials**: Select or create SFTP credentials
-
+   - **Source**: `/path/to/files/*.log`
+   - **Destination**: `sftp://your-server.com/backup`
+   - **Credentials**: Add your SFTP credentials
 3. Click **Save**
 
-The job will execute on your agent according to the schedule.
+---
 
-## Step 6: Monitor Transfer Activity
+## Step 4: Run It Now
 
-View transfer activity in the dashboard:
+Want to test immediately? Click **Run Now** on your job.
 
-1. Navigate to **Jobs** → **daily-sftp-sync**
-2. View recent executions under **History**
-3. Check status, timestamps, and file counts
+Monitor the execution under **History** — you'll see status, timestamps, and file counts.
 
-All transfers are logged locally on your agent in SQLite format at:
-- **Linux/macOS**: `~/.config/mft-agent/transfers.db`
-- **Windows**: `%APPDATA%\mft-agent\transfers.db`
+---
 
-## Common Workflows
+## Verify Success
 
-### Manual Transfer
+Check the transfer log locally:
 
-Run a job immediately without waiting for the schedule:
+| Platform | Transfer Log |
+|----------|--------------|
+| Linux/macOS | `~/.config/mftplus/transfers.db` |
+| Windows | `%APPDATA%\mftplus\transfers.db` |
 
-1. Navigate to **Jobs** in the dashboard
-2. Click **Run Now** on your job
-3. Monitor execution in **History**
+Or view in the dashboard under **Jobs** → **History**.
 
-### Ad-Hoc Transfer
-
-For one-time transfers, create a job with `--manual` trigger or use the agent's direct transfer interface (if available).
-
-### Transfer History
-
-View all transfer history:
-
-1. Navigate to **Transfers** in the dashboard
-2. Filter by agent, job, or date range
-3. Export for compliance audits
+---
 
 ## Supported Protocols
 
-MFTPlus supports the following transfer protocols:
-
-| Protocol | Description |
-|----------|-------------|
-| **SFTP** | SSH File Transfer Protocol (recommended) |
-| **FTP** | File Transfer Protocol |
+| Protocol | Best For |
+|----------|----------|
+| **SFTP** | Secure transfers (recommended) |
+| **FTP** | Legacy systems |
 | **FTPS** | FTP over TLS/SSL |
-| **Local** | Local filesystem operations |
+| **Local** | Same-machine file operations |
+
+---
 
 ## Troubleshooting
 
-### Agent Not Appearing in Dashboard
+**Agent not appearing in dashboard?**
+- Check server URL in config
+- Verify network connectivity to dashboard
+- Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
 
-1. Verify server URL in agent configuration
-2. Check network connectivity to dashboard
-3. Review agent logs for errors:
-   - **Linux/macOS**: `~/.config/mft-agent/logs/`
-   - **Windows**: `%APPDATA%\mft-agent\logs\`
+**Connection refused?**
+- Verify hostname and port
+- Check firewall rules allow outbound connections
+- Test: `telnet sftp.example.com 22`
 
-### Transfer Job Not Running
+**Permission denied?**
+- Verify source directory is readable
+- Verify destination directory is writable
+- Check SSH key permissions (if using key auth)
 
-1. Verify schedule syntax (cron format)
-2. Check agent is online in dashboard
-3. Review job history for error messages
-4. Test credentials with a manual transfer
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to common issues.
 
-### Connection Refused
-
-1. Verify target server hostname and port
-2. Check firewall rules allow outbound connections
-3. Confirm credentials are correct
-4. Test connectivity: `telnet sftp.example.com 22`
-
-### Permission Denied
-
-1. Verify source directory is readable by agent user
-2. Verify destination directory is writable
-3. Check SSH key permissions (if using key-based auth)
-4. Confirm user has necessary permissions on target server
+---
 
 ## Security
 
-MFTPlus encrypts all sensitive data:
+MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used for securing classified information. Credentials are stored locally with restrictive permissions (600) and never leave your machine unencrypted.
 
-- **Encryption**: AES-256-GCM for all file transfers
-- **Credentials**: Stored in protected files with restrictive permissions (600)
-- **Certificates**: Located at `~/.config/mft-agent/certificates/` (never leave your machine)
-- **Logging**: SHA-256 checksums for all transferred files
+---
 
 ## Next Steps
 
-- [Installation](./installation) - Detailed installation options
-- [Architecture](./architecture) - Learn how MFTPlus works
-- [Transfer Protocol](./protocol) - Understand transfer behavior
+- [Installation](./installation) — Detailed install options
+- [CLI Reference](../api/cli) — Complete `mftctl` command reference for job management
+- [Configuration](../api/config) — Advanced configuration options
 
 ## Need Help?
 
-- **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
-- **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)
+- 📖 [docs.mftplus.co.za](https://docs.mftplus.co.za)
+- 📧 [support@mftplus.co.za](mailto:support@mftplus.co.za)

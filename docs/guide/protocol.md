@@ -1,4 +1,9 @@
-# Transfer Protocol
+---
+title: Transfer Protocol - SFTP, FTP, FTPS Support | MFTPlus
+description: "Learn about MFTPlus protocol support: SFTP for secure transfers, FTP for legacy systems, FTPS for TLS/SSL, and local filesystem operations."
+---
+
+# Transfer Protocol Support
 
 The MFT Transfer Protocol (MFTP) is optimized for modern network conditions.
 
@@ -82,4 +87,5 @@ mftctl send --mode queue ./file.txt recipient@example.com
 ## Next Steps
 
 - [API Reference](../api/) - Explore the API
-- [Plugins](../plugins/) - Extend the protocol
+- [Plugins](../plugins/) - Extend the protocol with custom plugins
+- [Quick Start](../guide/quick-start) - Set up your first transfer
