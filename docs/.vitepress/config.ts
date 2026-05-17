@@ -49,6 +49,7 @@ export default defineConfig({
             { text: 'Backup and Recovery', link: '/guide/backup-and-recovery' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
+            { text: 'Transfer Triggers', link: '/guide/transfer-triggers' },
             { text: 'Monitoring & Observability', link: '/guide/monitoring' },
             { text: 'Webhooks', link: '/guide/webhooks' },
             { text: 'Security & Authentication', link: '/guide/security' },
