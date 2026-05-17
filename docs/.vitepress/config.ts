@@ -54,6 +54,7 @@ export default defineConfig({
             { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
             { text: 'Admin Panel', link: '/guide/admin-panel' },
+            { text: 'Network Discovery', link: '/guide/network-discovery' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
           ]
         },
