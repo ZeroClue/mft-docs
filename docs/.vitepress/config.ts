@@ -50,6 +50,7 @@ export default defineConfig({
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Transfer Triggers', link: '/guide/transfer-triggers' },
+            { text: 'HTTP Gateway', link: '/guide/gateway' },
             { text: 'Monitoring & Observability', link: '/guide/monitoring' },
             { text: 'Webhooks', link: '/guide/webhooks' },
             { text: 'Security & Authentication', link: '/guide/security' },
