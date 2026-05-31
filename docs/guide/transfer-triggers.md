@@ -45,7 +45,7 @@ sftp://partner/inbox/file.csv
    - **Name**: `incoming-csv-triggers`
    - **Watch Path**: `/data/incoming`
    - **Glob Pattern**: `*.csv`
-   - **Destination**: `sftp://partner.inbox.com/{{filename}}`
+   - **Destination**: `sftp://partner.inbox.com/{&#8203;{filename}&#8203;}`
    - **Credentials**: Select or create SFTP credentials
 3. Click **Save**
 
@@ -55,7 +55,7 @@ sftp://partner/inbox/file.csv
 mftctl trigger create \
   --watch /data/incoming \
   --glob "*.csv" \
-  --dest "sftp://partner.inbox.com/{{filename}}" \
+  --dest "sftp://partner.inbox.com/{&#8203;{filename}&#8203;}" \
   --debounce 5 \
   --recursive
 ```
@@ -88,25 +88,25 @@ Destination paths support dynamic variables for flexible routing:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `{{filename}}` | Full filename with extension | `report-2024.csv` |
-| `{{basename}}` | Filename without extension | `report-2024` |
-| `{{extension}}` | File extension including dot | `.csv` |
-| `{{parentdir}}` | Parent directory name | `incoming` |
+| `{&#8203;{filename}&#8203;}` | Full filename with extension | `report-2024.csv` |
+| `{&#8203;{basename}&#8203;}` | Filename without extension | `report-2024` |
+| `{&#8203;{extension}&#8203;}` | File extension including dot | `.csv` |
+| `{&#8203;{parentdir}&#8203;}` | Parent directory name | `incoming` |
 
 ### Date/Time Variables
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `{{date()}}` | Current date (YYYY-MM-DD) | `2024-05-17` |
-| `{{time()}}` | Current time (HH-MM-SS) | `14-30-45` |
-| `{{datetime()}}` | Current date and time | `2024-05-17_14-30-45` |
+| `{&#8203;{date()}&#8203;}` | Current date (YYYY-MM-DD) | `2024-05-17` |
+| `{&#8203;{time()}&#8203;}` | Current time (HH-MM-SS) | `14-30-45` |
+| `{&#8203;{datetime()}&#8203;}` | Current date and time | `2024-05-17_14-30-45` |
 
 ### Unique Identifiers
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `{{uuid}}` | Random UUID | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
-| `{{seq}}` | Sequential number (per trigger) | `1`, `2`, `3`... |
+| `{&#8203;{uuid}&#8203;}` | Random UUID | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| `{&#8203;{seq}&#8203;}` | Sequential number (per trigger) | `1`, `2`, `3`... |
 
 ### Template Transforms
 
@@ -114,27 +114,27 @@ Apply transformations to variables:
 
 | Transform | Description | Example |
 |-----------|-------------|---------|
-| `{{var|upper}}` | Uppercase | `{{basename|upper}}` → `REPORT-2024` |
-| `{{var|lower}}` | Lowercase | `{{basename|lower}}` → `report-2024` |
-| `{{var|replace:old:new}}` | Replace text | `{{basename|replace:-:_}}` → `report_2024` |
+| `{&#8203;{var|upper}&#8203;}` | Uppercase | `{&#8203;{basename|upper}&#8203;}` → `REPORT-2024` |
+| `{&#8203;{var|lower}&#8203;}` | Lowercase | `{&#8203;{basename|lower}&#8203;}` → `report-2024` |
+| `{&#8203;{var|replace:old:new}&#8203;}` | Replace text | `{&#8203;{basename|replace:-:_}&#8203;}` → `report_2024` |
 
 ### Template Examples
 
 ```
 # Keep original filename
-sftp://partner.inbox.com/{{filename}}
+sftp://partner.inbox.com/{&#8203;{filename}&#8203;}
 
 # Organize by date
-sftp://archive.example.com/{{date()}}/{{filename}}
+sftp://archive.example.com/{&#8203;{date()}&#8203;}/{&#8203;{filename}&#8203;}
 
 # Add timestamp
-sftp://backup.example.com/{{basename}}_{{datetime()}}{{extension}}
+sftp://backup.example.com/{&#8203;{basename}&#8203;}_{&#8203;{datetime()}&#8203;}{&#8203;{extension}&#8203;}
 
 # Sequential numbering
-sftp://orders.example.com/order-{{seq}}.csv
+sftp://orders.example.com/order-{&#8203;{seq}&#8203;}.csv
 
 # Parent directory routing
-sftp://partner.inbox.com/{{parentdir}}/{{filename}}
+sftp://partner.inbox.com/{&#8203;{parentdir}&#8203;}/{&#8203;{filename}&#8203;}
 ```
 
 ## Protocols and Destinations
@@ -143,10 +143,10 @@ Transfer Triggers support all MFTPlus protocols:
 
 | Protocol | URL Format | Example |
 |----------|------------|---------|
-| **SFTP** | `sftp://host/path` | `sftp://sftp.example.com/incoming/{{filename}}` |
-| **FTP** | `ftp://host/path` | `ftp://ftp.example.com/uploads/{{filename}}` |
-| **FTPS** | `ftps://host/path` | `ftps://secure.example.com/{{filename}}` |
-| **Local** | `file:///path` | `file:///var/archive/{{filename}}` |
+| **SFTP** | `sftp://host/path` | `sftp://sftp.example.com/incoming/{&#8203;{filename}&#8203;}` |
+| **FTP** | `ftp://host/path` | `ftp://ftp.example.com/uploads/{&#8203;{filename}&#8203;}` |
+| **FTPS** | `ftps://host/path` | `ftps://secure.example.com/{&#8203;{filename}&#8203;}` |
+| **Local** | `file:///path` | `file:///var/archive/{&#8203;{filename}&#8203;}` |
 
 ## Monitoring Trigger History
 
@@ -298,7 +298,7 @@ If monitoring large directory trees:
 ### Pattern Design
 
 - **Use specific patterns**: `*.csv` instead of `*`
-- **Combine with date**: `{{date()}}/{{filename}}` for organization
+- **Combine with date**: `{&#8203;{date()}&#8203;}/{&#8203;{filename}&#8203;}` for organization
 - **Exclude temporary files**: Add `*.tmp`, `*.bak` to `excludePatterns`
 
 ### Monitoring
@@ -316,7 +316,7 @@ mftctl trigger create \
   --name csv-ingest \
   --watch /data/incoming \
   --glob "*.csv" \
-  --dest "sftp://data-warehouse.example.com/ingest/{{date()}}/{{filename}}" \
+  --dest "sftp://data-warehouse.example.com/ingest/{&#8203;{date()}&#8203;}/{&#8203;{filename}&#8203;}" \
   --credentials warehouse-creds \
   --debounce 10
 ```
@@ -328,7 +328,7 @@ mftctl trigger create \
   --name config-backup \
   --watch /etc/app/config \
   --glob "*.yaml" \
-  --dest "file:///var/backups/config/{{datetime()}}/{{filename}}" \
+  --dest "file:///var/backups/config/{&#8203;{datetime()}&#8203;}/{&#8203;{filename}&#8203;}" \
   --debounce 2
 ```
 
@@ -339,11 +339,11 @@ Use multiple triggers for different file types:
 ```bash
 # CSV files to SFTP
 mftctl trigger create csv-sftp --watch /data/incoming --glob "*.csv" \
-  --dest "sftp://sftp.example.com/csv/{{filename}}"
+  --dest "sftp://sftp.example.com/csv/{&#8203;{filename}&#8203;}"
 
 # JSON files to local archive
 mftctl trigger create json-archive --watch /data/incoming --glob "*.json" \
-  --dest "file:///var/archive/json/{{basename}}_{{datetime()}}{{extension}}"
+  --dest "file:///var/archive/json/{&#8203;{basename}&#8203;}_{&#8203;{datetime()}&#8203;}{&#8203;{extension}&#8203;}"
 ```
 
 ## Next Steps
