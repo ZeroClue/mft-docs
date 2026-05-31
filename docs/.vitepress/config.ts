@@ -49,6 +49,7 @@ export default defineConfig({
             { text: 'Backup and Recovery', link: '/guide/backup-and-recovery' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Hub Deployment', link: '/guide/hub-deployment' },
+            { text: 'Hub Admin Guide', link: '/guide/hub-admin' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Transfer Triggers', link: '/guide/transfer-triggers' },
             { text: 'HTTP Gateway', link: '/guide/gateway' },
