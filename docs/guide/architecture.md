@@ -1,4 +1,9 @@
-# Architecture
+---
+title: Architecture - How MFTPlus Works | MFTPlus Documentation
+description: "Understand MFTPlus architecture: lightweight desktop agent, centralized dashboard, SQLite audit database, and cron-based scheduling. Built for cloud-native DevOps."
+---
+
+# MFTPlus Architecture
 
 Understanding MFTPlus architecture will help you plan your deployment and make the most of its capabilities.
 
@@ -142,7 +147,13 @@ Agent ──── Hub B ─┘
 
 Multiple hubs connecting to a single dashboard. Best for large enterprise deployments with geographic distribution.
 
+::: tip Security Configuration
+For detailed security and authentication setup, see [Security & Authentication](./security).
+:::
+
 ## Next Steps
 
 - [Transfer Protocol](./protocol) - Deep dive into the protocol
+- [Security & Authentication](./security) - Configure auth, encryption, and access control
 - [API Reference](../api/) - Explore the API
+- [Plugin System](../plugins/) - Extend MFTPlus with custom plugins

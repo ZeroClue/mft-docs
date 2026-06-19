@@ -1,3 +1,8 @@
+---
+title: Installation Guide - MFTPlus Documentation
+description: "Install MFTPlus CLI agent on Linux, Windows, or macOS using tar.gz binaries or one-line install scripts."
+---
+
 # Installation
 
 Install the MFTPlus agent CLI on your system.
@@ -109,9 +114,9 @@ Linux CLI available now. Windows CLI and macOS CLI supported in v0.6.2+.
 
 MFTPlus stores configuration and data in:
 
-- **Linux**: `~/.config/mft-agent/`
-- **macOS**: `~/Library/Application Support/mft-agent/`
-- **Windows**: `%APPDATA%\mft-agent\`
+- **Linux**: `~/.config/mftplus/`
+- **macOS**: `~/Library/Application Support/mftplus/`
+- **Windows**: `%APPDATA%\mftplus\`
 
 **Directory contents:**
 - `config.yaml` - Server URL and agent settings
@@ -135,7 +140,7 @@ https://dashboard.yourcompany.com
 
 Edit manually:
 ```yaml
-# ~/.config/mft-agent/config.yaml
+# ~/.config/mftplus/config.yaml
 server:
   url: http://localhost:8080
   timeout: 30s
@@ -154,7 +159,7 @@ Remove the binary and optionally the configuration directory:
 sudo rm /usr/local/bin/mft-agent-cli
 
 # Remove configuration (optional)
-rm -rf ~/.config/mft-agent
+rm -rf ~/.config/mftplus
 ```
 
 **Windows:**
@@ -163,7 +168,7 @@ rm -rf ~/.config/mft-agent
 Remove-Item C:\Windows\System32\mft-agent-cli.exe
 
 # Remove configuration (optional)
-Remove-Item $env:APPDATA\mft-agent -Recurse
+Remove-Item $env:APPDATA\mftplus -Recurse
 ```
 
 ## Troubleshooting
@@ -192,9 +197,9 @@ xattr -d com.apple.quarantine /usr/local/bin/mft-agent-cli
 ### Permission Errors
 
 Ensure the agent process has read/write access to:
-- Configuration directory (`~/.config/mft-agent/` or equivalent)
-- Certificate directory (`~/.config/mft-agent/certificates/`)
-- Transfer log database (`~/.config/mft-agent/transfers.db`)
+- Configuration directory (`~/.config/mftplus/` or equivalent)
+- Certificate directory (`~/.config/mftplus/certificates/`)
+- Transfer log database (`~/.config/mftplus/transfers.db`)
 
 ### Network Connectivity
 
