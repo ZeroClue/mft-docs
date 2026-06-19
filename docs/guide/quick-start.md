@@ -16,15 +16,15 @@ Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Step 1: Download and Install
 
-Download the tar.gz binary for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.2/):
 
 | Platform | Download |
 |----------|----------|
-| Linux (x86_64) | [mft-agent-cli-linux-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-linux-x86_64.tar.gz) |
-| Linux (aarch64) | [mft-agent-cli-linux-aarch64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-linux-aarch64.tar.gz) |
-| Windows (x86_64) | [mft-agent-cli-windows-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-windows-x86_64.tar.gz) |
-| macOS (Intel) | [mft-agent-cli-macos-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-macos-x86_64.tar.gz) |
-| macOS (Apple Silicon) | [mft-agent-cli-macos-aarch64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-macos-aarch64.tar.gz) |
+| Linux (x86_64) | [mft-agent-cli_0.6.2_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz) |
+| Linux (aarch64) | [mft-agent-cli_0.6.2_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_aarch64.tar.gz) |
+| Windows (x86_64) | [mft-agent-cli_0.6.2_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip) |
+| macOS (Intel) | [mft-agent-cli_0.6.2_darwin_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz) |
+| macOS (Apple Silicon) | [mft-agent-cli_0.6.2_darwin_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_aarch64.tar.gz) |
 
 **One-line install (Linux/macOS):**
 ```bash
@@ -36,14 +36,29 @@ curl -fsSL https://releases.mftplus.co.za/install.sh | sh
 iex ((New-Object System.Net.WebClient).DownloadString('https://releases.mftplus.co.za/install.ps1'))
 ```
 
-**Manual install (all platforms):**
+**Manual install (Linux/macOS):**
 ```bash
 # Download and extract
-tar xzf mft-agent-cli-*.tar.gz
+tar xzf mft-agent-cli_0.6.2_linux_amd64.tar.gz   # Linux
+tar xzf mft-agent-cli_0.6.2_darwin_amd64.tar.gz   # macOS
 
 # Move to PATH
-sudo mv mft-agent-cli /usr/local/bin/   # Linux/macOS
-Move-Item mft-agent-cli.exe C:\Windows\System32\  # Windows
+sudo mv mft-agent-cli /usr/local/bin/
+
+# Verify
+mft-agent-cli --version
+```
+
+**Manual install (Windows PowerShell):**
+```powershell
+# Download
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip -OutFile mft-agent-cli_0.6.2_windows_amd64.zip
+
+# Extract
+Expand-Archive .\mft-agent-cli_0.6.2_windows_amd64.zip -DestinationPath .
+
+# Move to PATH
+Move-Item .\mft-agent-cli.exe C:\Windows\System32\
 
 # Verify
 mft-agent-cli --version

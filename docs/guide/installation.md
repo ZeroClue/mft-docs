@@ -9,15 +9,15 @@ Install the MFTPlus agent CLI on your system.
 
 ## Download Binary
 
-Download the tar.gz archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.2/):
 
 | Platform | Architecture | Download |
 |----------|-------------|----------|
-| Linux | x86_64 | [mft-agent-cli-linux-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-linux-x86_64.tar.gz) |
-| Linux | aarch64 | [mft-agent-cli-linux-aarch64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-linux-aarch64.tar.gz) |
-| Windows | x86_64 | [mft-agent-cli-windows-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-windows-x86_64.tar.gz) |
-| macOS (Intel) | x86_64 | [mft-agent-cli-macos-x86_64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-macos-x86_64.tar.gz) |
-| macOS (Apple Silicon) | aarch64 | [mft-agent-cli-macos-aarch64.tar.gz](https://releases.mftplus.co.za/latest/mft-agent-cli-macos-aarch64.tar.gz) |
+| Linux | x86_64 | [mft-agent-cli_0.6.2_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz) |
+| Linux | aarch64 | [mft-agent-cli_0.6.2_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_aarch64.tar.gz) |
+| Windows | x86_64 | [mft-agent-cli_0.6.2_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip) |
+| macOS (Intel) | x86_64 | [mft-agent-cli_0.6.2_darwin_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz) |
+| macOS (Apple Silicon) | aarch64 | [mft-agent-cli_0.6.2_darwin_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_aarch64.tar.gz) |
 
 macOS CLI binary support added in v0.6.2. Windows CLI binary support added in v0.6.2.
 
@@ -43,10 +43,10 @@ These scripts download the correct binary for your platform and place it in a sy
 
 ```bash
 # Download
-wget https://releases.mftplus.co.za/latest/mft-agent-cli-linux-x86_64.tar.gz
+wget https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz
 
 # Extract
-tar xzf mft-agent-cli-linux-x86_64.tar.gz
+tar xzf mft-agent-cli_0.6.2_linux_amd64.tar.gz
 
 # Copy to PATH
 sudo mv mft-agent-cli /usr/local/bin/
@@ -59,10 +59,10 @@ mft-agent-cli --version
 
 ```bash
 # Download
-curl -OL https://releases.mftplus.co.za/latest/mft-agent-cli-macos-x86_64.tar.gz
+curl -OL https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz
 
 # Extract
-tar xzf mft-agent-cli-macos-x86_64.tar.gz
+tar xzf mft-agent-cli_0.6.2_darwin_amd64.tar.gz
 
 # Copy to PATH
 sudo mv mft-agent-cli /usr/local/bin/
@@ -72,7 +72,7 @@ mft-agent-cli --version
 ```
 
 ::: tip Apple Silicon
-If you are on Apple Silicon (M1/M2/M3), use the `aarch64` variant instead of `x86_64`.
+If you are on Apple Silicon (M1/M2/M3), use the `darwin_aarch64` variant instead of `darwin_amd64`.
 
 Check your architecture:
 ```bash
@@ -86,10 +86,10 @@ uname -m
 
 ```powershell
 # Download
-Invoke-WebRequest -Uri https://releases.mftplus.co.za/latest/mft-agent-cli-windows-x86_64.tar.gz -OutFile mft-agent-cli-windows-x86_64.tar.gz
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip -OutFile mft-agent-cli_0.6.2_windows_amd64.zip
 
 # Extract
-tar xzf mft-agent-cli-windows-x86_64.tar.gz
+Expand-Archive .\mft-agent-cli_0.6.2_windows_amd64.zip -DestinationPath .
 
 # Move to PATH directory
 Move-Item .\mft-agent-cli.exe C:\Windows\System32\
