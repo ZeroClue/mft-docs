@@ -690,4 +690,4 @@ COPY transfers (id, source_url, destination_path, ...) FROM stdin;
 | Complete system rebuild | 4-8 hours |
 | Failover to standby | 15-30 minutes |
 
-For additional information, see [Deployment](./deployment.md), [Monitoring](./monitoring.md), or [Troubleshooting](./troubleshooting.md).
+For additional information, see [Monitoring](./monitoring.md) or [Troubleshooting](./troubleshooting.md).

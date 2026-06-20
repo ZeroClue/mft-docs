@@ -162,11 +162,8 @@ Transfer Triggers support all MFTPlus protocols:
 ### Via CLI
 
 ```bash
-# List trigger executions
-mftctl trigger history incoming-csv-triggers
-
-# View real-time trigger events
-mftctl trigger watch incoming-csv-triggers
+# List triggers
+mftctl trigger list
 ```
 
 ## Security
@@ -205,9 +202,7 @@ Triggers cannot watch paths outside the configured `allowedPaths`. This prevents
 ### Trigger Not Firing
 
 1. **Verify path is within allowed directories**
-   ```bash
-   mftctl agent config | grep allowedPaths
-   ```
+   Check the `allowedPaths` setting in the agent configuration file at `~/.config/mft-agent/config.yaml`.
 
 2. **Check file pattern matches**
    - Verify `globPattern` matches your filenames
@@ -244,7 +239,7 @@ If large files are transferred before completion:
 
 2. **Check credentials are valid**
    ```bash
-   mftctl credentials test partner-creds
+   mftctl connections list
    ```
 
 3. **Review trigger execution logs**

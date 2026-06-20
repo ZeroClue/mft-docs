@@ -1,6 +1,6 @@
 ---
 title: HTTP Gateway - Direct File Upload API | MFTPlus
-description: "Upload files directly to MFTPlus via HTTP API without running an agent. Use cURL, PowerShell, or Python for programmatic uploads. FREE and PRO tier options available."
+description: "Upload files directly to MFTPlus via HTTP API without running an agent. Use cURL, PowerShell, or Python for programmatic uploads."
 ---
 
 # HTTP Gateway
@@ -16,7 +16,7 @@ The Gateway provides an HTTP endpoint (`POST /api/gateway/upload`) that accepts 
 - **Direct uploads**: Upload files via HTTP — no agent, no SFTP setup
 - **Programmatic access**: Works with any HTTP client (cURL, PowerShell, Python, etc.)
 - **Secure authentication**: API key-based auth with SHA-256 hashed keys
-- **Automatic cloud storage**: Files stored in MFTPlus-managed S3 (FREE) or your own cloud (PRO)
+- **Automatic cloud storage**: Files stored in MFTPlus-managed S3 (Community) or your own cloud (Pro)
 - **Progress tracking**: Each upload is tracked with status and SHA-256 checksum
 - **Rate limiting**: Per-key rate limiting (100 requests/minute)
 
@@ -36,8 +36,8 @@ The Gateway provides an HTTP endpoint (`POST /api/gateway/upload`) that accepts 
 
 ## Tier Comparison
 
-| Feature | FREE | PRO |
-|---------|------|-----|
+| Feature | Community | Pro |
+|---------|-----------|-----|
 | Upload endpoint | ✅ | ✅ |
 | Max file size | 500 MB | 500 MB (configurable) |
 | Rate limit | 100 req/min per key | 100 req/min per key |
@@ -215,7 +215,7 @@ Gateway configuration is managed through the MFTPlus admin panel.
 2. Click **Create Gateway**
 3. Configure the following:
    - **Name**: A unique name for this gateway
-   - **Tier**: FREE or PRO
+   - **Tier**: Community or Pro
    - **Max File Size**: Maximum allowed file size in MB (default: 500)
    - **Compression**: Compression algorithm (default: NONE)
    - **Allowed Source IPs**: (Optional) Restrict uploads to specific IPs or CIDR ranges
@@ -233,13 +233,13 @@ Gateway configuration is managed through the MFTPlus admin panel.
 2. Filter by status (UPLOADING, COMPLETED, FAILED), date range, or gateway
 3. Review upload details including filename, size, checksum, and timestamps
 
-## BYO Cloud Setup (PRO)
+## BYO Cloud Setup (Pro)
 
-PRO tier customers can upload files to their own S3 or Azure Blob Storage instead of MFTPlus-managed storage.
+Pro tier customers can upload files to their own S3 or Azure Blob Storage instead of MFTPlus-managed storage.
 
 ### Configuring BYO Cloud
 
-1. Ensure your gateway is set to PRO tier
+1. Ensure your gateway is set to Pro tier
 2. Navigate to **Gateway** → **BYO Cloud** in the admin panel
 3. Choose your provider and enter credentials
 

@@ -49,10 +49,7 @@ curl -v https://dashboard.yourcompany.com/health
 
 ```bash
 # View current configuration
-mftctl config show
-
-# Validate configuration
-mftctl config validate
+mftctl config list
 ```
 
 ---
@@ -70,7 +67,7 @@ mftctl config validate
 
 1. **Verify Server URL**
    ```bash
-   mftctl config get server.url
+   mftctl config get server-url
    ```
    Ensure the URL is correct and includes the protocol (`http://` or `https://`).
 
@@ -99,13 +96,10 @@ mftctl config validate
    If you're behind a proxy, configure it:
    
    ```bash
-   # Set proxy environment variables
-   export HTTP_PROXY=http://proxy.example.com:8080
-   export HTTPS_PROXY=http://proxy.example.com:8080
-   
-   # Or configure in mftctl
-   mftctl config set server.proxy http://proxy.example.com:8080
-   ```
+    # Set proxy environment variables
+    export HTTP_PROXY=http://proxy.example.com:8080
+    export HTTPS_PROXY=http://proxy.example.com:8080
+    ```
 
 5. **DNS Resolution**
    
@@ -113,8 +107,8 @@ mftctl config validate
    # Verify DNS resolves correctly
    nslookup dashboard.yourcompany.com
    
-   # Try using IP address directly if DNS fails
-   mftctl config set server.url https://192.168.1.100
+    # Try using IP address directly if DNS fails
+    mftctl config set server-url https://192.168.1.100
    ```
 
 ### mTLS / Certificate Errors
@@ -136,8 +130,9 @@ mftctl config validate
    
    For self-signed certificates in development, add the CA cert:
    
+   For self-signed certificates in development, add the CA cert path to the environment:
    ```bash
-   mftctl config set server.ca-cert /path/to/ca-cert.pem
+   export NODE_EXTRA_CA_CERTS=/path/to/ca-cert.pem
    ```
 
 3. **Certificate Mismatch**
@@ -212,11 +207,11 @@ mftctl config validate
 
 3. **Clear Cached Credentials**
    ```bash
-   # Remove stored tokens
-   mftctl config clear auth.token
-   
+   # Remove stored token
+   mftctl config unset jwt
+
    # Re-authenticate
-   mftctl auth login
+   mftctl login
    ```
 
 ### API Key Issues
@@ -227,16 +222,16 @@ mftctl config validate
 
 **Solutions:**
 
-1. **Verify API Key in Configuration**
+1. **Re-authenticate**
    ```bash
-   mftctl config get server.apiKey
+   mftctl login
    ```
 
 2. **Regenerate API Key**
    
-   Log into the dashboard and generate a new API key, then update:
+   Log into the dashboard and generate a new API key, then login again:
    ```bash
-   mftctl config set server.apiKey your-new-api-key
+   mftctl login pc-api-xxxxxxxxxxxxxxxx
    ```
 
 3. **Check API Key Permissions**
@@ -309,11 +304,8 @@ mftctl config validate
    ```
 
 2. **Clean Transfer Logs**
-   
-   Archive or prune old transfer records:
-   ```bash
-   mftctl transfers prune --older-than 90d
-   ```
+
+   Archive or delete old transfer log files from the agent's log directory.
 
 3. **Configure Log Rotation**
    ```yaml
@@ -512,9 +504,7 @@ mftctl config validate
 **Solutions:**
 
 1. **Validate Configuration**
-   ```bash
-   mftctl config validate
-   ```
+   Use an online YAML validator like [yamllint.com](https://yamllint.com).
 
 2. **Common YAML Mistakes**
    
@@ -614,14 +604,11 @@ MFTPlus supports SFTP, FTP, FTPS, and local file transfers. SFTP is recommended 
 
 **2. Is MFTPlus free?**
 
-MFTPlus offers a free tier for small-scale use. For enterprise features and higher transfer limits, see [mftplus.co.za/pricing](https://mftplus.co.za/pricing).
+MFTPlus offers a Community tier for small-scale use. For enterprise features and higher transfer limits, see [mftplus.co.za/pricing](https://mftplus.co.za/pricing).
 
 **3. Can I run multiple agents on the same machine?**
 
-Yes, but you must configure each agent with a unique configuration directory:
-```bash
-mftctl --config-dir ~/.config/mft-agent-2 config init
-```
+Yes, but you must configure each agent with a unique configuration directory. Copy the config and update the server URL:
 
 **4. How do I upgrade MFTPlus?**
 
@@ -659,8 +646,8 @@ Check file permissions and verify the agent's user account has access.
 **10. How do I enable debug logging?**
 
 ```bash
-# Temporarily enable verbose logging
-mftctl config set logging.level debug
+# Run with debug output
+mftctl --debug status
 
 # View logs
 tail -f ~/.config/mft-agent/logs/agent.log
@@ -669,7 +656,7 @@ tail -f ~/.config/mft-agent/logs/agent.log
 **11. The agent shows as offline in the dashboard. What do I do?**
 
 1. Check that the agent process is running: `mftctl status`
-2. Verify server URL: `mftctl config get server.url`
+2. Verify server URL: `mftctl config get server-url`
 3. Test connectivity: `curl -v https://dashboard.yourcompany.com/health`
 4. Check firewall rules allow outbound HTTPS
 
@@ -692,10 +679,7 @@ mftctl config init
 
 **14. Can I recover from a failed transfer?**
 
-If resume is enabled, MFTPlus will automatically resume incomplete transfers on the next retry. Check your configuration:
-```bash
-mftctl config get transfer.resumeEnabled
-```
+If resume is enabled in the transfer configuration, MFTPlus will automatically resume incomplete transfers on the next retry.
 
 **15. Where can I get help?**
 
@@ -711,14 +695,17 @@ If you've tried the solutions above and still can't resolve your issue:
 
 1. **Collect Diagnostic Information**
    ```bash
-   # Export diagnostic bundle
-   mftctl diagnostics export --output debug-bundle.zip
+   # Export configuration
+   mftctl config export
+
+   # Show agent status
+   mftctl status
    ```
 
 2. **Contact Support**
    
    Email [support@mftplus.co.za](mailto:support@mftplus.co.za) with:
-   - MFTPlus version (`mftctl version`)
+   - MFTPlus version (`mftctl --version`)
    - Operating system and version
    - Description of the issue
    - Relevant log excerpts or diagnostic bundle
