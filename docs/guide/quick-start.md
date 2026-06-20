@@ -14,7 +14,7 @@ Transfer your first file with MFTPlus in under 5 minutes.
 
 ---
 
-## Step 1: Download and Install
+## Step 1: Install mftctl
 
 Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
@@ -55,7 +55,9 @@ For detailed installation options, see the [Installation guide](./installation).
 
 ---
 
-## Step 2: Configure Server URL
+```bash
+mftctl version
+```
 
 Set your dashboard server URL:
 
@@ -74,7 +76,9 @@ Configuration is stored at:
 
 ---
 
-## Step 3: Register Your Agent
+```bash
+mftctl login pc-api-xxxxxxxxxxxxxxxx
+```
 
 ```bash
 mft-agent-cli register --deploy-key your-deploy-key
@@ -140,7 +144,7 @@ Or view in the dashboard under **Jobs** → **History**.
 
 ---
 
-## Supported Protocols
+## Cleanup
 
 | Protocol | Best For |
 |----------|----------|

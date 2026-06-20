@@ -67,18 +67,15 @@ Linux CLI available now. Windows CLI supported in v0.6.2+. macOS CLI coming in a
 
 ## Configuration Directory
 
-MFTPlus stores configuration and data in:
+mftctl stores configuration at:
 
 - **Linux**: `~/.config/mftplus/`
 - **Windows**: `%APPDATA%\mftplus\`
 
 **Directory contents:**
-- `config.yaml` - Server URL and agent settings
-- `certificates/` - Encryption keys (permissions: 600)
-- `transfers.db` - SQLite transfer log
-- `logs/` - Application logs
+- `config.json` - Server URL, API key, and CLI settings
 
-## Server URL Configuration
+## Configuration
 
 On first launch, the agent prompts for your dashboard server URL.
 
@@ -129,7 +126,6 @@ Remove-Item $env:APPDATA\mftplus -Recurse
 
 ### Binary Won't Run
 
-**Linux:**
 ```bash
 # Check for missing libraries
 ldd /usr/local/bin/mft-agent-cli
@@ -151,32 +147,17 @@ Ensure the agent process has read/write access to:
 
 ### Network Connectivity
 
-Verify the agent can reach the dashboard:
+Verify you can reach the release server:
 
 ```bash
-# Test dashboard connectivity
-curl -v http://localhost:8080/health
-
-# Check firewall rules
-sudo ufw status  # Linux
-netsh advfirewall show allprofiles  # Windows
+curl -I https://releases.mftplus.co.za
 ```
-
-## Data Directories
-
-| Directory | Purpose |
-|-----------|---------|
-| `config.yaml` | Agent configuration |
-| `certificates/` | Encryption keys (600 permissions) |
-| `transfers.db` | SQLite transfer log |
-| `logs/` | Application logs |
-| `jobs/` | Scheduled job definitions |
 
 ## Next Steps
 
-- [Quick Start](./quick-start) - Create your first transfer
+- [Quick Start](./quick-start) - Start using mftctl
 - [Architecture](./architecture) - Learn how MFTPlus works
-- [Configuration](../api/config) - Configuration options
+- [CLI Commands](../api/cli) - Complete command reference
 
 ## Need Help?
 

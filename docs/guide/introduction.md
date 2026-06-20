@@ -9,27 +9,28 @@ Welcome to **MFTPlus** — Managed File Transfer, reimagined for modern DevOps w
 
 ## What is MFTPlus?
 
-MFTPlus is the first file transfer tool built specifically for DevOps workflows. Unlike legacy MFT solutions that require expensive central servers, MFTPlus runs as a standalone desktop agent that gives you enterprise-grade features in a ~5MB package.
+MFTPlus is a managed file transfer platform built for DevOps workflows. Unlike legacy MFT solutions that require expensive central servers, MFTPlus provides a modern CLI-first experience with enterprise-grade features.
 
-- **Lightweight**: No central server required. Runs on Windows, macOS, and Linux.
-- **Secure**: AES-256-GCM encryption with restrictive file permissions.
-- **Scheduled**: Cron-based job scheduling for automated transfers.
-- **Audit-Ready**: Built-in SQLite logging for compliance requirements.
-- **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers.
+- **CLI-First**: `mftctl` provides complete control from the command line
+- **Secure**: TLS encryption, AES-256-GCM file encryption, and cryptographic audit chains
+- **Scheduled**: Cron-based job scheduling for automated transfers
+- **Audit-Ready**: Immutable, cryptographically chained audit logs
+- **Multi-Protocol**: SFTP, FTP, FTPS, and local file transfers
+- **Agent-Based**: Lightweight agents for distributed execution
 
 ## Key Features
 
-### Desktop Agent, Not Server
+### CLI-First Design
 
-Unlike traditional MFT solutions that require a complex central server deployment, MFTPlus runs as a lightweight desktop agent. Deploy in minutes, not months.
+`mftctl` is the primary interface for managing transfers, agents, jobs, and audit. Everything available in the dashboard is accessible from the terminal.
 
-### Multi-Protocol Support
+### Agent-Based Architecture
 
-Transfer files using SFTP, FTP, FTPS, or local filesystem operations — all from a unified interface.
+Agents run on managed machines and execute transfers. They communicate with the dashboard via WebSocket for real-time status updates.
 
-### Scheduled Transfers
+### Flexible Transfer Options
 
-Set up automated file transfer jobs using familiar cron syntax. Full execution history and retry logic included.
+Send files directly with `mftctl send`, create transfers via the dashboard API, or schedule recurring jobs with cron syntax.
 
 ### Enterprise Security
 
@@ -41,7 +42,7 @@ Every transfer is logged to a local SQLite database with SHA-256 checksums. Perf
 
 ### Cross-Platform
 
-Built with Tauri and Rust for native performance on all major platforms. No JVM, no Electron bloat.
+The `mftctl` CLI runs on Linux, macOS, and Windows. Agents support all major platforms.
 
 ## Who Uses MFTPlus?
 
@@ -51,7 +52,7 @@ Built with Tauri and Rust for native performance on all major platforms. No JVM,
 
 ## Next Steps
 
-- [Installation](./installation) - Get MFTPlus installed on your system
+- [Installation](./installation) - Install mftctl
 - [Quick Start](./quick-start) - Start transferring files in minutes
 - [Production Deployment](./deployment) - Deploy MFTPlus with Docker in production
 - [Architecture](./architecture) - Understand how MFTPlus works

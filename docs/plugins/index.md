@@ -23,6 +23,7 @@ The MFTPlus plugin system allows you to:
 Handle user authentication and authorization:
 
 ```bash
+mftctl plugin search auth
 mftctl plugin install auth-oidc
 mftctl plugin install auth-ldap
 ```
@@ -32,6 +33,7 @@ mftctl plugin install auth-ldap
 Integrate with storage backends:
 
 ```bash
+mftctl plugin search s3
 mftctl plugin install s3-storage
 mftctl plugin install azure-storage
 mftctl plugin install gcs-storage
@@ -42,6 +44,7 @@ mftctl plugin install gcs-storage
 Implement custom transfer protocols:
 
 ```bash
+mftctl plugin search protocol
 mftctl plugin install protocol-sftp
 mftctl plugin install protocol-as2
 ```
@@ -51,16 +54,47 @@ mftctl plugin install protocol-as2
 Add monitoring and observability:
 
 ```bash
+mftctl plugin search monitor
 mftctl plugin install monitor-prometheus
 mftctl plugin install monitor-datadog
 ```
 
-## Plugin Discovery
+## Plugin Management
 
-List available plugins:
+### Search for plugins
+
+```bash
+mftctl plugin search <query>
+```
+
+### View plugin details
+
+```bash
+mftctl plugin info <plugin-name>
+```
+
+### Install a plugin
+
+```bash
+mftctl plugin install <plugin-name>
+```
+
+### List installed plugins
 
 ```bash
 mftctl plugin list
+```
+
+### Verify plugin integrity
+
+```bash
+mftctl plugin verify <plugin-name>
+```
+
+### Remove a plugin
+
+```bash
+mftctl plugin remove <plugin-name>
 ```
 
 ## Next Steps
