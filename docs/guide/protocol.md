@@ -1,4 +1,9 @@
-# Transfer Protocol
+---
+title: Transfer Protocol - SFTP, FTP, FTPS Support | MFTPlus
+description: "Learn about MFTPlus protocol support: SFTP for secure transfers, FTP for legacy systems, FTPS for TLS/SSL, and local filesystem operations."
+---
+
+# Transfer Protocol Support
 
 MFTPlus supports multiple transfer protocols for flexible file movement.
 
@@ -108,5 +113,6 @@ mftctl connections test backup-server
 
 ## Next Steps
 
-- [CLI Commands](../api/cli) - Command reference
-- [Plugins](../plugins/) - Extend transfer capabilities
+- [API Reference](../api/) - Explore the API
+- [Plugins](../plugins/) - Extend the protocol with custom plugins
+- [Quick Start](../guide/quick-start) - Set up your first transfer
