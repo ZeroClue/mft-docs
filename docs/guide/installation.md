@@ -53,6 +53,11 @@ Move-Item .\mft-agent-cli.exe C:\Windows\System32\
 mft-agent-cli --version
 ```
 
+An automated installer (`install.ps1`) is also available — download and run it from an elevated PowerShell prompt:
+```powershell
+powershell -c "iwr https://releases.mftplus.co.za/v0.6.1/install.ps1 -OutFile install.ps1; .\install.ps1"
+```
+
 ## Requirements
 
 | Requirement | Minimum | Recommended |

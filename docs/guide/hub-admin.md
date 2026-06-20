@@ -1,5 +1,7 @@
 # Hub Admin Guide
 
+> **The hub is an optional add-on for licensed tiers (Enterprise).** Most users manage agents directly through the [MFTPlus Cloud Dashboard](https://dashboard.mftplus.co.za) without deploying a hub. See [pricing](https://mftplus.co.za/pricing) for tier details.
+
 This guide covers the MFTPlus cloud dashboard and hub management — user roles, hub setup, deploy key management, and the hub dashboard interface. Intended for system administrators and team leads managing MFTPlus deployments.
 
 ## User Roles
@@ -102,10 +104,10 @@ The full key is shown only at generation time. Store it in a secrets manager (e.
 
 ### Register an Agent with a Deploy Key
 
-On the agent machine, use the deploy key during registration:
+On the agent machine, use the deploy key to connect:
 
 ```bash
-mftctl register --hub https://hub-xxxx.mftplus.co.za --deploy-key mft_dep_xxxxxxxxxxxx
+mftctl connect --server https://hub-xxxx.mftplus.co.za --token mft_dep_xxxxxxxxxxxx
 ```
 
 The agent authenticates with the key and appears in the hub's agent list once connected.
@@ -126,7 +128,7 @@ Rotating keys is a security best practice. The rotation process introduces a new
 1. **Generate** a new deploy key (see above) — agents can still use the old key
 2. **Re-register** each agent with the new key:
    ```bash
-   mftctl register --hub https://hub-xxxx.mftplus.co.za --deploy-key mft_dep_yyyyyyyyyyyy
+   mftctl connect --server https://hub-xxxx.mftplus.co.za --token mft_dep_yyyyyyyyyyyy
    ```
 3. **Verify** all agents are online with the new key
 4. **Revoke** the old deploy key once no agents depend on it

@@ -37,9 +37,9 @@ The web-based management interface for:
 
 The dashboard is the central point of control for all agents in your deployment.
 
-### Hub (v0.6.0+)
+### Hub (v0.6.0+, licensed add-on)
 
-An optional relay component that enables:
+An optional relay component (available on Enterprise tier) that enables:
 
 - Hub-and-spoke topology for distributed deployments
 - WebSocket relay for agent-to-hub connectivity (v0.6.1+)
@@ -48,9 +48,9 @@ An optional relay component that enables:
 
 The hub sits between agents and the dashboard, relaying traffic when agents cannot connect directly.
 
-## Hub-and-Spoke Topology
+## Hub-and-Spoke Topology (Licensed Add-On)
 
-In a hub-and-spoke deployment (v0.6.0+):
+In a hub-and-spoke deployment (v0.6.0+, Enterprise tier):
 
 ```
 ┌──────────┐     ┌──────────┐     ┌──────────┐

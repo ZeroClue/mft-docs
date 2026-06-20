@@ -129,4 +129,4 @@ Schedule transfers using familiar cron syntax. Monitor execution in real-time.
 
 **Start free in under 5 minutes.** No credit card required. Scale when you need to.
 
-[:star: Start Free Forever](https://mftplus.co.za/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)
+[:star: Start with Community](https://mftplus.co.za/pricing) | [:book: Read the Docs](/guide/introduction) | [:email: Talk to Sales](mailto:sales@mftplus.co.za)

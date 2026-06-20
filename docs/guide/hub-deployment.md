@@ -1,5 +1,7 @@
 # Hub Deployment Guide
 
+> **The hub is an optional add-on for licensed tiers (Enterprise).** Most users manage agents directly through the [MFTPlus Cloud Dashboard](https://dashboard.mftplus.co.za) without deploying a hub. See [pricing](https://mftplus.co.za/pricing) for tier details.
+
 Deploy an MFTPlus Hub — a local edge proxy that extends the MFTPlus cloud
 into your on-premises environment.
 
@@ -387,14 +389,16 @@ On a machine in the same network as the Hub, configure an agent to point
 at the Hub and send a test transfer:
 
 ```bash
-mftctl send ./test-file.txt recipient@example.com \
-  --server http://hub.yourcompany.com:3002
+mftctl transfers create \
+  --agent ag-2x8mK9nR \
+  --source ./test-file.txt \
+  --dest sftp://recipient@example.com/incoming
 ```
 
-Verify the transfer completes successfully:
+Verify the agent is connected:
 
 ```bash
-mftctl status --server http://hub.yourcompany.com:3002
+mftctl agents list
 ```
 
 ---

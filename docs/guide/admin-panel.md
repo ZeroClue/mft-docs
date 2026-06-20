@@ -84,14 +84,7 @@ Per-customer settings include:
 
 Monitor and manage customer subscriptions from the Subscriptions section.
 
-### Subscription Tiers
-
-| Tier | Features | Agents | Storage |
-|------|----------|--------|---------|
-| **Free** | Basic transfers, community support | 1 | 10 GB |
-| **Pro** | Priority transfers, email support | 10 | 500 GB |
-| **Business** | SSO, API access, phone support | 50 | 5 TB |
-| **Enterprise** | Custom limits, dedicated support | Unlimited | Unlimited |
+Subscription tiers (Community, Starter, Pro, Enterprise) determine agent limits, storage quotas, and support level. See [mftplus.co.za/pricing](https://mftplus.co.za/pricing) for current details.
 
 ### Subscription Actions
 
