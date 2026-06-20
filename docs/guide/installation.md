@@ -1,56 +1,170 @@
+---
+title: Installation Guide - MFTPlus Documentation
+description: "Install MFTPlus CLI agent on Linux or Windows using tar.gz binaries."
+---
+
 # Installation
 
-MFTPlus provides two separate tools. Choose the one that fits your use case:
+Install the MFTPlus agent CLI on your system.
 
-| Tool | Purpose | Install Method |
-|------|---------|---------------|
-| **mftctl** | CLI tool for managing agents, transfers, jobs, and audit from the terminal | One-line script or manual binary download |
-| **MFTPlus Agent** | Background service that runs on servers and executes file transfers | Package manager (.deb/.rpm) or desktop installer |
+## Download Binary
 
-## Quick Links
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
-- [Install mftctl](./install-mftctl) — CLI management tool
-- [Install MFTPlus Agent](./install-agent) — Agent runtime for servers
+| Platform | Architecture | Download |
+|----------|-------------|----------|
+| Linux | x86_64 | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux | aarch64 | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows | x86_64 | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
 
-## Which One Do I Need?
+Windows CLI binary support added in v0.6.2. macOS CLI support coming in a future release.
 
-**Use mftctl if you:**
-- Want to manage transfers, agents, and jobs from the command line
-- Need to automate MFT operations in CI/CD pipelines
-- Are an admin managing the MFTPlus platform
+## Manual Installation
 
-**Use the MFTPlus Agent if you:**
-- Need to run file transfers on a remote server
-- Want a background service with scheduling
-- Prefer a desktop application with a graphical interface
-
-You can install both on the same machine. Use `mftctl` to manage agents running anywhere.
-
-## Quick Install
-
-### mftctl (CLI)
+### Linux
 
 ```bash
-curl -fsSL https://releases.mftplus.co.za/install.sh | sh
+# Download
+wget https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz
+
+# Extract
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
+
+# Copy to PATH
+sudo mv mft-agent-cli /usr/local/bin/
+
+# Verify
+mft-agent-cli --version
 ```
 
-### MFTPlus Agent
+### Windows
 
-**Debian/Ubuntu:**
-```bash
-wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
-sudo dpkg -i mftplus_amd64.deb
-sudo systemctl start mft-agent
+```powershell
+# Download
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
+
+# Extract
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
+
+# Move to PATH directory
+Move-Item .\mft-agent-cli.exe C:\Windows\System32\
+
+# Verify
+mft-agent-cli --version
 ```
 
-**RHEL/CentOS/Fedora:**
+An automated installer (`install.ps1`) is also available — download and run it from an elevated PowerShell prompt:
+```powershell
+powershell -c "iwr https://releases.mftplus.co.za/v0.6.1/install.ps1 -OutFile install.ps1; .\install.ps1"
+```
+
+## Requirements
+
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| **OS** | Linux kernel 3.10+, Windows 10+ | Latest LTS versions |
+| **Architecture** | x86_64 (amd64), ARM64 (aarch64) | x86_64 |
+| **Memory** | 50 MB RAM | 100 MB RAM |
+| **Disk** | 20 MB free space | 50 MB free space |
+| **Network** | HTTPS access to dashboard | Stable internet connection |
+
+Linux CLI available now. Windows CLI supported in v0.6.2+. macOS CLI coming in a future release.
+
+## Configuration Directory
+
+mftctl stores configuration at:
+
+- **Linux**: `~/.config/mftplus/`
+- **Windows**: `%APPDATA%\mftplus\`
+
+**Directory contents:**
+- `config.json` - Server URL, API key, and CLI settings
+
+## Configuration
+
+On first launch, the agent prompts for your dashboard server URL.
+
+**For local development:**
+```
+http://localhost:8080
+```
+
+**For production deployments:**
+```
+https://dashboard.yourcompany.com
+```
+
+Edit manually:
+```yaml
+# ~/.config/mftplus/config.yaml
+server:
+  url: http://localhost:8080
+  timeout: 30s
+```
+
+## Upgrading
+
+Download the latest tar.gz binary and replace the existing binary in your PATH. Configuration and transfer history are preserved.
+
+## Uninstalling
+
+Remove the binary and optionally the configuration directory:
+
 ```bash
-wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
-sudo rpm -i mftplus-x86_64.rpm
-sudo systemctl start mft-agent
+# Remove binary
+sudo rm /usr/local/bin/mft-agent-cli
+
+# Remove configuration (optional)
+rm -rf ~/.config/mftplus
+```
+
+**Windows:**
+```powershell
+# Remove binary
+Remove-Item C:\Windows\System32\mft-agent-cli.exe
+
+# Remove configuration (optional)
+Remove-Item $env:APPDATA\mftplus -Recurse
+```
+
+## Troubleshooting
+
+### Binary Won't Run
+
+```bash
+# Check for missing libraries
+ldd /usr/local/bin/mft-agent-cli
+
+# View detailed logs
+mft-agent-cli --verbose
+```
+
+**Windows:**
+- Check Windows Defender or antivirus logs
+- Run PowerShell as administrator if permission errors occur
+
+### Permission Errors
+
+Ensure the agent process has read/write access to:
+- Configuration directory (`~/.config/mftplus/` or equivalent)
+- Certificate directory (`~/.config/mftplus/certificates/`)
+- Transfer log database (`~/.config/mftplus/transfers.db`)
+
+### Network Connectivity
+
+Verify you can reach the release server:
+
+```bash
+curl -I https://releases.mftplus.co.za
 ```
 
 ## Next Steps
 
-- [Quick Start](./quick-start) — Get started in under 5 minutes
-- [Architecture](./architecture) — Learn how MFTPlus works
+- [Quick Start](./quick-start) - Start using mftctl
+- [Architecture](./architecture) - Learn how MFTPlus works
+- [CLI Commands](../api/cli) - Complete command reference
+
+## Need Help?
+
+- **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
+- **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)

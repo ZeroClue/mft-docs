@@ -17,49 +17,44 @@
   <!-- Terminal Content -->
   <g font-family="'SF Mono', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace" font-size="14">
 
-    <!-- Prompt 1 -->
+    <!-- Prompt 1: Login -->
     <text x="24" y="80" fill="#a6e3a1">➜</text>
     <text x="44" y="80" fill="#89b4fa">~</text>
-    <text x="60" y="80" fill="#cdd6f4">mftctl init my-transfer</text>
+    <text x="60" y="80" fill="#cdd6f4">mftctl login</text>
 
     <!-- Output 1 -->
     <text x="24" y="110" fill="#a6e3a1">✓</text>
-    <text x="44" y="110" fill="#cdd6f4">Created transfer configuration</text>
-    <text x="60" y="130" fill="#cdd6f4">  Source: s3://my-bucket/uploads/</text>
-    <text x="60" y="150" fill="#cdd6f4">  Destination: ftp://partner.example.com/incoming/</text>
+    <text x="44" y="110" fill="#cdd6f4">Authenticated as admin@mftplus.co.za</text>
 
     <!-- Prompt 2 -->
-    <text x="24" y="190" fill="#a6e3a1">➜</text>
-    <text x="44" y="190" fill="#89b4fa">~</text>
-    <text x="60" y="190" fill="#cdd6f4">mftctl validate</text>
+    <text x="24" y="150" fill="#a6e3a1">➜</text>
+    <text x="44" y="150" fill="#89b4fa">~</text>
+    <text x="60" y="150" fill="#cdd6f4">mftctl agents list</text>
 
     <!-- Output 2 -->
-    <text x="24" y="220" fill="#a6e3a1">✓</text>
-    <text x="44" y="220" fill="#cdd6f4">Configuration valid</text>
+    <text x="24" y="180" fill="#cdd6f4">  ag-2x8mK9nR  prod-server-01   online</text>
+    <text x="24" y="200" fill="#cdd6f4">  ag-7hJ3pL2q  staging-server   online</text>
+    <text x="24" y="220" fill="#cdd6f4">  ag-4mB9vC5x  dr-replica       offline</text>
 
     <!-- Prompt 3 -->
     <text x="24" y="260" fill="#a6e3a1">➜</text>
     <text x="44" y="260" fill="#89b4fa">~</text>
-    <text x="60" y="260" fill="#cdd6f4">mftctl apply --watch</text>
+    <text x="60" y="260" fill="#cdd6f4">mftctl transfers create --agent ag-2x8mK9nR \</text>
+    <text x="60" y="280" fill="#cdd6f4">  --source /var/log/app/*.log \</text>
+    <text x="60" y="300" fill="#cdd6f4">  --dest sftp://backup.example.com/logs</text>
 
     <!-- Output 3 -->
-    <text x="24" y="290" fill="#a6e3a1">●</text>
-    <text x="44" y="290" fill="#f9e2af">Watching for changes...</text>
+    <text x="24" y="330" fill="#a6e3a1">✓</text>
+    <text x="44" y="330" fill="#cdd6f4">Transfer created: tr-abc123</text>
 
     <!-- Animated Progress Bar -->
-    <rect x="24" y="315" width="200" height="8" fill="#313244" rx="4"/>
-    <rect x="24" y="315" width="140" height="8" fill="#89b4fa" rx="4"/>
+    <rect x="24" y="350" width="200" height="8" fill="#313244" rx="4"/>
+    <rect x="24" y="350" width="140" height="8" fill="#89b4fa" rx="4"/>
 
     <!-- Transfer Stats -->
-    <text x="24" y="350" fill="#89b4fa" font-weight="bold">Transferring:</text>
-    <text x="130" y="350" fill="#cdd6f4">report_2024_q1.csv</text>
-    <text x="400" y="350" fill="#a6e3a1">70%</text>
-
-    <text x="24" y="375" fill="#89b4fa" font-weight="bold">Speed:</text>
-    <text x="80" y="375" fill="#cdd6f4">45.2 MB/s</text>
-
-    <text x="24" y="400" fill="#89b4fa" font-weight="bold">ETA:</text>
-    <text x="60" y="400" fill="#cdd6f4">2m 14s</text>
+    <text x="24" y="380" fill="#89b4fa" font-weight="bold">Status:</text>
+    <text x="80" y="380" fill="#cdd6f4">transferring</text>
+    <text x="400" y="380" fill="#a6e3a1">70%</text>
 
     <!-- Prompt 4 (blinking cursor) -->
     <text x="24" y="450" fill="#a6e3a1">➜</text>

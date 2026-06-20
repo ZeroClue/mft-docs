@@ -1,6 +1,11 @@
-# Configuration
+---
+title: Configuration Options - MFTPlus Documentation
+description: "Configure MFTPlus agent behavior: server URLs, credentials, retry policies, logging levels, and security settings. Complete configuration reference."
+---
 
-MFTPlus consists of two components with separate configuration files.
+# MFTPlus Configuration
+
+MFTPlus configuration options for `mftctl` CLI.
 
 ## mftctl CLI Configuration
 
@@ -11,14 +16,33 @@ MFTPlus consists of two components with separate configuration files.
 
 ### Config File Format
 
-The configuration file is in JSON format:
-
 ```json
 {
-  "server_url": "http://localhost:3001",
-  "api_key": "",
-  "jwt_token": ""
+  "server-url": "https://dashboard.mftplus.co.za",
+  "api-key": "",
+  "jwt": ""
 }
+```
+
+## Configuration via CLI
+
+Use `mftctl config` commands to manage settings:
+
+```bash
+# Initialize config file
+mftctl config init
+
+# Set server URL
+mftctl config set server-url https://dashboard.mftplus.co.za
+
+# View all config values
+mftctl config list
+
+# Get a specific value
+mftctl config get server-url
+
+# Export configuration
+mftctl config export
 ```
 
 ### Configuration Keys
@@ -32,26 +56,9 @@ The configuration file is in JSON format:
 ### Configuration via CLI
 
 ```bash
-# Initialize config file
-mftctl config init
-
-# Set server URL
-mftctl config set server-url https://dashboard.mftplus.co.za
-
-# Set API key
-mftctl config set api-key pc-api-xxxxxxxxxxxxxxxx
-
-# View current configuration
-mftctl config list
-
-# Get a specific value
-mftctl config get server-url
-
-# Unset a value
-mftctl config unset api-key
-
-# Export configuration as JSON
-mftctl config export
+# Server
+MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
+MFTPLUS_API_KEY=pc-api-xxxxxxxxxxxxxxxx
 ```
 
 ## MFTPlus Agent Configuration
@@ -60,27 +67,8 @@ The agent runtime uses a separate configuration file in TOML format.
 
 ### Config File Location
 
-- **Linux/macOS**: `~/.config/mft-agent/config.toml`
-- **Windows**: `%APPDATA%\mft-agent\config.toml`
-
-### Config File Format
-
-```toml
-dashboard_url = "https://dashboard.mftplus.co.za"
-api_key = "pc-api-xxxxxxxxxxxxxxxx"
-agent_name = "production-server-01"
-tags = ["production", "eu-west"]
-enable_telemetry = true
-```
-
-### Configuration via Agent CLI
-
-```bash
-mft-agent-cli configure --dashboard-url https://dashboard.mftplus.co.za --api-key pc-api-xxxxxxxxxxxxxxxx
-```
-
 ## Next Steps
 
-- [CLI Commands](./cli) — CLI reference
-- [Install mftctl](../guide/install-mftctl) — Install the CLI tool
-- [Install Agent](../guide/install-agent) — Install the agent runtime
+- [CLI Commands](./cli) - CLI reference for managing configuration
+- [Plugin API](../plugins/api) - Plugin development
+- [Installation](../guide/installation) - Setup guide for new deployments

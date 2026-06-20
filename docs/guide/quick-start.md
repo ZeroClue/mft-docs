@@ -1,152 +1,195 @@
-# Quick Start
+---
+title: Quick Start Guide - Transfer Files in 5 Minutes | MFTPlus
+description: "Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job."
+---
 
-Get up and running with `mftctl` in under 5 minutes.
+# Quick Start: Your First Transfer in 5 Minutes
+
+Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Prerequisites
 
-- **Operating System**: Linux, macOS, or Windows
-- **MFTPlus dashboard**: Running instance with an API key
+- **OS**: Windows 10+ or Linux
+- **Access**: SFTP/FTP credentials or local directory path
+
+---
 
 ## Step 1: Install mftctl
 
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
+
+| Platform | Download |
+|----------|----------|
+| Linux (x86_64) | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux (aarch64) | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows (x86_64) | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
+
+**Manual install (Linux):**
 ```bash
-curl -fsSL https://releases.mftplus.co.za/install.sh | sh
+# Download and extract
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
+
+# Move to PATH
+sudo mv mft-agent-cli /usr/local/bin/
+
+# Verify
+mft-agent-cli --version
 ```
 
-Verify the installation:
+**Manual install (Windows PowerShell):**
+```powershell
+# Download
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
 
-```bash
-mftctl --version
+# Extract
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
+
+# Move to PATH
+Move-Item .\mft-agent-cli.exe C:\Windows\System32\
+
+# Verify
+mft-agent-cli --version
 ```
 
-## Step 2: Authenticate
+For detailed installation options, see the [Installation guide](./installation).
 
-Log in to your MFTPlus dashboard:
+---
+
+```bash
+mftctl version
+```
+
+Set your dashboard server URL:
+
+```bash
+mft-agent-cli config set server.url http://localhost:8080
+```
+
+For cloud deployments:
+```bash
+mft-agent-cli config set server.url https://dashboard.yourcompany.com
+```
+
+Configuration is stored at:
+- **Linux**: `~/.config/mftplus/config.yaml`
+- **Windows**: `%APPDATA%\mftplus\config.yaml`
+
+---
 
 ```bash
 mftctl login pc-api-xxxxxxxxxxxxxxxx
 ```
 
-To use a custom server URL:
-
 ```bash
-mftctl login --server https://dashboard.mftplus.co.za pc-api-xxxxxxxxxxxxxxxx
+mft-agent-cli register --deploy-key your-deploy-key
 ```
 
-## Step 3: Configure Server URL
+Your agent will appear in the dashboard with a unique agent ID.
 
-Set your dashboard server URL:
+::: tip Finding Your Agent ID
+Run `mft-agent-cli status` to see your agent ID and connection status.
+:::
 
-```bash
-mftctl config set server-url https://dashboard.mftplus.co.za
-```
+---
 
-## Step 4: View Your Agents
+## Step 4: Verify Registration
 
-```bash
-mftctl agents list
-```
-
-View details for a specific agent:
+Check your agent status:
 
 ```bash
-mftctl agents show ag-2x8mK9nR
+mft-agent-cli status
 ```
 
-## Step 5: Create Your First Transfer
+Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
+- Agent hostname
+- Online status
+- Last heartbeat timestamp
 
-Send a file directly:
+---
 
-```bash
-mftctl send ./report.pdf \
-  --agent ag-2x8mK9nR \
-  --to sftp://backup.example.com/incoming
-```
+## Step 5: Create Your First Transfer Job
 
-Create a scheduled transfer job:
+In the dashboard:
 
-```bash
-mftctl transfers create \
-  --agent ag-2x8mK9nR \
-  --source /var/log/app/*.log \
-  --dest sftp://backup.example.com/logs \
-  --protocol sftp
-```
+1. Navigate to **Jobs** → **Create Job**
+2. Configure:
+   - **Name**: `my-first-transfer`
+   - **Schedule**: `0 2 * * *` (daily at 2 AM)
+   - **Protocol**: SFTP
+   - **Source**: `/path/to/files/*.log`
+   - **Destination**: `sftp://your-server.com/backup`
+   - **Credentials**: Add your SFTP credentials
+3. Click **Save**
 
-## Step 6: Monitor Transfers
+---
 
-```bash
-# List all transfers
-mftctl transfers list
+## Step 6: Run It Now
 
-# Check transfer details
-mftctl transfers status tr-abc123
+Want to test immediately? Click **Run Now** on your job.
 
-# View transfer logs
-mftctl transfers logs tr-abc123
-```
+Monitor the execution under **History** — you'll see status, timestamps, and file counts.
 
-## Step 7: Schedule a Job
+---
 
-Create a recurring transfer job:
+## Verify Success
 
-```bash
-mftctl jobs create \
-  --agent ag-2x8mK9nR \
-  --name daily-sync \
-  --source /var/log/app/*.log \
-  --dest sftp://backup.example.com/logs \
-  --schedule "0 2 * * *" \
-  --protocol sftp
-```
+Check the transfer log locally:
 
-## Step 8: Audit
+| Platform | Transfer Log |
+|----------|--------------|
+| Linux | `~/.config/mftplus/transfers.db` |
+| Windows | `%APPDATA%\mftplus\transfers.db` |
 
-Verify audit chain integrity:
+Or view in the dashboard under **Jobs** → **History**.
 
-```bash
-mftctl audit verify
-```
-
-List recent audit entries:
-
-```bash
-mftctl audit log list --limit 10
-```
-
-## Common Workflows
-
-### Send from stdin
-
-```bash
-cat data.csv | mftctl send --agent ag-2x8mK9nR --to sftp://recipient.example.com/incoming --stdin
-```
-
-### Agent Labels
-
-```bash
-mftctl agents label list ag-2x8mK9nR
-mftctl agents label add ag-2x8mK9nR environment production
-```
-
-### Export Audit Reports
-
-```bash
-mftctl audit chain export --format csv
-```
+---
 
 ## Cleanup
 
-```bash
-# Delete a job
-mftctl jobs delete job-abc123
+| Protocol | Best For |
+|----------|----------|
+| **SFTP** | Secure transfers (recommended) |
+| **FTP** | Legacy systems |
+| **FTPS** | FTP over TLS/SSL |
+| **Local** | Same-machine file operations |
 
-# Logout
-mftctl logout
-```
+---
+
+## Troubleshooting
+
+**Agent not appearing in dashboard?**
+- Check server URL in config
+- Verify network connectivity to dashboard
+- Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
+- Run `mft-agent-cli status` to check connection
+
+**Connection refused?**
+- Verify hostname and port
+- Check firewall rules allow outbound connections
+- Test: `telnet sftp.example.com 22`
+
+**Permission denied?**
+- Verify source directory is readable
+- Verify destination directory is writable
+- Check SSH key permissions (if using key auth)
+
+**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to common issues.
+
+---
+
+## Security
+
+MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used for securing classified information. Credentials are stored locally with restrictive permissions (600) and never leave your machine unencrypted.
+
+---
 
 ## Next Steps
 
-- [CLI Commands](../api/cli) — Complete command reference
+- [Installation](./installation) — Detailed install options
+- [Configuration](../api/config) — Advanced configuration options
 - [Architecture](./architecture) — Learn how MFTPlus works
-- [Installation](./installation) — Detailed installation options
+
+## Need Help?
+
+- **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
+- **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)

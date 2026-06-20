@@ -1,6 +1,20 @@
-# Transfer Protocol
+---
+title: Transfer Protocol - SFTP, FTP, FTPS Support | MFTPlus
+description: "Learn about MFTPlus protocol support: SFTP for secure transfers, FTP for legacy systems, FTPS for TLS/SSL, and local filesystem operations."
+---
 
-The MFT Transfer Protocol (MFTP) is optimized for modern network conditions.
+# Transfer Protocol Support
+
+MFTPlus supports multiple transfer protocols for flexible file movement.
+
+## Supported Protocols
+
+| Protocol | Description |
+|----------|-------------|
+| **SFTP** | SSH File Transfer Protocol (recommended) |
+| **FTP** | File Transfer Protocol |
+| **FTPS** | FTP over TLS/SSL |
+| **Local** | Local filesystem operations |
 
 ## Protocol Features
 
@@ -37,49 +51,68 @@ Every chunk is verified using:
 - Automatic retransmission on failure
 - End-to-end verification
 
-## Protocol Versions
+## Protocol Selection
 
-### MFTP v1 (Current)
-
-- Basic transfer support
-- Chunked transfers
-- Checksum verification
-- Basic retry logic
-
-### MFTP v2 (Coming Soon)
-
-- UDP support for high-latency networks
-- QUIC protocol integration
-- Advanced compression
-- Transfer prioritization
-
-## Connection Modes
-
-### Direct Mode
-
-Point-to-point connection between sender and receiver:
+Specify the protocol when creating transfers:
 
 ```bash
-mftctl send --mode direct ./file.txt recipient@example.com
+mftctl transfers create \
+  --agent <id> \
+  --source /path/to/file \
+  --dest sftp://backup.example.com/incoming \
+  --protocol sftp
 ```
 
-### Relay Mode
-
-Use a relay server for NAT traversal:
+Or send files directly with a protocol-specific destination URL:
 
 ```bash
-mftctl send --mode relay ./file.txt recipient@example.com
+mftctl send ./file.txt \
+  --agent <id> \
+  --to ftp://host.example.com/incoming
 ```
 
-### Queue Mode
+## Supported URL Schemes
 
-Store-and-forward via server queue:
+| Scheme | Protocol | Example |
+|--------|----------|---------|
+| `sftp://` | SFTP | `sftp://user@host:22/path` |
+| `ftp://` | FTP | `ftp://user@host:21/path` |
+| `ftps://` | FTPS | `ftps://user@host:990/path` |
+| (local path) | Local | `/var/data/file.txt` |
+
+## Encryption
+
+File content can be encrypted during transfer:
 
 ```bash
-mftctl send --mode queue ./file.txt recipient@example.com
+mftctl send ./sensitive.pdf \
+  --agent <id> \
+  --to sftp://partner.example.com/incoming \
+  --encryption aes256
+```
+
+Supported algorithms:
+- `aes256` - AES-256-GCM (default)
+- `chacha20` - ChaCha20-Poly1305
+
+## Connection Profiles
+
+Store and reuse connection settings:
+
+```bash
+mftctl connections create \
+  --name backup-server \
+  --type sftp \
+  --host backup.example.com \
+  --port 22 \
+  --username deploy \
+  --auth key
+
+mftctl connections test backup-server
 ```
 
 ## Next Steps
 
 - [API Reference](../api/) - Explore the API
-- [Plugins](../plugins/) - Extend the protocol
+- [Plugins](../plugins/) - Extend the protocol with custom plugins
+- [Quick Start](../guide/quick-start) - Set up your first transfer

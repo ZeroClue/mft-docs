@@ -1,4 +1,9 @@
-# Creating Plugins
+---
+title: Creating Plugins - Development Guide | MFTPlus
+description: "Learn to create custom plugins for MFTPlus. Build transfer handlers, add protocol support, and integrate with external systems."
+---
+
+# Creating MFTPlus Plugins
 
 Build custom plugins to extend MFTPlus functionality.
 
@@ -21,7 +26,7 @@ my-plugin/
 ```yaml
 name: my-plugin
 version: 1.0.0
-description: My custom MFTPlus plugin
+description: "My custom MFTPlus plugin"
 type: storage
 author: Your Name <you@example.com>
 license: MIT
@@ -107,18 +112,18 @@ type ProtocolPlugin interface {
 # Build plugin
 go build -o my-plugin.so -buildmode=plugin
 
-# Install plugin
-mftctl plugin install ./my-plugin.so
+# Install plugin via CLI
+mftctl plugin install my-plugin
 ```
 
 ## Testing Plugins
 
 ```bash
-# Test plugin locally
-mftctl plugin test ./my-plugin.so
+# View plugin info
+mftctl plugin info my-plugin
 
-# Enable plugin
-mftctl plugin enable my-plugin
+# Verify plugin integrity
+mftctl plugin verify my-plugin
 ```
 
 ## Distribution
@@ -132,3 +137,4 @@ Publish your plugin:
 ## Next Steps
 
 - [Plugin API](./api) - Complete API reference
+- [Architecture](../guide/architecture) - Learn about MFTPlus architecture

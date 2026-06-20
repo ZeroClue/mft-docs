@@ -1,4 +1,9 @@
-# Plugin API Reference
+---
+title: Plugin API Reference - MFTPlus Documentation
+description: "API reference for MFTPlus plugins. Interfaces, hooks, and patterns for building custom transfer handlers and extending platform functionality."
+---
+
+# MFTPlus Plugin API
 
 Complete API reference for plugin development.
 
@@ -268,3 +273,4 @@ func (e *PluginError) Error() string {
 ## Next Steps
 
 - [Creating Plugins](./creating) - Build your first plugin
+- [CLI Commands](../api/cli) - Plugin management commands
