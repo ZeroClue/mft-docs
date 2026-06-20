@@ -1,54 +1,43 @@
 # Configuration
 
-MFTPlus configuration options and environment variables.
+MFTPlus configuration options for `mftctl` CLI.
 
 ## Config File Location
 
 Default configuration file location:
 
-- **Linux/macOS**: `~/.config/mftplus/config.yaml`
-- **Windows**: `%APPDATA%\mftplus\config.yaml`
+- **Linux/macOS**: `~/.mftctl/config.json`
+- **Windows**: `%USERPROFILE%\.mftctl\config.json`
 
 ## Configuration Structure
 
-```yaml
-# Dashboard server configuration
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 30s
+```json
+{
+  "server-url": "https://dashboard.mftplus.co.za",
+  "api-key": "",
+  "jwt": ""
+}
+```
 
-# Transfer settings
-transfer:
-  timeout: 5m
-  chunk_size: 10MB
-  retry_count: 3
-  compress: false
-  protocol: auto
+## Configuration via CLI
 
-# Connection settings
-connection:
-  mode: auto
-  parallel: 2
-  keepalive: 30s
+Use `mftctl config` commands to manage settings:
 
-# Certificate settings
-certificates:
-  ca_url: https://ca.example.com
-  auto_renew: true
-  validity: 8760h
+```bash
+# Initialize config file
+mftctl config init
 
-# Logging
-logging:
-  level: info
-  format: text
-  file: /var/log/mftplus/mftplus.log
+# Set server URL
+mftctl config set server-url https://dashboard.mftplus.co.za
 
-# Plugins
-plugins:
-  enabled:
-    - s3-storage
-    - auth-oidc
-  directory: /usr/local/lib/mftplus/plugins
+# View all config values
+mftctl config list
+
+# Get a specific value
+mftctl config get server-url
+
+# Export configuration
+mftctl config export
 ```
 
 ## Environment Variables
@@ -58,25 +47,7 @@ Environment variables override config file settings:
 ```bash
 # Server
 MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
-MFTPLUS_SERVER_TIMEOUT=30s
-
-# Transfer
-MFTPLUS_TRANSFER_TIMEOUT=5m
-MFTPLUS_CHUNK_SIZE=10MB
-MFTPLUS_RETRY_COUNT=3
-MFTPLUS_COMPRESS=true
-
-# Connection
-MFTPLUS_CONNECTION_MODE=direct
-MFTPLUS_PARALLEL=4
-
-# Certificates
-MFTPLUS_CA_URL=https://ca.example.com
-MFTPLUS_AUTO_RENEW=true
-
-# Logging
-MFTPLUS_LOG_LEVEL=debug
-MFTPLUS_LOG_FILE=/var/log/mftplus/mftplus.log
+MFTPLUS_API_KEY=pc-api-xxxxxxxxxxxxxxxx
 ```
 
 ## Configuration Priority
@@ -87,55 +58,6 @@ Settings are applied in this order (higher priority overrides lower):
 2. Environment variables
 3. Config file
 4. Default values
-
-## Common Configurations
-
-### Development Environment
-
-```yaml
-server:
-  url: http://localhost:8080
-
-transfer:
-  timeout: 30s
-  retry_count: 1
-
-logging:
-  level: debug
-```
-
-### Production Environment
-
-```yaml
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 60s
-
-transfer:
-  timeout: 10m
-  retry_count: 5
-  compress: true
-
-certificates:
-  auto_renew: true
-
-logging:
-  level: info
-  file: /var/log/mftplus/mftplus.log
-```
-
-### High-Latency Network
-
-```yaml
-transfer:
-  timeout: 30m
-  chunk_size: 5MB
-  retry_count: 10
-
-connection:
-  parallel: 4
-  keepalive: 60s
-```
 
 ## Next Steps
 

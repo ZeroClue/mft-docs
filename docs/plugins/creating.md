@@ -107,18 +107,18 @@ type ProtocolPlugin interface {
 # Build plugin
 go build -o my-plugin.so -buildmode=plugin
 
-# Install plugin
-mftctl plugin install ./my-plugin.so
+# Install plugin via CLI
+mftctl plugin install my-plugin
 ```
 
 ## Testing Plugins
 
 ```bash
-# Test plugin locally
-mftctl plugin test ./my-plugin.so
+# View plugin info
+mftctl plugin info my-plugin
 
-# Enable plugin
-mftctl plugin enable my-plugin
+# Verify plugin integrity
+mftctl plugin verify my-plugin
 ```
 
 ## Distribution
