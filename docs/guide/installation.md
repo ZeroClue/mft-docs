@@ -1,140 +1,75 @@
 ---
 title: Installation Guide - MFTPlus Documentation
-description: "Install MFTPlus on Windows, macOS, or Linux. Choose between one-line curl install or desktop installer. Up and running in under 5 minutes."
+description: "Install MFTPlus CLI agent on Linux or Windows using tar.gz binaries."
 ---
 
-# Installing MFTPlus
+# Installation
 
-Install MFTPlus on your system.
+Install the MFTPlus agent CLI on your system.
 
-## Quick Install (One-Line)
+## Download Binary
 
-**macOS / Linux:**
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
+| Platform | Architecture | Download |
+|----------|-------------|----------|
+| Linux | x86_64 | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux | aarch64 | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows | x86_64 | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
 
-This installs `mftctl` — the MFTPlus command-line interface — to `/usr/local/bin/`.
+Windows CLI binary support added in v0.6.2. macOS CLI support coming in a future release.
 
-::: tip
-After installing, initialize your configuration:
-```bash
-mftctl config init
-```
-:::
-
----
-
-## Desktop Agent Installers
-
-Download the latest installer for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/latest/):
-
-| Platform | Download |
-|----------|----------|
-| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
-| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
-| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
-| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
-| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
-
-## Platform-Specific Instructions
-
-### Windows
-
-1. Download `MFTPlus-x.x.x-x64_64.msi`
-2. Double-click the installer
-3. Follow the installation wizard
-4. Launch MFTPlus from the Start Menu
-
-**Verify installation:**
-```powershell
-# Check application directory
-dir "C:\Program Files\MFTPlus"
-
-# View version
-fileversioninfo "C:\Program Files\MFTPlus\MFTPlus.exe"
-```
-
-### macOS
-
-1. Download the appropriate DMG for your architecture:
-   - **Intel**: `MFTPlus-x.x.x-x86_64.dmg`
-   - **Apple Silicon**: `MFTPlus-x.x.x-aarch64.dmg`
-
-2. Open the DMG file
-3. Drag MFTPlus to Applications
-4. Launch MFTPlus from Applications
-
-**Verify installation:**
-```bash
-# Check application
-ls /Applications/MFTPlus.app
-
-# View version info
-defaults read /Applications/MFTPlus.app/Contents/Info.plist CFBundleShortVersionString
-```
-
-::: tip Apple Silicon
-To check your Mac architecture:
-```bash
-uname -m
-# x86_64 = Intel
-# arm64 = Apple Silicon
-```
-:::
+## Manual Installation
 
 ### Linux
 
-#### Debian/Ubuntu
-
 ```bash
-# Download and install
-wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
-sudo dpkg -i mftplus_amd64.deb
+# Download
+wget https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz
 
-# Launch
-mftplus
+# Extract
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
+
+# Copy to PATH
+sudo mv mft-agent-cli /usr/local/bin/
+
+# Verify
+mft-agent-cli --version
 ```
 
-#### RHEL/CentOS/Fedora
+### Windows
 
-```bash
-# Download and install
-wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
-sudo rpm -i mftplus-x86_64.rpm
+```powershell
+# Download
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
 
-# Launch
-mftplus
+# Extract
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
+
+# Move to PATH directory
+Move-Item .\mft-agent-cli.exe C:\Windows\System32\
+
+# Verify
+mft-agent-cli --version
 ```
-
-::: tip Missing Dependencies
-If you see dependency errors, install missing packages:
-```bash
-# Debian/Ubuntu
-sudo apt-get install -f
-
-# RHEL/CentOS/Fedora
-sudo yum install missing-package-name
-```
-:::
 
 ## Requirements
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
-| **OS** | Windows 10+, macOS 10.15+, Linux kernel 3.10+ | Latest LTS versions |
+| **OS** | Linux kernel 3.10+, Windows 10+ | Latest LTS versions |
 | **Architecture** | x86_64 (amd64), ARM64 (aarch64) | x86_64 |
-| **Memory** | 100 MB RAM | 200 MB RAM |
-| **Disk** | 50 MB free space | 100 MB free space |
+| **Memory** | 50 MB RAM | 100 MB RAM |
+| **Disk** | 20 MB free space | 50 MB free space |
 | **Network** | HTTPS access to dashboard | Stable internet connection |
+
+Linux CLI available now. Windows CLI supported in v0.6.2+. macOS CLI coming in a future release.
 
 ## Configuration Directory
 
 MFTPlus stores configuration and data in:
 
 - **Linux**: `~/.config/mftplus/`
-- **macOS**: `~/Library/Application Support/mftplus/`
 - **Windows**: `%APPDATA%\mftplus\`
 
 **Directory contents:**
@@ -145,7 +80,7 @@ MFTPlus stores configuration and data in:
 
 ## Server URL Configuration
 
-On first launch, MFTPlus prompts for your dashboard server URL.
+On first launch, the agent prompts for your dashboard server URL.
 
 **For local development:**
 ```
@@ -167,64 +102,45 @@ server:
 
 ## Upgrading
 
-Download and run the latest installer. The new version will replace the existing one while preserving your configuration and transfer history.
-
-::: warning Configuration Compatibility
-Major version updates may require configuration changes. Review the release notes before upgrading.
-:::
+Download the latest tar.gz binary and replace the existing binary in your PATH. Configuration and transfer history are preserved.
 
 ## Uninstalling
 
-### Windows
-
-1. Open **Settings** → **Apps**
-2. Find **MFTPlus**
-3. Click **Uninstall**
-4. Optionally remove `%APPDATA%\mftplus` to delete configuration
-
-### macOS
+Remove the binary and optionally the configuration directory:
 
 ```bash
-# Remove application
-rm -rf /Applications/MFTPlus.app
+# Remove binary
+sudo rm /usr/local/bin/mft-agent-cli
 
-# Optionally remove configuration
-rm -rf ~/Library/Application Support/mftplus
+# Remove configuration (optional)
+rm -rf ~/.config/mftplus
 ```
 
-### Linux
+**Windows:**
+```powershell
+# Remove binary
+Remove-Item C:\Windows\System32\mft-agent-cli.exe
 
-```bash
-# Debian/Ubuntu
-sudo apt-get remove mftplus
-
-# RHEL/CentOS/Fedora
-sudo yum remove mftplus
-
-# Optionally remove configuration
-rm -rf ~/.config/mftplus
+# Remove configuration (optional)
+Remove-Item $env:APPDATA\mftplus -Recurse
 ```
 
 ## Troubleshooting
 
-### Application Won't Launch
+### Binary Won't Run
 
 **Linux:**
 ```bash
 # Check for missing libraries
-ldd /usr/bin/mftplus
+ldd /usr/local/bin/mft-agent-cli
 
 # View detailed logs
-mftplus --verbose
+mft-agent-cli --verbose
 ```
 
 **Windows:**
-- Check Event Viewer for application errors
-- Run as administrator if permission errors occur
-
-**macOS:**
-- Verify Gatekeeper allows the app: `xattr -d com.apple.quarantine /Applications/MFTPlus.app`
-- Check Console.app for crash logs
+- Check Windows Defender or antivirus logs
+- Run PowerShell as administrator if permission errors occur
 
 ### Permission Errors
 
@@ -246,8 +162,6 @@ sudo ufw status  # Linux
 netsh advfirewall show allprofiles  # Windows
 ```
 
-**Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to installation and configuration issues.
-
 ## Data Directories
 
 | Directory | Purpose |
@@ -260,12 +174,9 @@ netsh advfirewall show allprofiles  # Windows
 
 ## Next Steps
 
-- [Quick Start](./quick-start) — Transfer your first file in 5 minutes
-- [Production Deployment](./deployment) — Deploy MFTPlus with Docker in production
-- [CLI Reference](../api/cli) — Complete `mftctl` command reference
-- [Architecture](./architecture) — Learn how MFTPlus works
-- [Configuration](../api/config) — Advanced configuration options for production
-- [Security & Authentication](./security) — Secure your deployment
+- [Quick Start](./quick-start) - Create your first transfer
+- [Architecture](./architecture) - Learn how MFTPlus works
+- [Configuration](../api/config) - Configuration options
 
 ## Need Help?
 

@@ -9,69 +9,101 @@ Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Prerequisites
 
-- **OS**: Windows 10+, macOS 10.15+, or Linux
+- **OS**: Windows 10+ or Linux
 - **Access**: SFTP/FTP credentials or local directory path
 
 ---
 
-## Option A: One-Line Install (macOS/Linux)
+## Step 1: Download and Install
 
-```bash
-curl -fsSL https://docs.mftplus.co.za/install.sh | sh
-```
-
-This installs `mftctl` — the MFTPlus command-line interface.
-
----
-
-## Option B: Desktop Installer
-
-Download and run the installer for your platform:
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
 | Platform | Download |
 |----------|----------|
-| Windows | [MFTPlus-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
-| macOS (Intel) | [MFTPlus-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
-| macOS (Apple Silicon) | [MFTPlus-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
-| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
-| Linux (RHEL/CentOS) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
+| Linux (x86_64) | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux (aarch64) | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows (x86_64) | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
 
-Launch MFTPlus from your applications menu.
+**Manual install (Linux):**
+```bash
+# Download and extract
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
+
+# Move to PATH
+sudo mv mft-agent-cli /usr/local/bin/
+
+# Verify
+mft-agent-cli --version
+```
+
+**Manual install (Windows PowerShell):**
+```powershell
+# Download
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
+
+# Extract
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
+
+# Move to PATH
+Move-Item .\mft-agent-cli.exe C:\Windows\System32\
+
+# Verify
+mft-agent-cli --version
+```
+
+For detailed installation options, see the [Installation guide](./installation).
 
 ---
 
-## Step 1: Configure Server URL
+## Step 2: Configure Server URL
 
-**First launch?** Enter your dashboard server URL when prompted.
+Set your dashboard server URL:
 
-| Deployment | Server URL |
-|------------|------------|
-| Local development | `http://localhost:8080` |
-| Cloud | Your cloud dashboard URL |
-| Self-hosted | Your company's dashboard URL |
+```bash
+mft-agent-cli config set server.url http://localhost:8080
+```
 
-**Desktop app:** This is saved automatically.
-**CLI:** Run `mftctl config init` and set with `mftctl config set server.url <url>`
+For cloud deployments:
+```bash
+mft-agent-cli config set server.url https://dashboard.yourcompany.com
+```
+
+Configuration is stored at:
+- **Linux**: `~/.config/mftplus/config.yaml`
+- **Windows**: `%APPDATA%\mftplus\config.yaml`
 
 ---
 
-## Step 2: Register Your Agent
+## Step 3: Register Your Agent
 
-1. Click **Register** in the MFTPlus interface
-2. Enter your registration credentials
-3. Verify your agent appears in the dashboard under **Agents**
+```bash
+mft-agent-cli register --deploy-key your-deploy-key
+```
 
-::: info Registration Credentials
-New users receive registration credentials via email after signing up at [mftplus.co.za](https://mftplus.co.za). Contact your account owner if you don't have credentials.
+Your agent will appear in the dashboard with a unique agent ID.
+
+::: tip Finding Your Agent ID
+Run `mft-agent-cli status` to see your agent ID and connection status.
 :::
 
-::: tip
-Your agent ID is shown in the app header and dashboard agents list.
-:::
+---
+
+## Step 4: Verify Registration
+
+Check your agent status:
+
+```bash
+mft-agent-cli status
+```
+
+Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
+- Agent hostname
+- Online status
+- Last heartbeat timestamp
 
 ---
 
-## Step 3: Create Your First Transfer Job
+## Step 5: Create Your First Transfer Job
 
 In the dashboard:
 
@@ -87,7 +119,7 @@ In the dashboard:
 
 ---
 
-## Step 4: Run It Now
+## Step 6: Run It Now
 
 Want to test immediately? Click **Run Now** on your job.
 
@@ -101,7 +133,7 @@ Check the transfer log locally:
 
 | Platform | Transfer Log |
 |----------|--------------|
-| Linux/macOS | `~/.config/mftplus/transfers.db` |
+| Linux | `~/.config/mftplus/transfers.db` |
 | Windows | `%APPDATA%\mftplus\transfers.db` |
 
 Or view in the dashboard under **Jobs** → **History**.
@@ -125,6 +157,7 @@ Or view in the dashboard under **Jobs** → **History**.
 - Check server URL in config
 - Verify network connectivity to dashboard
 - Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
+- Run `mft-agent-cli status` to check connection
 
 **Connection refused?**
 - Verify hostname and port
@@ -149,10 +182,10 @@ MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used 
 ## Next Steps
 
 - [Installation](./installation) — Detailed install options
-- [CLI Reference](../api/cli) — Complete `mftctl` command reference for job management
 - [Configuration](../api/config) — Advanced configuration options
+- [Architecture](./architecture) — Learn how MFTPlus works
 
 ## Need Help?
 
-- 📖 [docs.mftplus.co.za](https://docs.mftplus.co.za)
-- 📧 [support@mftplus.co.za](mailto:support@mftplus.co.za)
+- **Documentation**: [docs.mftplus.co.za](https://docs.mftplus.co.za)
+- **Support**: [support@mftplus.co.za](mailto:support@mftplus.co.za)
