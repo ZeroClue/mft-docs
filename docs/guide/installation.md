@@ -1,6 +1,6 @@
 ---
 title: Installation Guide - MFTPlus Documentation
-description: "Install MFTPlus CLI agent on Linux, Windows, or macOS using tar.gz binaries or one-line install scripts."
+description: "Install MFTPlus CLI agent on Linux or Windows using tar.gz binaries."
 ---
 
 # Installation
@@ -9,33 +9,15 @@ Install the MFTPlus agent CLI on your system.
 
 ## Download Binary
 
-Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.2/):
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
 | Platform | Architecture | Download |
 |----------|-------------|----------|
-| Linux | x86_64 | [mft-agent-cli_0.6.2_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz) |
-| Linux | aarch64 | [mft-agent-cli_0.6.2_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_aarch64.tar.gz) |
-| Windows | x86_64 | [mft-agent-cli_0.6.2_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip) |
-| macOS (Intel) | x86_64 | [mft-agent-cli_0.6.2_darwin_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz) |
-| macOS (Apple Silicon) | aarch64 | [mft-agent-cli_0.6.2_darwin_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_aarch64.tar.gz) |
+| Linux | x86_64 | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux | aarch64 | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows | x86_64 | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
 
-macOS CLI binary support added in v0.6.2. Windows CLI binary support added in v0.6.2.
-
-## One-Line Install
-
-If you have `curl` or `wget` available:
-
-```bash
-curl -fsSL https://releases.mftplus.co.za/install.sh | sh
-```
-
-**Windows (PowerShell):**
-
-```powershell
-iex ((New-Object System.Net.WebClient).DownloadString('https://releases.mftplus.co.za/install.ps1'))
-```
-
-These scripts download the correct binary for your platform and place it in a system PATH directory.
+Windows CLI binary support added in v0.6.2. macOS CLI support coming in a future release.
 
 ## Manual Installation
 
@@ -43,10 +25,10 @@ These scripts download the correct binary for your platform and place it in a sy
 
 ```bash
 # Download
-wget https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz
+wget https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz
 
 # Extract
-tar xzf mft-agent-cli_0.6.2_linux_amd64.tar.gz
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
 
 # Copy to PATH
 sudo mv mft-agent-cli /usr/local/bin/
@@ -54,42 +36,15 @@ sudo mv mft-agent-cli /usr/local/bin/
 # Verify
 mft-agent-cli --version
 ```
-
-### macOS
-
-```bash
-# Download
-curl -OL https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz
-
-# Extract
-tar xzf mft-agent-cli_0.6.2_darwin_amd64.tar.gz
-
-# Copy to PATH
-sudo mv mft-agent-cli /usr/local/bin/
-
-# Verify
-mft-agent-cli --version
-```
-
-::: tip Apple Silicon
-If you are on Apple Silicon (M1/M2/M3), use the `darwin_aarch64` variant instead of `darwin_amd64`.
-
-Check your architecture:
-```bash
-uname -m
-# x86_64 = Intel
-# arm64 = Apple Silicon
-```
-:::
 
 ### Windows
 
 ```powershell
 # Download
-Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip -OutFile mft-agent-cli_0.6.2_windows_amd64.zip
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
 
 # Extract
-Expand-Archive .\mft-agent-cli_0.6.2_windows_amd64.zip -DestinationPath .
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
 
 # Move to PATH directory
 Move-Item .\mft-agent-cli.exe C:\Windows\System32\
@@ -102,20 +57,19 @@ mft-agent-cli --version
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
-| **OS** | Linux kernel 3.10+, Windows 10+, macOS 10.15+ | Latest LTS versions |
+| **OS** | Linux kernel 3.10+, Windows 10+ | Latest LTS versions |
 | **Architecture** | x86_64 (amd64), ARM64 (aarch64) | x86_64 |
 | **Memory** | 50 MB RAM | 100 MB RAM |
 | **Disk** | 20 MB free space | 50 MB free space |
 | **Network** | HTTPS access to dashboard | Stable internet connection |
 
-Linux CLI available now. Windows CLI and macOS CLI supported in v0.6.2+.
+Linux CLI available now. Windows CLI supported in v0.6.2+. macOS CLI coming in a future release.
 
 ## Configuration Directory
 
 MFTPlus stores configuration and data in:
 
 - **Linux**: `~/.config/mftplus/`
-- **macOS**: `~/Library/Application Support/mftplus/`
 - **Windows**: `%APPDATA%\mftplus\`
 
 **Directory contents:**
@@ -182,12 +136,6 @@ ldd /usr/local/bin/mft-agent-cli
 
 # View detailed logs
 mft-agent-cli --verbose
-```
-
-**macOS:**
-```bash
-# Verify Gatekeeper allows the binary
-xattr -d com.apple.quarantine /usr/local/bin/mft-agent-cli
 ```
 
 **Windows:**

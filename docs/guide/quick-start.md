@@ -9,38 +9,25 @@ Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Prerequisites
 
-- **OS**: Windows 10+, macOS 10.15+, or Linux
+- **OS**: Windows 10+ or Linux
 - **Access**: SFTP/FTP credentials or local directory path
 
 ---
 
 ## Step 1: Download and Install
 
-Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.2/):
+Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
 
 | Platform | Download |
 |----------|----------|
-| Linux (x86_64) | [mft-agent-cli_0.6.2_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_amd64.tar.gz) |
-| Linux (aarch64) | [mft-agent-cli_0.6.2_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_linux_aarch64.tar.gz) |
-| Windows (x86_64) | [mft-agent-cli_0.6.2_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip) |
-| macOS (Intel) | [mft-agent-cli_0.6.2_darwin_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_amd64.tar.gz) |
-| macOS (Apple Silicon) | [mft-agent-cli_0.6.2_darwin_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_darwin_aarch64.tar.gz) |
+| Linux (x86_64) | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
+| Linux (aarch64) | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
+| Windows (x86_64) | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
 
-**One-line install (Linux/macOS):**
-```bash
-curl -fsSL https://releases.mftplus.co.za/install.sh | sh
-```
-
-**One-line install (Windows PowerShell):**
-```powershell
-iex ((New-Object System.Net.WebClient).DownloadString('https://releases.mftplus.co.za/install.ps1'))
-```
-
-**Manual install (Linux/macOS):**
+**Manual install (Linux):**
 ```bash
 # Download and extract
-tar xzf mft-agent-cli_0.6.2_linux_amd64.tar.gz   # Linux
-tar xzf mft-agent-cli_0.6.2_darwin_amd64.tar.gz   # macOS
+tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
 
 # Move to PATH
 sudo mv mft-agent-cli /usr/local/bin/
@@ -52,10 +39,10 @@ mft-agent-cli --version
 **Manual install (Windows PowerShell):**
 ```powershell
 # Download
-Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.2/mft-agent-cli_0.6.2_windows_amd64.zip -OutFile mft-agent-cli_0.6.2_windows_amd64.zip
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
 
 # Extract
-Expand-Archive .\mft-agent-cli_0.6.2_windows_amd64.zip -DestinationPath .
+Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
 
 # Move to PATH
 Move-Item .\mft-agent-cli.exe C:\Windows\System32\
@@ -82,7 +69,7 @@ mft-agent-cli config set server.url https://dashboard.yourcompany.com
 ```
 
 Configuration is stored at:
-- **Linux/macOS**: `~/.config/mftplus/config.yaml`
+- **Linux**: `~/.config/mftplus/config.yaml`
 - **Windows**: `%APPDATA%\mftplus\config.yaml`
 
 ---
@@ -146,7 +133,7 @@ Check the transfer log locally:
 
 | Platform | Transfer Log |
 |----------|--------------|
-| Linux/macOS | `~/.config/mftplus/transfers.db` |
+| Linux | `~/.config/mftplus/transfers.db` |
 | Windows | `%APPDATA%\mftplus\transfers.db` |
 
 Or view in the dashboard under **Jobs** → **History**.

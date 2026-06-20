@@ -156,4 +156,3 @@ For detailed security and authentication setup, see [Security & Authentication](
 - [Transfer Protocol](./protocol) - Deep dive into the protocol
 - [Security & Authentication](./security) - Configure auth, encryption, and access control
 - [API Reference](../api/) - Explore the API
-- [Plugin System](../plugins/) - Extend MFTPlus with custom plugins
