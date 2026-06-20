@@ -7,14 +7,14 @@ description: "Configure MFTPlus agent behavior: server URLs, credentials, retry 
 
 MFTPlus configuration options for `mftctl` CLI.
 
-## Config File Location
+## mftctl CLI Configuration
 
-Default configuration file location:
+### Config File Location
 
 - **Linux/macOS**: `~/.mftctl/config.json`
 - **Windows**: `%USERPROFILE%\.mftctl\config.json`
 
-## Configuration Structure
+### Config File Format
 
 ```json
 {
@@ -45,9 +45,15 @@ mftctl config get server-url
 mftctl config export
 ```
 
-## Environment Variables
+### Configuration Keys
 
-Environment variables override config file settings:
+| Key | Description | Default |
+|-----|-------------|---------|
+| `server_url` | MFTPlus dashboard server URL | `http://localhost:3001` |
+| `api_key` | Admin API key for authentication | (empty) |
+| `jwt_token` | JWT token for session-based auth | (empty) |
+
+### Configuration via CLI
 
 ```bash
 # Server
@@ -55,14 +61,11 @@ MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
 MFTPLUS_API_KEY=pc-api-xxxxxxxxxxxxxxxx
 ```
 
-## Configuration Priority
+## MFTPlus Agent Configuration
 
-Settings are applied in this order (higher priority overrides lower):
+The agent runtime uses a separate configuration file in TOML format.
 
-1. Command-line flags
-2. Environment variables
-3. Config file
-4. Default values
+### Config File Location
 
 ## Next Steps
 
