@@ -1,143 +1,86 @@
 # Configuration
 
-MFTPlus configuration options and environment variables.
+MFTPlus consists of two components with separate configuration files.
 
-## Config File Location
+## mftctl CLI Configuration
 
-Default configuration file location:
+### Config File Location
 
-- **Linux/macOS**: `~/.config/mftplus/config.yaml`
-- **Windows**: `%APPDATA%\mftplus\config.yaml`
+- **Linux/macOS**: `~/.mftctl/config.json`
+- **Windows**: `%USERPROFILE%\.mftctl\config.json`
 
-## Configuration Structure
+### Config File Format
 
-```yaml
-# Dashboard server configuration
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 30s
+The configuration file is in JSON format:
 
-# Transfer settings
-transfer:
-  timeout: 5m
-  chunk_size: 10MB
-  retry_count: 3
-  compress: false
-  protocol: auto
-
-# Connection settings
-connection:
-  mode: auto
-  parallel: 2
-  keepalive: 30s
-
-# Certificate settings
-certificates:
-  ca_url: https://ca.example.com
-  auto_renew: true
-  validity: 8760h
-
-# Logging
-logging:
-  level: info
-  format: text
-  file: /var/log/mftplus/mftplus.log
-
-# Plugins
-plugins:
-  enabled:
-    - s3-storage
-    - auth-oidc
-  directory: /usr/local/lib/mftplus/plugins
+```json
+{
+  "server_url": "http://localhost:3001",
+  "api_key": "",
+  "jwt_token": ""
+}
 ```
 
-## Environment Variables
+### Configuration Keys
 
-Environment variables override config file settings:
+| Key | Description | Default |
+|-----|-------------|---------|
+| `server_url` | MFTPlus dashboard server URL | `http://localhost:3001` |
+| `api_key` | Admin API key for authentication | (empty) |
+| `jwt_token` | JWT token for session-based auth | (empty) |
+
+### Configuration via CLI
 
 ```bash
-# Server
-MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
-MFTPLUS_SERVER_TIMEOUT=30s
+# Initialize config file
+mftctl config init
 
-# Transfer
-MFTPLUS_TRANSFER_TIMEOUT=5m
-MFTPLUS_CHUNK_SIZE=10MB
-MFTPLUS_RETRY_COUNT=3
-MFTPLUS_COMPRESS=true
+# Set server URL
+mftctl config set server-url https://dashboard.mftplus.co.za
 
-# Connection
-MFTPLUS_CONNECTION_MODE=direct
-MFTPLUS_PARALLEL=4
+# Set API key
+mftctl config set api-key pc-api-xxxxxxxxxxxxxxxx
 
-# Certificates
-MFTPLUS_CA_URL=https://ca.example.com
-MFTPLUS_AUTO_RENEW=true
+# View current configuration
+mftctl config list
 
-# Logging
-MFTPLUS_LOG_LEVEL=debug
-MFTPLUS_LOG_FILE=/var/log/mftplus/mftplus.log
+# Get a specific value
+mftctl config get server-url
+
+# Unset a value
+mftctl config unset api-key
+
+# Export configuration as JSON
+mftctl config export
 ```
 
-## Configuration Priority
+## MFTPlus Agent Configuration
 
-Settings are applied in this order (higher priority overrides lower):
+The agent runtime uses a separate configuration file in TOML format.
 
-1. Command-line flags
-2. Environment variables
-3. Config file
-4. Default values
+### Config File Location
 
-## Common Configurations
+- **Linux/macOS**: `~/.config/mft-agent/config.toml`
+- **Windows**: `%APPDATA%\mft-agent\config.toml`
 
-### Development Environment
+### Config File Format
 
-```yaml
-server:
-  url: http://localhost:8080
-
-transfer:
-  timeout: 30s
-  retry_count: 1
-
-logging:
-  level: debug
+```toml
+dashboard_url = "https://dashboard.mftplus.co.za"
+api_key = "pc-api-xxxxxxxxxxxxxxxx"
+agent_name = "production-server-01"
+tags = ["production", "eu-west"]
+enable_telemetry = true
 ```
 
-### Production Environment
+### Configuration via Agent CLI
 
-```yaml
-server:
-  url: https://dashboard.mftplus.co.za
-  timeout: 60s
-
-transfer:
-  timeout: 10m
-  retry_count: 5
-  compress: true
-
-certificates:
-  auto_renew: true
-
-logging:
-  level: info
-  file: /var/log/mftplus/mftplus.log
-```
-
-### High-Latency Network
-
-```yaml
-transfer:
-  timeout: 30m
-  chunk_size: 5MB
-  retry_count: 10
-
-connection:
-  parallel: 4
-  keepalive: 60s
+```bash
+mft-agent-cli configure --dashboard-url https://dashboard.mftplus.co.za --api-key pc-api-xxxxxxxxxxxxxxxx
 ```
 
 ## Next Steps
 
-- [CLI Commands](./cli) - CLI reference
-- [Plugin API](../plugins/api) - Plugin development
+- [CLI Commands](./cli) — CLI reference
+- [Install mftctl](../guide/install-mftctl) — Install the CLI tool
+- [Install Agent](../guide/install-agent) — Install the agent runtime
