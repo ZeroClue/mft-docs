@@ -52,9 +52,6 @@ List all registered agents.
 
 ```bash
 mftctl agents list [options]
-
-Options:
-  -j, --json  Output as JSON
 ```
 
 ### agents show
@@ -63,9 +60,6 @@ Show detailed agent information.
 
 ```bash
 mftctl agents show <agent-id> [options]
-
-Options:
-  -j, --json  Output as JSON
 
 Examples:
   mftctl agents show ag-2x8mK9nR
@@ -78,9 +72,6 @@ List transfers for a specific agent.
 ```bash
 mftctl agents transfers <agent-id> [options]
 
-Options:
-  -j, --json  Output as JSON
-
 Examples:
   mftctl agents transfers ag-2x8mK9nR
 ```
@@ -91,9 +82,6 @@ List jobs for a specific agent.
 
 ```bash
 mftctl agents jobs <agent-id> [options]
-
-Options:
-  -j, --json  Output as JSON
 
 Examples:
   mftctl agents jobs ag-2x8mK9nR
@@ -133,7 +121,6 @@ Options:
   --agent <id>       Filter by agent
   --page <n>         Page number
   --limit <n>        Results per page
-  -j, --json         Output as JSON
 ```
 
 ### transfers show / status
@@ -143,9 +130,6 @@ Show transfer details.
 ```bash
 mftctl transfers show <transfer-id> [options]
 mftctl transfers status <transfer-id> [options]
-
-Options:
-  -j, --json  Output as JSON
 
 Examples:
   mftctl transfers show tr-abc123
@@ -165,7 +149,8 @@ Options:
   --dest <path>            Destination path
   --protocol <protocol>    Transfer protocol (sftp, ftp, ftps, local)
   --retention <duration>   Retention period
-  --compress               Enable compression
+  --compress <algo>        Compression algorithm (gzip, zstd, none)
+  --compress-level <n>     Compression level (algorithm-specific)
   --encryption <algo>      Encryption algorithm (aes256, chacha20)
   --pre-hook <cmd>         Pre-transfer hook command
   --post-hook <cmd>        Post-transfer hook command
@@ -234,7 +219,7 @@ List all configured triggers.
 mftctl trigger list [options]
 
 Options:
-  -j, --json  Output in JSON format
+  --json  Output in JSON format
 
 Persistent Flags:
   -k, --api-key <key>  API key (overrides logged-in config)
