@@ -212,3 +212,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Nav title span overflow prevention */
+.VPNavBar .title .VPNavBarTitle .title > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
