@@ -205,3 +205,10 @@
   border-color: var(--vp-button-brand-active-bg);
   color: var(--vp-button-brand-active-text);
 }
+
+/* Sidebar link text overflow prevention */
+.VPSidebarItem .link .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
