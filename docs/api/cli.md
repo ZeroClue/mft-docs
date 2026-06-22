@@ -222,6 +222,86 @@ Examples:
   cat data.csv | mftctl send --agent ag-2x8mK9nR --to sftp://partner.example.com/incoming --stdin
 ```
 
+## Trigger Management
+
+Manage file watch triggers for event-driven automated transfers.
+
+### trigger list
+
+List all configured triggers.
+
+```bash
+mftctl trigger list [options]
+
+Options:
+  -j, --json  Output in JSON format
+
+Persistent Flags:
+  -k, --api-key <key>  API key (overrides logged-in config)
+  --server <url>       Server URL (overrides logged-in config)
+```
+
+### trigger show
+
+Show detailed trigger information and firing history.
+
+```bash
+mftctl trigger show <trigger-id> [options]
+
+Persistent Flags:
+  -k, --api-key <key>  API key (overrides logged-in config)
+  --server <url>       Server URL (overrides logged-in config)
+
+Examples:
+  mftctl trigger show tr-abc123
+```
+
+### trigger create
+
+Create a new file watch trigger.
+
+```bash
+mftctl trigger create [options]
+
+Required Options:
+  --watch <path>     Path to watch
+  --dest <path>      Destination path template
+  --agent <id>       Agent ID
+
+Options:
+  --glob <pattern>   Glob pattern for files to match (default: *)
+  --name <name>      Trigger name
+  --protocol <proto> Transfer protocol (local, sftp; default: local)
+  --recursive        Watch subdirectories recursively
+
+Persistent Flags:
+  -k, --api-key <key>  API key (overrides logged-in config)
+  --server <url>       Server URL (overrides logged-in config)
+
+Examples:
+  mftctl trigger create \
+    --watch /data/incoming \
+    --glob "*.csv" \
+    --dest "sftp://partner.inbox.com/{{filename}}" \
+    --agent ag-2x8mK9nR \
+    --name csv-ingest
+```
+
+### trigger delete
+
+Delete a trigger.
+
+```bash
+mftctl trigger delete <trigger-id>
+
+Persistent Flags:
+  -k, --api-key <key>  API key (overrides logged-in config)
+  --server <url>       Server URL (overrides logged-in config)
+
+Examples:
+  mftctl trigger delete tr-abc123
+```
+
 ## Job Management
 
 ### jobs list

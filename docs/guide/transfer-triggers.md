@@ -244,7 +244,10 @@ If large files are transferred before completion:
 
 3. **Review trigger execution logs**
    ```bash
-   mftctl trigger history incoming-csv-triggers --last 10
+    # List triggers to find the trigger ID
+    mftctl trigger list
+    # Show detailed info and firing history
+    mftctl trigger show <trigger-id>
    ```
 
 ### Permission Denied
