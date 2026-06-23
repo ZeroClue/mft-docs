@@ -16,6 +16,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/' },
+      { text: 'Admin', link: '/guide/hub-admin' },
       { text: 'API Reference', link: '/api/' },
       { text: 'Plugins', link: '/plugins/' }
     ],
@@ -23,13 +24,19 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
-          text: 'Documentation',
+          text: '📘 User Guide',
           items: [
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Architecture', link: '/guide/architecture' },
             { text: 'Transfer Protocol', link: '/guide/protocol' }
+          ]
+        },
+        {
+          text: '🔧 Admin Guide',
+          items: [
+            { text: 'Hub Administration', link: '/guide/hub-admin' }
           ]
         },
         {
@@ -60,5 +67,9 @@ export default defineConfig({
 
   markdown: {
     lineNumbers: true
-  }
+  },
+
+  ignoreDeadLinks: [
+    /\/pricing$/
+  ]
 })
