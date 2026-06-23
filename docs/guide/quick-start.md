@@ -1,6 +1,6 @@
 # Quick Start
 
-Get up and running with MFTPlus in under 5 minutes. This guide will walk you through downloading the agent, configuring your first scheduled transfer, and verifying it works.
+Get up and running with MFT Agent in under 5 minutes. This guide will walk you through downloading the agent, configuring your first scheduled transfer, and verifying it works.
 
 ## Prerequisites
 
@@ -14,17 +14,17 @@ Download the installer for your platform:
 
 | Platform | Download |
 |----------|----------|
-| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
-| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
-| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
-| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
-| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
+| Windows | [MFT.Agent-x64_64.msi](https://releases.mftplus.co.za/latest/MFT.Agent-x64_64.msi) |
+| macOS (Intel) | [MFT.Agent-x86_64.dmg](https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.dmg) |
+| macOS (Apple Silicon) | [MFT.Agent-aarch64.dmg](https://releases.mftplus.co.za/latest/MFT.Agent-aarch64.dmg) |
+| Linux (Debian/Ubuntu) | [MFT.Agent_amd64.deb](https://releases.mftplus.co.za/latest/MFT.Agent_amd64.deb) |
+| Linux (RHEL/CentOS/Fedora) | [MFT.Agent-x86_64.rpm](https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.rpm) |
 
-Run the installer and launch MFTPlus from your applications menu.
+Run the installer and launch MFT Agent from your applications menu.
 
 ## Step 2: Configure Server URL
 
-On first launch, MFTPlus will prompt for your dashboard server URL.
+On first launch, MFT Agent will prompt for your dashboard server URL.
 
 **For self-hosted deployments**, enter your server URL (e.g., `http://localhost:8080` or your company's dashboard URL).
 
@@ -38,12 +38,12 @@ This setting is stored in:
 
 Register your agent with the dashboard:
 
-1. Click **Register** in the MFTPlus interface
+1. Click **Register** in the MFT Agent interface
 2. Enter your registration credentials
 3. Your agent will appear in the dashboard with a unique ID
 
 ::: tip Finding Your Agent ID
-Your agent ID is displayed in the MFTPlus application header and in the dashboard agents list.
+Your agent ID is displayed in the MFT Agent application header and in the dashboard agents list.
 :::
 
 ## Step 4: Verify Registration
@@ -106,7 +106,7 @@ View all transfer history:
 
 ## Supported Protocols
 
-MFTPlus supports the following transfer protocols:
+MFT Agent supports the following transfer protocols:
 
 | Protocol | Description |
 |----------|-------------|
@@ -148,7 +148,7 @@ MFTPlus supports the following transfer protocols:
 
 ## Security
 
-MFTPlus encrypts all sensitive data:
+MFT Agent encrypts all sensitive data:
 
 - **Encryption**: AES-256-GCM for all file transfers
 - **Credentials**: Stored in protected files with restrictive permissions (600)

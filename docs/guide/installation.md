@@ -1,6 +1,6 @@
 # Installation
 
-Install the MFTPlus desktop agent on your system.
+Install the MFT Agent desktop application on your system.
 
 ## Download Installers
 
@@ -8,47 +8,47 @@ Download the latest installer for your platform from [releases.mftplus.co.za](ht
 
 | Platform | Download |
 |----------|----------|
-| Windows | [MFTPlus-x.x.x-x64_64.msi](https://releases.mftplus.co.za/latest/mftplus-x64_64.msi) |
-| macOS (Intel) | [MFTPlus-x.x.x-x86_64.dmg](https://releases.mftplus.co.za/latest/mftplus-x86_64.dmg) |
-| macOS (Apple Silicon) | [MFTPlus-x.x.x-aarch64.dmg](https://releases.mftplus.co.za/latest/mftplus-aarch64.dmg) |
-| Linux (Debian/Ubuntu) | [mftplus_amd64.deb](https://releases.mftplus.co.za/latest/mftplus_amd64.deb) |
-| Linux (RHEL/CentOS/Fedora) | [mftplus-x86_64.rpm](https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm) |
+| Windows | [MFT.Agent-x64_64.msi](https://releases.mftplus.co.za/latest/MFT.Agent-x64_64.msi) |
+| macOS (Intel) | [MFT.Agent-x86_64.dmg](https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.dmg) |
+| macOS (Apple Silicon) | [MFT.Agent-aarch64.dmg](https://releases.mftplus.co.za/latest/MFT.Agent-aarch64.dmg) |
+| Linux (Debian/Ubuntu) | [MFT.Agent_amd64.deb](https://releases.mftplus.co.za/latest/MFT.Agent_amd64.deb) |
+| Linux (RHEL/CentOS/Fedora) | [MFT.Agent-x86_64.rpm](https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.rpm) |
 
 ## Platform-Specific Instructions
 
 ### Windows
 
-1. Download `MFTPlus-x.x.x-x64_64.msi`
+1. Download `MFT.Agent-x64_64.msi`
 2. Double-click the installer
 3. Follow the installation wizard
-4. Launch MFTPlus from the Start Menu
+4. Launch MFT Agent from the Start Menu
 
 **Verify installation:**
 ```powershell
 # Check application directory
-dir "C:\Program Files\MFTPlus"
+dir "C:\Program Files\MFT Agent"
 
 # View version
-fileversioninfo "C:\Program Files\MFTPlus\MFTPlus.exe"
+fileversioninfo "C:\Program Files\MFT Agent\MFT Agent.exe"
 ```
 
 ### macOS
 
 1. Download the appropriate DMG for your architecture:
-   - **Intel**: `MFTPlus-x.x.x-x86_64.dmg`
-   - **Apple Silicon**: `MFTPlus-x.x.x-aarch64.dmg`
+   - **Intel**: `MFT.Agent-x86_64.dmg`
+   - **Apple Silicon**: `MFT.Agent-aarch64.dmg`
 
 2. Open the DMG file
-3. Drag MFTPlus to Applications
-4. Launch MFTPlus from Applications
+3. Drag MFT Agent to Applications
+4. Launch MFT Agent from Applications
 
 **Verify installation:**
 ```bash
 # Check application
-ls /Applications/MFTPlus.app
+ls /Applications/MFT\ Agent.app
 
 # View version info
-defaults read /Applications/MFTPlus.app/Contents/Info.plist CFBundleShortVersionString
+defaults read /Applications/MFT\ Agent.app/Contents/Info.plist CFBundleShortVersionString
 ```
 
 ::: tip Apple Silicon
@@ -66,22 +66,22 @@ uname -m
 
 ```bash
 # Download and install
-wget https://releases.mftplus.co.za/latest/mftplus_amd64.deb
-sudo dpkg -i mftplus_amd64.deb
+wget https://releases.mftplus.co.za/latest/MFT.Agent_amd64.deb
+sudo dpkg -i MFT.Agent_amd64.deb
 
 # Launch
-mftplus
+mft-agent
 ```
 
 #### RHEL/CentOS/Fedora
 
 ```bash
 # Download and install
-wget https://releases.mftplus.co.za/latest/mftplus-x86_64.rpm
-sudo rpm -i mftplus-x86_64.rpm
+wget https://releases.mftplus.co.za/latest/MFT.Agent-x86_64.rpm
+sudo rpm -i MFT.Agent-x86_64.rpm
 
 # Launch
-mftplus
+mft-agent
 ```
 
 ::: tip Missing Dependencies
@@ -107,7 +107,7 @@ sudo yum install missing-package-name
 
 ## Configuration Directory
 
-MFTPlus stores configuration and data in:
+MFT Agent stores configuration and data in:
 
 - **Linux**: `~/.config/mft-agent/`
 - **macOS**: `~/Library/Application Support/mft-agent/`
@@ -121,7 +121,7 @@ MFTPlus stores configuration and data in:
 
 ## Server URL Configuration
 
-On first launch, MFTPlus prompts for your dashboard server URL.
+On first launch, MFT Agent prompts for your dashboard server URL.
 
 **For local development:**
 ```
@@ -154,7 +154,7 @@ Major version updates may require configuration changes. Review the release note
 ### Windows
 
 1. Open **Settings** → **Apps**
-2. Find **MFTPlus**
+2. Find **MFT Agent**
 3. Click **Uninstall**
 4. Optionally remove `%APPDATA%\mft-agent` to delete configuration
 
@@ -162,7 +162,7 @@ Major version updates may require configuration changes. Review the release note
 
 ```bash
 # Remove application
-rm -rf /Applications/MFTPlus.app
+rm -rf /Applications/MFT\ Agent.app
 
 # Optionally remove configuration
 rm -rf ~/Library/Application Support/mft-agent
@@ -172,10 +172,10 @@ rm -rf ~/Library/Application Support/mft-agent
 
 ```bash
 # Debian/Ubuntu
-sudo apt-get remove mftplus
+sudo apt-get remove mft-agent
 
 # RHEL/CentOS/Fedora
-sudo yum remove mftplus
+sudo yum remove mft-agent
 
 # Optionally remove configuration
 rm -rf ~/.config/mft-agent
@@ -188,10 +188,10 @@ rm -rf ~/.config/mft-agent
 **Linux:**
 ```bash
 # Check for missing libraries
-ldd /usr/bin/mftplus
+ldd /usr/bin/mft-agent
 
 # View detailed logs
-mftplus --verbose
+mft-agent --verbose
 ```
 
 **Windows:**
@@ -199,7 +199,7 @@ mftplus --verbose
 - Run as administrator if permission errors occur
 
 **macOS:**
-- Verify Gatekeeper allows the app: `xattr -d com.apple.quarantine /Applications/MFTPlus.app`
+- Verify Gatekeeper allows the app: `xattr -d com.apple.quarantine /Applications/MFT\ Agent.app`
 - Check Console.app for crash logs
 
 ### Permission Errors
