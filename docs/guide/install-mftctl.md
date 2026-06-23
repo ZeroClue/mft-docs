@@ -1,6 +1,6 @@
 # Install mftctl
 
-Install `mftctl` — the MFTPlus command-line tool for managing agents, transfers, jobs, and audit.
+Install `mftctl` — the MFTPlus command-line tool for managing agents, transfers, jobs, and plugins.
 
 ## Quick Install (Linux & macOS)
 
