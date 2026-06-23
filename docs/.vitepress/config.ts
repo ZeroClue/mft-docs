@@ -31,6 +31,7 @@ export default defineConfig({
     appearance: 'dark',
     nav: [
       { text: 'Guide', link: '/guide/' },
+      { text: 'Admin', link: '/guide/hub-admin' },
       { text: 'API Reference', link: '/api/openapi-reference' },
       { text: 'Plugins', link: '/plugins/' }
     ],
@@ -38,7 +39,7 @@ export default defineConfig({
     sidebar: {
       '/': [
         {
-          text: 'Documentation',
+          text: '📘 User Guide',
           items: [
             { text: 'Introduction', link: '/guide/introduction' },
             { text: 'Installation', link: '/guide/installation' },
@@ -47,8 +48,6 @@ export default defineConfig({
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Backup and Recovery', link: '/guide/backup-and-recovery' },
             { text: 'Architecture', link: '/guide/architecture' },
-            { text: 'Hub Deployment', link: '/guide/hub-deployment' },
-            { text: 'Hub Admin Guide', link: '/guide/hub-admin' },
             { text: 'Transfer Protocol', link: '/guide/protocol' },
             { text: 'Transfer Triggers', link: '/guide/transfer-triggers' },
             { text: 'HTTP Gateway', link: '/guide/gateway' },
@@ -56,9 +55,16 @@ export default defineConfig({
             { text: 'Webhooks', link: '/guide/webhooks' },
             { text: 'Security & Authentication', link: '/guide/security' },
             { text: 'Two-Factor Authentication (2FA)', link: '/guide/two-factor-authentication' },
-            { text: 'Admin Panel', link: '/guide/admin-panel' },
             { text: 'Network Discovery', link: '/guide/network-discovery' },
             { text: 'Troubleshooting', link: '/guide/troubleshooting' }
+          ]
+        },
+        {
+          text: '🔧 Admin Guide',
+          items: [
+            { text: 'Hub Deployment', link: '/guide/hub-deployment' },
+            { text: 'Hub Administration', link: '/guide/hub-admin' },
+            { text: 'Admin Panel', link: '/guide/admin-panel' }
           ]
         },
         {

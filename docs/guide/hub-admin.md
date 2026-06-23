@@ -1,5 +1,7 @@
 # Hub Admin Guide
 
+> **Admin Only:** This guide covers cloud dashboard administration and hub management for system operators. If you are an end user setting up transfers, see the [User Guide](/guide/).
+
 > **The hub is an optional add-on for licensed tiers (Enterprise).** Most users manage agents directly through the [MFTPlus Cloud Dashboard](https://dashboard.mftplus.co.za) without deploying a hub. See [pricing](https://mftplus.co.za/pricing) for tier details.
 
 This guide covers the MFTPlus cloud dashboard and hub management — user roles, hub setup, deploy key management, and the hub dashboard interface. Intended for system administrators and team leads managing MFTPlus deployments.
