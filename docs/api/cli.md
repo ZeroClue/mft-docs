@@ -22,13 +22,14 @@ Global Options:
 
 ### login
 
-Authenticate with the MFTPlus dashboard.
+Login to the MFT dashboard using your admin API key.
+This will store your credentials locally for future commands.
 
 ```bash
-mftctl login [api-key]
+mftctl login [api-key] [flags]
 
-Options:
-  -s, --server <url>  Dashboard server URL
+Flags:
+  -s, --server string   Dashboard server URL
 
 Examples:
   mftctl login
@@ -41,7 +42,7 @@ Examples:
 Clear stored credentials.
 
 ```bash
-mftctl logout
+mftctl logout [flags]
 ```
 
 ## Agent Management
@@ -51,7 +52,10 @@ mftctl logout
 List all registered agents.
 
 ```bash
-mftctl agents list [options]
+mftctl agents list [flags]
+
+Flags:
+  -h, --help  help for list
 ```
 
 ### agents show
@@ -59,7 +63,10 @@ mftctl agents list [options]
 Show detailed agent information.
 
 ```bash
-mftctl agents show <agent-id> [options]
+mftctl agents show [agent-id] [flags]
+
+Flags:
+  -h, --help  help for show
 
 Examples:
   mftctl agents show ag-2x8mK9nR
@@ -70,7 +77,10 @@ Examples:
 List transfers for a specific agent.
 
 ```bash
-mftctl agents transfers <agent-id> [options]
+mftctl agents transfers [agent-id] [flags]
+
+Flags:
+  -h, --help  help for transfers
 
 Examples:
   mftctl agents transfers ag-2x8mK9nR
@@ -81,30 +91,13 @@ Examples:
 List jobs for a specific agent.
 
 ```bash
-mftctl agents jobs <agent-id> [options]
+mftctl agents jobs [agent-id] [flags]
+
+Flags:
+  -h, --help  help for jobs
 
 Examples:
   mftctl agents jobs ag-2x8mK9nR
-```
-
-### agents label
-
-Manage agent labels.
-
-```bash
-mftctl agents label <command> [args...]
-
-Commands:
-  list    List all labels for an agent
-  add     Add or update a label
-  update  Update a label value
-  remove  Remove a label
-
-Examples:
-  mftctl agents label list ag-2x8mK9nR
-  mftctl agents label add ag-2x8mK9nR environment production
-  mftctl agents label update ag-2x8mK9nR environment staging
-  mftctl agents label remove ag-2x8mK9nR environment
 ```
 
 ## Transfer Management
@@ -114,13 +107,14 @@ Examples:
 List all transfers.
 
 ```bash
-mftctl transfers list [options]
+mftctl transfers list [flags]
 
-Options:
-  --status <status>  Filter by status
-  --agent <id>       Filter by agent
-  --page <n>         Page number
-  --limit <n>        Results per page
+Flags:
+  -a, --agent string    Filter by agent ID
+  -h, --help            help for list
+  -l, --limit int       Results per page (default 20)
+  -p, --page int        Page number (default 1)
+  -S, --status string   Filter by status
 ```
 
 ### transfers show / status
@@ -128,8 +122,11 @@ Options:
 Show transfer details.
 
 ```bash
-mftctl transfers show <transfer-id> [options]
-mftctl transfers status <transfer-id> [options]
+mftctl transfers show [transfer-id] [flags]
+mftctl transfers status [transfer-id] [flags]
+
+Flags:
+  -h, --help  help for show
 
 Examples:
   mftctl transfers show tr-abc123
@@ -140,21 +137,24 @@ Examples:
 
 Create a new transfer.
 
-```bash
-mftctl transfers create [options]
+Note: This is primarily used by agents. When creating a transfer manually,
+you need to specify an agent that will execute the transfer.
 
-Options:
-  --agent <id>             Agent ID
-  --source <path>          Source file or directory
-  --dest <path>            Destination path
-  --protocol <protocol>    Transfer protocol (sftp, ftp, ftps, local)
-  --retention <duration>   Retention period
-  --compress <algo>        Compression algorithm (gzip, zstd, none)
-  --compress-level <n>     Compression level (algorithm-specific)
-  --encryption <algo>      Encryption algorithm (aes256, chacha20)
-  --pre-hook <cmd>         Pre-transfer hook command
-  --post-hook <cmd>        Post-transfer hook command
-  --on-failure-hook <cmd>  On-failure hook command
+```bash
+mftctl transfers create [flags]
+
+Flags:
+  --agent string             Agent ID (required)
+  --compress string          Compression algorithm (gzip|zstd|none)
+  --compress-level int       Compression level (algorithm-specific)
+  --dest string              Destination path (required)
+  --encryption string        Encryption algorithm (aes256|chacha20)
+  --on-failure-hook string   On-failure webhook URL
+  --post-hook string         Post-transfer webhook URL
+  --pre-hook string          Pre-transfer webhook URL
+  --protocol string          Protocol (default: local)
+  --retention string         Retention period (e.g., 30d, 7y). Empty = keep forever
+  --source string            Source path/URL (required)
 
 Examples:
   mftctl transfers create --agent ag-2x8mK9nR \
@@ -165,14 +165,16 @@ Examples:
 
 ### transfers update
 
-Update transfer notification settings.
+Update notification settings for a transfer.
+
+Configure email notifications for transfer completion or failure.
 
 ```bash
-mftctl transfers update <transfer-id> [options]
+mftctl transfers update [transfer-id] [flags]
 
-Options:
-  --on-success <email>  Success notification email
-  --on-failure <email>  Failure notification email
+Flags:
+  --on-failure string   Email address for failure notifications
+  --on-success string   Email address for success notifications
 
 Examples:
   mftctl transfers update tr-abc123 --on-failure ops@example.com
@@ -180,10 +182,13 @@ Examples:
 
 ### transfers logs
 
-Show transfer logs.
+Show logs for a specific transfer.
+
+Note: Transfer logs are currently stored on the agent. This feature will
+be available when the agent implements log streaming.
 
 ```bash
-mftctl transfers logs <transfer-id> [options]
+mftctl transfers logs [transfer-id] [flags]
 
 Examples:
   mftctl transfers logs tr-abc123
@@ -191,16 +196,19 @@ Examples:
 
 ### send
 
-Send a file directly to a remote destination.
+Send a file to a remote destination via an MFT agent.
+
+Reads file content from a local path or from stdin (with --stdin) and
+creates a transfer to the specified destination.
 
 ```bash
-mftctl send [file] [options]
+mftctl send [file] [flags]
 
-Options:
-  --agent <id>        Agent ID (required)
-  --to <destination>  Remote destination (required)
-  --stdin             Read file content from stdin
-  --encryption <algo> Encryption algorithm (aes256, chacha20)
+Flags:
+  --agent string        Agent ID (required)
+  --encryption string   Encryption algorithm (aes256|chacha20)
+  --stdin               Read file content from stdin
+  --to string           Destination path/URL (required)
 
 Examples:
   mftctl send ./report.pdf --agent ag-2x8mK9nR --to sftp://partner.example.com/incoming
@@ -216,14 +224,15 @@ Manage file watch triggers for event-driven automated transfers.
 List all configured triggers.
 
 ```bash
-mftctl trigger list [options]
+mftctl trigger list [flags]
 
-Options:
-  --json  Output in JSON format
+Flags:
+  --json   Output in JSON format
 
-Persistent Flags:
-  -k, --api-key <key>  API key (overrides logged-in config)
-  --server <url>       Server URL (overrides logged-in config)
+Global Flags:
+  -k, --api-key string   API key (overrides logged-in config)
+  -h, --help             help for trigger
+      --server string    Server URL (overrides logged-in config)
 ```
 
 ### trigger show
@@ -231,11 +240,12 @@ Persistent Flags:
 Show detailed trigger information and firing history.
 
 ```bash
-mftctl trigger show <trigger-id> [options]
+mftctl trigger show [trigger-id] [flags]
 
-Persistent Flags:
-  -k, --api-key <key>  API key (overrides logged-in config)
-  --server <url>       Server URL (overrides logged-in config)
+Global Flags:
+  -k, --api-key string   API key (overrides logged-in config)
+  -h, --help             help for trigger
+      --server string    Server URL (overrides logged-in config)
 
 Examples:
   mftctl trigger show tr-abc123
@@ -246,22 +256,21 @@ Examples:
 Create a new file watch trigger.
 
 ```bash
-mftctl trigger create [options]
+mftctl trigger create [flags]
 
-Required Options:
-  --watch <path>     Path to watch
-  --dest <path>      Destination path template
-  --agent <id>       Agent ID
+Flags:
+  --agent string      Agent ID (required)
+  --dest string       Destination path template (required)
+  --glob string       Glob pattern for files to match (default "*")
+  --name string       Trigger name
+  --protocol string   Protocol (local/sftp) (default "local")
+  --recursive         Watch subdirectories recursively
+  --watch string      Path to watch (required)
 
-Options:
-  --glob <pattern>   Glob pattern for files to match (default: *)
-  --name <name>      Trigger name
-  --protocol <proto> Transfer protocol (local, sftp; default: local)
-  --recursive        Watch subdirectories recursively
-
-Persistent Flags:
-  -k, --api-key <key>  API key (overrides logged-in config)
-  --server <url>       Server URL (overrides logged-in config)
+Global Flags:
+  -k, --api-key string   API key (overrides logged-in config)
+  -h, --help             help for trigger
+      --server string    Server URL (overrides logged-in config)
 
 Examples:
   mftctl trigger create \
@@ -277,11 +286,12 @@ Examples:
 Delete a trigger.
 
 ```bash
-mftctl trigger delete <trigger-id>
+mftctl trigger delete [trigger-id] [flags]
 
-Persistent Flags:
-  -k, --api-key <key>  API key (overrides logged-in config)
-  --server <url>       Server URL (overrides logged-in config)
+Global Flags:
+  -k, --api-key string   API key (overrides logged-in config)
+  -h, --help             help for trigger
+      --server string    Server URL (overrides logged-in config)
 
 Examples:
   mftctl trigger delete tr-abc123
@@ -294,10 +304,10 @@ Examples:
 List all scheduled jobs.
 
 ```bash
-mftctl jobs list [options]
+mftctl jobs list [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help  help for list
 ```
 
 ### jobs show
@@ -305,10 +315,10 @@ Options:
 Show job details.
 
 ```bash
-mftctl jobs show <job-id> [options]
+mftctl jobs show [job-id] [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help  help for show
 
 Examples:
   mftctl jobs show job-abc123
@@ -319,19 +329,19 @@ Examples:
 Create a new scheduled job.
 
 ```bash
-mftctl jobs create [options]
+mftctl jobs create [flags]
 
-Options:
-  --agent <id>        Agent ID (required)
-  --name <name>       Job name (required)
-  --source <path>     Source file or directory
-  --dest <path>       Destination path
-  --schedule <cron>   Cron schedule expression
-  --protocol <proto>  Transfer protocol
-  --direction <dir>   Transfer direction (upload, download)
-  --enabled           Enable the job immediately
-  --template <name>   Use a transfer template
-  --var <kv>          Template variable (key=value)
+Flags:
+  --agent string       Agent ID (required)
+  --dest string        Destination path (required unless --template)
+  --direction string   Direction (push/pull, default: push)
+  --enabled            Enable job (default: true)
+  --name string        Job name (required)
+  --protocol string    Protocol (default: local)
+  --schedule string    Cron schedule (required)
+  --source string      Source path (required unless --template)
+  --template string    Create from template ID
+  --var stringArray    Template variables (key=value, can be used multiple times)
 
 Examples:
   mftctl jobs create \
@@ -348,89 +358,10 @@ Examples:
 Delete a scheduled job.
 
 ```bash
-mftctl jobs delete <job-id>
+mftctl jobs delete [job-id] [flags]
 
 Examples:
   mftctl jobs delete job-abc123
-```
-
-## Audit Commands
-
-### audit verify
-
-Verify cryptographic chain integrity of audit logs.
-
-```bash
-mftctl audit verify [options]
-
-Options:
-  -k, --api-key <key>  Admin API key
-  --server <url>       Dashboard server URL
-  -j, --json           Output as JSON
-
-Examples:
-  mftctl audit verify
-  mftctl audit verify --json
-```
-
-### audit chain status
-
-Show audit chain metadata.
-
-```bash
-mftctl audit chain status [options]
-
-Options:
-  -k, --api-key <key>  Admin API key
-  --server <url>       Dashboard server URL
-  -j, --json           Output as JSON
-```
-
-### audit chain export
-
-Export audit logs as CSV or PDF.
-
-```bash
-mftctl audit chain export [options]
-
-Options:
-  -k, --api-key <key>  Admin API key
-  --server <url>       Dashboard server URL
-  --format <format>    Export format (csv, pdf; default: csv)
-```
-
-### audit entry get
-
-Get a specific audit log entry.
-
-```bash
-mftctl audit entry get <entry-id> [options]
-
-Options:
-  -k, --api-key <key>  Admin API key
-  --server <url>       Dashboard server URL
-  -j, --json           Output as JSON
-```
-
-### audit log list
-
-Query audit log entries.
-
-```bash
-mftctl audit log list [options]
-
-Options:
-  -k, --api-key <key>    Admin API key
-  --server <url>         Dashboard server URL
-  --category <category>  Filter by category
-  --severity <severity>  Filter by severity
-  --customer <id>        Filter by customer
-  --limit <n>            Results limit
-  --offset <n>           Results offset
-  -j, --json             Output as JSON
-
-Categories: authentication, authorization, admin, agent, transfer, job, system
-Severities: info, warning, error, critical
 ```
 
 ## Connection Management
@@ -440,10 +371,11 @@ Severities: info, warning, error, critical
 List all connection profiles.
 
 ```bash
-mftctl connections list [options]
+mftctl connections list [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help          help for list
+      --format string Output format (table, json) (default "table")
 ```
 
 ### connections show
@@ -451,10 +383,10 @@ Options:
 Show connection profile details.
 
 ```bash
-mftctl connections show <profile-id> [options]
+mftctl connections show [name] [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help  help for show
 ```
 
 ### connections create
@@ -462,15 +394,23 @@ Options:
 Create a new connection profile.
 
 ```bash
-mftctl connections create [options]
+mftctl connections create [flags]
 
-Options:
-  --name <name>     Profile name
-  --type <type>     Connection type (sftp, ftp, ftps, s3, gcs)
-  --host <host>     Server hostname
-  --port <port>     Server port
-  --username <user> Username
-  --auth <method>   Authentication method (password, key, env)
+Flags:
+  --access-key string     Access key (for S3/Azure/GCS/Glacier)
+  --bucket string         Bucket/container/vault name (for S3/Azure/GCS/Glacier)
+  --description string    Description
+  --host string           Server hostname or IP
+  --name string           Profile name (required)
+  --password string       Password
+  --path string           Default path
+  --port int              Server port (default: 22 for SFTP, 21 for FTP)
+  --region string         Region (for S3/Azure/GCS/Glacier)
+  --secret-key string     Secret key (for S3/Azure/GCS/Glacier)
+  --ssh-key string        SSH private key content
+  --ssh-key-path string   Path to SSH private key file
+  --type string           Connection type (required: sftp, ftp, ftps, local, s3, azure, gcs, glacier)
+  --username string       Username
 ```
 
 ### connections update
@@ -478,7 +418,22 @@ Options:
 Update a connection profile.
 
 ```bash
-mftctl connections update <profile-id> [options]
+mftctl connections update [name] [flags]
+
+Flags:
+  --access-key string     Access key
+  --bucket string         Bucket/container name
+  --description string    Description
+  --host string           Server hostname or IP
+  --password string       Password
+  --path string           Default path
+  --port int              Server port
+  --region string         Region
+  --secret-key string     Secret key
+  --ssh-key string        SSH private key content
+  --ssh-key-path string   Path to SSH private key file
+  --type string           Connection type
+  --username string       Username
 ```
 
 ### connections delete
@@ -486,15 +441,18 @@ mftctl connections update <profile-id> [options]
 Delete a connection profile.
 
 ```bash
-mftctl connections delete <profile-id>
+mftctl connections delete [name] [flags]
 ```
 
 ### connections test
 
-Test a connection profile.
+Test connectivity to a connection profile.
+
+This will attempt to connect to the remote system using the saved credentials
+and report whether the connection is successful.
 
 ```bash
-mftctl connections test <profile-id>
+mftctl connections test [name] [flags]
 ```
 
 ## Bridge Management
@@ -504,10 +462,11 @@ mftctl connections test <profile-id>
 List all bridge configurations.
 
 ```bash
-mftctl bridge list [options]
+mftctl bridge list [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help          help for list
+      --format string Output format (table, json) (default "table")
 ```
 
 ### bridge show
@@ -515,10 +474,10 @@ Options:
 Show bridge configuration details.
 
 ```bash
-mftctl bridge show <bridge-id> [options]
+mftctl bridge show [name] [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -h, --help  help for show
 ```
 
 ### bridge create
@@ -526,7 +485,15 @@ Options:
 Create a new bridge configuration.
 
 ```bash
-mftctl bridge create [options]
+mftctl bridge create [flags]
+
+Flags:
+  --description string        Description
+  --dest string               Destination connection name (required)
+  --name string               Bridge name (required)
+  --options string            Additional options as JSON
+  --protocol-mapping string   Protocol mapping (e.g., sftp->s3, auto)
+  --source string             Source connection name (required)
 ```
 
 ### bridge delete
@@ -534,7 +501,7 @@ mftctl bridge create [options]
 Delete a bridge configuration.
 
 ```bash
-mftctl bridge delete <bridge-id>
+mftctl bridge delete [name] [flags]
 ```
 
 ## Template Management
@@ -544,10 +511,7 @@ mftctl bridge delete <bridge-id>
 List all transfer templates.
 
 ```bash
-mftctl templates list [options]
-
-Options:
-  -j, --json  Output as JSON
+mftctl templates list [flags]
 ```
 
 ### templates show
@@ -555,10 +519,7 @@ Options:
 Show template details.
 
 ```bash
-mftctl templates show <template-id> [options]
-
-Options:
-  -j, --json  Output as JSON
+mftctl templates show [template-id] [flags]
 ```
 
 ### templates create
@@ -566,7 +527,15 @@ Options:
 Create a new transfer template.
 
 ```bash
-mftctl templates create [options]
+mftctl templates create [flags]
+
+Flags:
+  --dest string        Destination path with variable placeholders (required)
+  --direction string   Direction (push/pull, default: push)
+  --name string        Template name (required)
+  --protocol string    Protocol (default: local)
+  --source string      Source path with variable placeholders (required)
+  --variables string   Variables as JSON array
 ```
 
 ### templates delete
@@ -584,7 +553,11 @@ mftctl templates delete <template-id>
 Search for available plugins in the registry.
 
 ```bash
-mftctl plugin search <query>
+mftctl plugin search [query] [flags]
+
+Flags:
+  -o, --output string   Output format (pretty, json) (default "pretty")
+  -v, --verbose         Verbose output
 
 Examples:
   mftctl plugin search s3
@@ -596,7 +569,7 @@ Examples:
 Get detailed information about a plugin.
 
 ```bash
-mftctl plugin info <plugin-name>
+mftctl plugin info <name> [flags]
 
 Examples:
   mftctl plugin info s3-storage
@@ -607,7 +580,12 @@ Examples:
 Install a plugin from the registry.
 
 ```bash
-mftctl plugin install <plugin-name>
+mftctl plugin install <name> [flags]
+
+Flags:
+  -f, --force           Overwrite if plugin already exists
+      --no-verify       Skip signature verification
+  -t, --target string   Target directory for installation
 
 Examples:
   mftctl plugin install s3-storage
@@ -616,21 +594,24 @@ Examples:
 
 ### plugin list
 
-List installed plugins.
+List installed plugins with their versions and status.
 
 ```bash
-mftctl plugin list [options]
+mftctl plugin list [flags]
 
-Options:
-  -j, --json  Output as JSON
+Flags:
+  -v, --verbose   Show detailed information
 ```
 
 ### plugin remove
 
-Remove an installed plugin.
+Remove an installed plugin from the system.
 
 ```bash
-mftctl plugin remove <plugin-name>
+mftctl plugin remove <name> [flags]
+
+Flags:
+  -f, --force   Remove without confirmation
 
 Examples:
   mftctl plugin remove s3-storage
@@ -638,10 +619,15 @@ Examples:
 
 ### plugin verify
 
-Verify an installed plugin's signature and checksum.
+Verify the cryptographic signature and checksum of an installed plugin.
+
+This command checks:
+- The plugin's digital signature is valid
+- The plugin's checksum matches the expected value
+- The plugin has not been modified since installation
 
 ```bash
-mftctl plugin verify <plugin-name>
+mftctl plugin verify <name> [flags]
 
 Examples:
   mftctl plugin verify s3-storage
@@ -666,7 +652,7 @@ Get a configuration value.
 ```bash
 mftctl config get <key>
 
-Keys: server-url, api-key, jwt
+Valid keys: server-url, api-key, jwt
 
 Examples:
   mftctl config get server-url
@@ -714,15 +700,26 @@ mftctl config export
 
 ### connect
 
-Connect to MFTPlus hub or cloud relay via WebSocket.
+Establish a persistent WebSocket connection to the MFTPlus hub or cloud relay.
+
+The connect command acts as an MFTPlus agent, maintaining a real-time
+WebSocket connection to either:
+- The local hub relay (/hub/ws), which forwards to the cloud
+- The cloud agent endpoint (/api/ws/agent), connecting directly
+
+On disconnect it automatically reconnects with exponential backoff
+(1s → 2s → 4s → … → 30s max).
+
+Use Ctrl+C or SIGTERM to gracefully disconnect.
 
 ```bash
-mftctl connect [options]
+mftctl connect [flags]
 
-Options:
-  -s, --server <url>  Hub server URL
-  -t, --token <token> Authentication token
-  --hub               Connect in hub mode
+Flags:
+  -h, --help            help for connect
+      --hub             Connect via hub relay (/hub/ws) instead of directly to cloud
+  -s, --server string   Hub or cloud server URL (default: from config)
+  -t, --token string    Auth token / API key (default: from config)
 
 Examples:
   mftctl connect --server wss://hub.mftplus.co.za --token my-token
@@ -733,26 +730,37 @@ Examples:
 
 ### update check
 
-Check for available agent updates.
+Check for available agent updates by querying the version check API.
 
 ```bash
-mftctl update check
+mftctl update check [flags]
+
+Flags:
+  --current string   Current version (default: auto-detected)
 ```
 
 ### update apply
 
-Apply the latest agent update.
+Download, verify, and apply the latest agent update.
 
 ```bash
-mftctl update apply
+mftctl update apply [flags]
+
+Flags:
+  -v, --verbose          Show detailed progress
+      --version string   Target version to apply (default: latest)
+  -y, --yes              Skip confirmation prompt
 ```
 
 ### update rollback
 
-Rollback to the previous agent version.
+Rollback the agent binary to the previous version.
 
 ```bash
-mftctl update rollback
+mftctl update rollback [flags]
+
+Flags:
+  -y, --yes   Skip confirmation prompt
 ```
 
 ## Shell Completion
