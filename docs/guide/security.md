@@ -37,6 +37,15 @@ mftctl logout
 
 Credentials are stored in `~/.mftctl/config.json` after login.
 
+::: tip Configuration Directories
+MFTPlus uses two separate configuration directories for different purposes:
+
+- **CLI** (`~/.mftctl/`) — stores credentials, server URL, and session state for `mftctl`
+- **Agent** (`~/.config/mft-agent/`) — stores agent configuration, transfer logs, certificates, and scheduled job definitions
+
+This separation keeps CLI credentials isolated from agent runtime data.
+:::
+
 ### Environment Variables
 
 ```bash
