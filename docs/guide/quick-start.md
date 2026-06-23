@@ -20,35 +20,35 @@ Download the archive for your platform from [releases.mftplus.co.za](https://rel
 
 | Platform | Download |
 |----------|----------|
-| Linux (x86_64) | [mft-agent-cli_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_amd64.tar.gz) |
-| Linux (aarch64) | [mft-agent-cli_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_linux_aarch64.tar.gz) |
-| Windows (x86_64) | [mft-agent-cli_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip) |
+| Linux (x86_64) | [mftctl_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_linux_amd64.tar.gz) |
+| Linux (aarch64) | [mftctl_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_linux_aarch64.tar.gz) |
+| Windows (x86_64) | [mftctl_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_windows_amd64.zip) |
 
 **Manual install (Linux):**
 ```bash
 # Download and extract
-tar xzf mft-agent-cli_0.6.1_linux_amd64.tar.gz
+tar xzf mftctl_0.6.1_linux_amd64.tar.gz
 
 # Move to PATH
-sudo mv mft-agent-cli /usr/local/bin/
+sudo mv mftctl /usr/local/bin/
 
 # Verify
-mft-agent-cli --version
+mftctl --version
 ```
 
 **Manual install (Windows PowerShell):**
 ```powershell
 # Download
-Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mft-agent-cli_0.6.1_windows_amd64.zip -OutFile mft-agent-cli_0.6.1_windows_amd64.zip
+Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_windows_amd64.zip -OutFile mftctl_0.6.1_windows_amd64.zip
 
 # Extract
-Expand-Archive .\mft-agent-cli_0.6.1_windows_amd64.zip -DestinationPath .
+Expand-Archive .\mftctl_0.6.1_windows_amd64.zip -DestinationPath .
 
 # Move to PATH
-Move-Item .\mft-agent-cli.exe C:\Windows\System32\
+Move-Item .\mftctl.exe C:\Windows\System32\
 
 # Verify
-mft-agent-cli --version
+mftctl --version
 ```
 
 For detailed installation options, see the [Installation guide](./installation).
@@ -62,12 +62,12 @@ mftctl version
 Set your dashboard server URL:
 
 ```bash
-mft-agent-cli config set server.url http://localhost:8080
+mftctl config set server.url http://localhost:8080
 ```
 
 For cloud deployments:
 ```bash
-mft-agent-cli config set server.url https://dashboard.yourcompany.com
+mftctl config set server.url https://dashboard.yourcompany.com
 ```
 
 Configuration is stored at:
@@ -81,13 +81,13 @@ mftctl login pc-api-xxxxxxxxxxxxxxxx
 ```
 
 ```bash
-mft-agent-cli register --deploy-key your-deploy-key
+mftctl register --deploy-key your-deploy-key
 ```
 
 Your agent will appear in the dashboard with a unique agent ID.
 
 ::: tip Finding Your Agent ID
-Run `mft-agent-cli status` to see your agent ID and connection status.
+Run `mftctl status` to see your agent ID and connection status.
 :::
 
 ---
@@ -97,7 +97,7 @@ Run `mft-agent-cli status` to see your agent ID and connection status.
 Check your agent status:
 
 ```bash
-mft-agent-cli status
+mftctl status
 ```
 
 Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
@@ -161,7 +161,7 @@ Or view in the dashboard under **Jobs** → **History**.
 - Check server URL in config
 - Verify network connectivity to dashboard
 - Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
-- Run `mft-agent-cli status` to check connection
+- Run `mftctl status` to check connection
 
 **Connection refused?**
 - Verify hostname and port
