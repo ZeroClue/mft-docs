@@ -33,11 +33,21 @@ export default defineConfig({
           ]
         },
         {
+          text: 'User Management',
+          items: [
+            { text: 'User Roles & Permissions', link: '/guides/user-roles' },
+            { text: 'Team Management', link: '/guides/team-management' },
+            { text: 'Inviting Users', link: '/guides/inviting-users' },
+            { text: 'Billing Access Control', link: '/guides/billing-access' }
+          ]
+        },
+        {
           text: 'API Reference',
           items: [
             { text: 'Overview', link: '/api/' },
             { text: 'CLI Commands', link: '/api/cli' },
-            { text: 'Configuration', link: '/api/config' }
+            { text: 'Configuration', link: '/api/config' },
+            { text: 'RBAC API', link: '/api/rbac' }
           ]
         },
         {
