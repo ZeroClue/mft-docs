@@ -62,7 +62,6 @@ export default defineConfig({
         {
           text: '🔧 Admin Guide',
           items: [
-            { text: 'Hub Deployment', link: '/guide/hub-deployment' },
             { text: 'Hub Administration', link: '/guide/hub-admin' },
             { text: 'Admin Panel', link: '/guide/admin-panel' }
           ]
