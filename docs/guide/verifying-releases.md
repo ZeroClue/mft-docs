@@ -3,7 +3,7 @@
 Every MFTPlus release is published at `https://releases.mftplus.co.za/v{version}/`, together with the integrity metadata needed to verify downloads before use:
 
 - **SHA-256 checksums** — detect corrupted or truncated downloads.
-- **minisign signatures (Ed25519)** — prove artifacts were produced by MFTPlus and were not tampered with in transit or at rest.
+- **minisign signatures (Ed25519)** — prove artifacts were produced by MFTPlus and were not tampered with in transit or at rest. Rolling out with Phase 1A — see Rollout status below.
 
 This guide shows how to check both. The one-line habit: **verify before you run**.
 
@@ -68,7 +68,7 @@ Compare the output hash (case-insensitive) against the value in `release-info.js
 
 ## Signature verification (minisign)
 
-MFTPlus signs releases with [minisign](https://github.com/jedisct1/minisign) detached Ed25519 signatures. Verification needs only the public key — it works fully offline, with no keyring or daemon.
+MFTPlus will sign releases with [minisign](https://github.com/jedisct1/minisign) detached Ed25519 signatures as part of the Phase 1A signing pipeline. Verification needs only the public key — it works fully offline, with no keyring or daemon. Until signing is announced live for a given release, use the checksum methods above.
 
 ### 1. Install minisign
 
@@ -87,7 +87,7 @@ Windows users can verify signatures from [WSL](https://learn.microsoft.com/en-us
 
 ### 2. Get the MFTPlus release public key
 
-The MFTPlus release-signing public key and its fingerprint are published at [`docs.mftplus.co.za/install/verify`](https://docs.mftplus.co.za/install/verify) as part of the Phase 1A rollout. Save it as `mftplus-release.pub`.
+The MFTPlus release-signing public key and its fingerprint will be published at [`docs.mftplus.co.za/install/verify`](https://docs.mftplus.co.za/install/verify) as part of the Phase 1A rollout. Save it as `mftplus-release.pub`.
 
 ### 3. Verify the signed checksum manifest
 
