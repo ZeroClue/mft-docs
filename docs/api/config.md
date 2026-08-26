@@ -97,7 +97,7 @@ mft-agent-cli configure --dashboard-api-url https://dashboard.mftplus.co.za --da
 mft-agent-cli status
 
 # Run the agent engine in the foreground
-mft-agent-cli run
+mft-agent-cli start
 ```
 
 For installation of the headless agent on servers, see [Install Agent](../guide/install-agent).
