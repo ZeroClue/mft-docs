@@ -45,6 +45,7 @@ export default defineConfig({
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Install mftctl', link: '/guide/install-mftctl' },
             { text: 'Install Agent', link: '/guide/install-agent' },
+            { text: 'Verifying Releases', link: '/guide/verifying-releases' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Backup and Recovery', link: '/guide/backup-and-recovery' },
             { text: 'Architecture', link: '/guide/architecture' },
