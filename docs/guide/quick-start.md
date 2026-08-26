@@ -1,6 +1,6 @@
 ---
 title: Quick Start Guide - Transfer Files in 5 Minutes | MFTPlus
-description: "Get started with MFTPlus in under 5 minutes. Install the agent, register with your dashboard, and create your first scheduled SFTP/FTP transfer job."
+description: "Get started with MFTPlus in under 5 minutes. Install mftctl, log in with your API key, connect your machine as an agent, and send your first transfer."
 ---
 
 # Quick Start: Your First Transfer in 5 Minutes
@@ -9,169 +9,130 @@ Transfer your first file with MFTPlus in under 5 minutes.
 
 ## Prerequisites
 
-- **OS**: Windows 10+ or Linux
-- **Access**: SFTP/FTP credentials or local directory path
+- **OS**: Linux (amd64/aarch64), macOS (Intel or Apple Silicon), or Windows 10+
+- **MFTPlus account**: sign up at [dashboard.mftplus.co.za](https://dashboard.mftplus.co.za)
+- **Destination**: SFTP credentials or a local directory path for your first transfer
 
 ---
 
 ## Step 1: Install mftctl
 
-Download the archive for your platform from [releases.mftplus.co.za](https://releases.mftplus.co.za/v0.6.1/):
+**Linux & macOS — one line:**
 
-| Platform | Download |
-|----------|----------|
-| Linux (x86_64) | [mftctl_0.6.1_linux_amd64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_linux_amd64.tar.gz) |
-| Linux (aarch64) | [mftctl_0.6.1_linux_aarch64.tar.gz](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_linux_aarch64.tar.gz) |
-| Windows (x86_64) | [mftctl_0.6.1_windows_amd64.zip](https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_windows_amd64.zip) |
-
-**Manual install (Linux):**
 ```bash
-# Download and extract
-tar xzf mftctl_0.6.1_linux_amd64.tar.gz
-
-# Move to PATH
-sudo mv mftctl /usr/local/bin/
-
-# Verify
-mftctl --version
+curl -fsSL https://releases.mftplus.co.za/install.sh | sh
 ```
 
-**Manual install (Windows PowerShell):**
+**Windows (PowerShell):**
+
 ```powershell
-# Download
-Invoke-WebRequest -Uri https://releases.mftplus.co.za/v0.6.1/mftctl_0.6.1_windows_amd64.zip -OutFile mftctl_0.6.1_windows_amd64.zip
+irm https://releases.mftplus.co.za/install.ps1 | iex
+```
 
-# Extract
-Expand-Archive .\mftctl_0.6.1_windows_amd64.zip -DestinationPath .
+Verify:
 
-# Move to PATH
-Move-Item .\mftctl.exe C:\Windows\System32\
-
-# Verify
+```bash
 mftctl --version
 ```
 
-For detailed installation options, see the [Installation guide](./installation).
+For manual downloads and all supported platforms, see the [Installation guide](./installation).
 
 ---
 
-```bash
-mftctl version
-```
+## Step 2: Get Your API Key
 
-Set your dashboard server URL:
-
-```bash
-mftctl config set server.url http://localhost:8080
-```
-
-For cloud deployments:
-```bash
-mftctl config set server.url https://dashboard.yourcompany.com
-```
-
-Configuration is stored at:
-- **Linux**: `~/.config/mftplus/config.yaml`
-- **Windows**: `%APPDATA%\mftplus\config.yaml`
+1. Log in at [dashboard.mftplus.co.za](https://dashboard.mftplus.co.za)
+2. Go to **API Keys** → **Create API Key**
+3. Give it a name and copy the key — it starts with `sk_` and is **shown only once**
 
 ---
 
-```bash
-mftctl login pc-api-xxxxxxxxxxxxxxxx
-```
+## Step 3: Log In
 
 ```bash
-mftctl register --deploy-key your-deploy-key
+mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
 ```
 
-Your agent will appear in the dashboard with a unique agent ID.
+You should see:
 
-::: tip Finding Your Agent ID
-Run `mftctl status` to see your agent ID and connection status.
+```text
+✓ Successfully logged in to https://dashboard.mftplus.co.za
+```
+
+Your credentials are stored locally in `~/.mftctl/config.json` (`%USERPROFILE%\.mftctl\config.json` on Windows) so you only do this once per machine.
+
+::: tip Behind a proxy or custom deployment?
+Override the saved values per command: `mftctl connect --server <url> --token <key>`, or update them with `mftctl config set server-url / api-key`.
 :::
 
 ---
 
-## Step 4: Verify Registration
+## Step 4: Connect This Machine as an Agent
 
-Check your agent status:
+In a terminal, run:
 
 ```bash
-mftctl status
+mftctl connect
 ```
 
-Open your dashboard and verify that your agent appears in the **Agents** list. You should see:
-- Agent hostname
-- Online status
-- Last heartbeat timestamp
+This opens a persistent connection to MFTPlus and registers this machine as an agent in your dashboard. If the connection drops, it reconnects automatically (retrying every few seconds, up to 30 seconds between attempts).
+
+Leave it running — press `Ctrl+C` when you want to disconnect.
 
 ---
 
-## Step 5: Create Your First Transfer Job
+## Step 5: Verify the Connection
 
-In the dashboard:
+From another terminal:
 
-1. Navigate to **Jobs** → **Create Job**
-2. Configure:
-   - **Name**: `my-first-transfer`
-   - **Schedule**: `0 2 * * *` (daily at 2 AM)
-   - **Protocol**: SFTP
-   - **Source**: `/path/to/files/*.log`
-   - **Destination**: `sftp://your-server.com/backup`
-   - **Credentials**: Add your SFTP credentials
-3. Click **Save**
+```bash
+mftctl agents list
+```
 
----
+Your machine appears in the list with an agent ID. You can also open the dashboard and check **Agents** — it should show your hostname as **online**.
 
-## Step 6: Run It Now
+Need details about one agent?
 
-Want to test immediately? Click **Run Now** on your job.
-
-Monitor the execution under **History** — you'll see status, timestamps, and file counts.
+```bash
+mftctl agents show <agent-id>
+```
 
 ---
 
-## Verify Success
+## Step 6: Send Your First Transfer
 
-Check the transfer log locally:
+With your agent connected, send a file through it:
 
-| Platform | Transfer Log |
-|----------|--------------|
-| Linux | `~/.config/mftplus/transfers.db` |
-| Windows | `%APPDATA%\mftplus\transfers.db` |
+```bash
+mftctl send report.csv --to sftp://user@backup.example.com/uploads/ --agent <agent-id>
+```
 
-Or view in the dashboard under **Jobs** → **History**.
+Then watch it move:
 
----
+```bash
+mftctl transfers list
+```
 
-## Cleanup
+Or view status, timestamps, and file counts under **Transfers** in the dashboard.
 
-| Protocol | Best For |
-|----------|----------|
-| **SFTP** | Secure transfers (recommended) |
-| **FTP** | Legacy systems |
-| **FTPS** | FTP over TLS/SSL |
-| **Local** | Same-machine file operations |
+Once you're comfortable with one-off sends, schedule recurring work with transfer jobs and triggers — see [Transfer Triggers](./transfer-triggers) and the dashboard's **Jobs** page.
 
 ---
 
 ## Troubleshooting
 
-**Agent not appearing in dashboard?**
-- Check server URL in config
-- Verify network connectivity to dashboard
-- Check logs: `~/.config/mftplus/logs/` (or `%APPDATA%\mftplus\logs\` on Windows)
-- Run `mftctl status` to check connection
+**Login fails with an authentication error?**
+- Make sure you copied the full `sk_...` key (it's shown only once at creation)
+- Regenerate a key in the dashboard under **API Keys**, then log in again
 
-**Connection refused?**
-- Verify hostname and port
-- Check firewall rules allow outbound connections
-- Test: `telnet sftp.example.com 22`
+**Agent not appearing online?**
+- Check that `mftctl connect` is still running in your first terminal
+- Verify your saved settings: `mftctl config list`
+- Confirm outbound HTTPS to `dashboard.mftplus.co.za` is allowed
 
-**Permission denied?**
-- Verify source directory is readable
-- Verify destination directory is writable
-- Check SSH key permissions (if using key auth)
+**Transfer failed?**
+- Check the destination path and permissions
+- Review recent attempts: `mftctl transfers list`
 
 **Need more help?** See the [Troubleshooting Guide](./troubleshooting) for comprehensive solutions to common issues.
 
@@ -179,14 +140,14 @@ Or view in the dashboard under **Jobs** → **History**.
 
 ## Security
 
-MFTPlus encrypts all transfers using **AES-256-GCM** — the same standard used for securing classified information. Credentials are stored locally with restrictive permissions (600) and never leave your machine unencrypted.
+Credentials are stored locally with restrictive permissions (600) and never leave your machine unencrypted. Transfers are encrypted in transit using AES-256.
 
 ---
 
 ## Next Steps
 
 - [Installation](./installation) — Detailed install options
-- [Configuration](../api/config) — Advanced configuration options
+- [Configuration](../api/config) — Configuration reference for `mftctl` and the agent
 - [Architecture](./architecture) — Learn how MFTPlus works
 
 ## Need Help?

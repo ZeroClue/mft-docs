@@ -15,11 +15,11 @@ Before diving into specific issues, run these quick checks:
 ### 1. Check Agent Status
 
 ```bash
-# Linux/macOS
-mftctl status
+# Is this machine connected? List your agents and their online state
+mftctl agents list
 
-# Windows
-mftctl.exe status
+# Running the headless agent daemon on a server? Check it directly
+mft-agent-cli status
 ```
 
 ### 2. View Recent Logs
@@ -41,8 +41,7 @@ Get-Content "$env:APPDATA\mft-agent\logs\agent.log" -Tail 50
 ### 3. Test Dashboard Connectivity
 
 ```bash
-# Replace with your dashboard URL
-curl -v https://dashboard.yourcompany.com/health
+curl -v https://dashboard.mftplus.co.za/api/health
 ```
 
 ### 4. Verify Configuration
@@ -65,19 +64,19 @@ mftctl config list
 
 **Solutions:**
 
-1. **Verify Server URL**
+1. **Check Your Saved Server URL**
    ```bash
    mftctl config get server-url
    ```
-   Ensure the URL is correct and includes the protocol (`http://` or `https://`).
+   Ensure the URL is correct and includes the protocol (`http://` or `https://`). For the MFTPlus cloud it should be `https://dashboard.mftplus.co.za`.
 
 2. **Test Network Connectivity**
    ```bash
    # Test basic connectivity
-   ping dashboard.yourcompany.com
+   ping dashboard.mftplus.co.za
 
-   # Test HTTPS (replace with your port if non-standard)
-   curl -v https://dashboard.yourcompany.com
+   # Test HTTPS
+   curl -v https://dashboard.mftplus.co.za/api/health
    ```
 
 3. **Check Firewall Rules**
@@ -105,10 +104,7 @@ mftctl config list
    
    ```bash
    # Verify DNS resolves correctly
-   nslookup dashboard.yourcompany.com
-   
-    # Try using IP address directly if DNS fails
-    mftctl config set server-url https://192.168.1.100
+   nslookup dashboard.mftplus.co.za
    ```
 
 ### mTLS / Certificate Errors
@@ -123,7 +119,7 @@ mftctl config list
 1. **Verify Certificate Validity**
    ```bash
    # Check certificate expiry
-   openssl s_client -connect dashboard.yourcompany.com:443 -showcerts
+   openssl s_client -connect dashboard.mftplus.co.za:443 -showcerts
    ```
 
 2. **Self-Signed Certificates**
@@ -148,27 +144,20 @@ mftctl config list
 
 **Solutions:**
 
-1. **Increase Timeout**
-   ```yaml
-   # config.yaml
-   server:
-     timeout: 300s  # Increase from default 30s
-   ```
+1. **Rely on Automatic Reconnect**
 
-2. **Enable Retry Logic**
-   ```yaml
-   # config.yaml
-   transfer:
-     retryAttempts: 3
-     retryDelay: 5s
-   ```
+   `mftctl connect` reconnects automatically after a drop, retrying with exponential backoff (1s → 2s → 4s … capped at 30s). Keep the process running; no manual restart is needed for brief network interruptions.
+
+2. **Retry Failed Transfers**
+
+   Scheduled jobs support configurable retry attempts and backoff — set them when creating the job in the dashboard, or with `mft-agent-cli jobs create --max-retries --initial-backoff`. One-off failures can be re-sent from the dashboard or with `mftctl send`.
 
 3. **Check Network Stability**
    
    Monitor for packet loss or high latency:
    ```bash
    # Ping test with 100 packets
-   ping -c 100 dashboard.yourcompany.com
+   ping -c 100 dashboard.mftplus.co.za
    ```
 
 ---
@@ -184,12 +173,12 @@ mftctl config list
 
 **Solutions:**
 
-1. **Re-register the Agent**
+1. **Log In Again**
+
+   Re-authenticate with your API key (create a fresh one in the dashboard if needed):
    ```bash
-   mftctl register --force
+   mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
    ```
-   
-   You'll need your registration credentials. Contact your account owner if you don't have them.
 
 2. **Check System Clock**
    
@@ -207,11 +196,11 @@ mftctl config list
 
 3. **Clear Cached Credentials**
    ```bash
-   # Remove stored token
-   mftctl config unset jwt
+   # Remove stored credentials
+   mftctl logout
 
    # Re-authenticate
-   mftctl login
+   mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
    ```
 
 ### API Key Issues
@@ -224,14 +213,14 @@ mftctl config list
 
 1. **Re-authenticate**
    ```bash
-   mftctl login
+   mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
    ```
 
 2. **Regenerate API Key**
    
-   Log into the dashboard and generate a new API key, then login again:
+   Log into the dashboard and generate a new API key (**API Keys** → **Create API Key**), then login again:
    ```bash
-   mftctl login pc-api-xxxxxxxxxxxxxxxx
+   mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
    ```
 
 3. **Check API Key Permissions**
@@ -307,13 +296,12 @@ mftctl config list
 
    Archive or delete old transfer log files from the agent's log directory.
 
-3. **Configure Log Rotation**
-   ```yaml
-   # config.yaml
-   logging:
-     maxSize: 100MB
-     maxBackups: 5
-     maxAge: 30d
+3. **Keep Log Size Under Control**
+
+   Archive or delete old log files on a schedule, for example with a cron job:
+   ```bash
+   # Delete agent logs older than 30 days (Linux/macOS)
+   find ~/.config/mft-agent/logs -name "*.log" -mtime +30 -delete
    ```
 
 ### File Not Found
@@ -334,15 +322,15 @@ mftctl config list
    ```
 
 2. **Check Pattern Syntax**
-   
-   Ensure glob patterns are correct:
-   ```yaml
-   # Correct
-   source: /var/log/*.log
-   
-   # Incorrect (missing extension)
-   source: /var/log/*.
-   ```
+    
+   Ensure the source patterns you configured for the job are correct:
+    ```text
+    # Correct
+    /var/log/*.log
+
+    # Incorrect (missing extension)
+    /var/log/*.
+    ```
 
 3. **Case Sensitivity**
    
@@ -362,21 +350,14 @@ mftctl config list
 
 **Solutions:**
 
-1. **Enable Resume Support**
-   ```yaml
-   # config.yaml
-   transfer:
-     resumeEnabled: true
-     chunkSize: 10MB
+1. **Retry the Transfer**
+
+   Interrupted transfers can be retried from the dashboard (**Transfers** → retry), or simply re-sent:
+   ```bash
+   mftctl send largefile.bin --to sftp://user@host/path --agent <agent-id>
    ```
 
-2. **Increase Timeout**
-   ```yaml
-   server:
-     timeout: 600s  # 10 minutes for large files
-   ```
-
-3. **Verify Destination Space**
+2. **Verify Destination Space**
    ```bash
    # For SFTP
    sftp user@server.com
@@ -405,15 +386,14 @@ mftctl config list
    uname -m
    
    # Expected outputs:
-   # x86_64    → Download amd64/x64 build
-   # aarch64   → Download arm64 build
-   # armv7l    → Download arm build
+   # x86_64    → Download amd64 build (macOS: universal build covers it)
+   # aarch64   → Download aarch64/arm64 build (macOS: universal build covers it)
    ```
 
 2. **Missing Dependencies on Linux**
    ```bash
    # Check for missing libraries
-   ldd /usr/bin/mftplus
+   ldd /usr/local/bin/mftctl
    
    # Install common dependencies
    sudo apt-get install libc6 libssl1.1  # Debian/Ubuntu
@@ -442,11 +422,11 @@ mftctl config list
 
 1. **Install with Elevated Privileges**
    ```bash
-   # Linux/macOS
-   sudo dpkg -i mftplus_amd64.deb
-   sudo rpm -i mftplus-x86_64.rpm
+   # Install the desktop agent (Linux) from the release channel
+   sudo dpkg -i MFT.Agent_<version>_amd64.deb        # Debian/Ubuntu
+   sudo rpm -i MFT.Agent-<version>-1.x86_64.rpm      # RHEL/CentOS
    
-   # Windows: Run Command Prompt as Administrator
+   # Windows: Run the installer as Administrator
    ```
 
 2. **Manual Installation Directory**
@@ -454,10 +434,10 @@ mftctl config list
    Install to a user-writable location:
    ```bash
    # Extract to home directory
-   tar -xzf mftplus-linux-amd64.tar.gz -C $HOME/
+   tar -xzf mftctl_<version>_linux_amd64.tar.gz -C $HOME/
    
    # Add to PATH
-   export PATH=$HOME/mftplus/bin:$PATH
+   export PATH=$HOME/bin:$PATH
    ```
 
 ### Service Won't Start (Windows)
@@ -481,52 +461,47 @@ mftctl config list
    Get-WmiObject Win32_Service | Where-Object {$_.Name -eq "MFTPlus"}
    ```
 
-3. **Reinstall Service**
-   ```powershell
-   # Remove existing service
-   mftplus-service.exe uninstall
-   
-   # Reinstall as administrator
-   mftplus-service.exe install
-   ```
+3. **Reinstall the Agent**
+
+   Uninstall the desktop agent via Windows "Apps & features" (or the original installer's repair option), then re-run the latest installer from the [release channel](https://releases.mftplus.co.za/latest/) as Administrator.
 
 ---
 
 ## Configuration Mistakes
 
-### Invalid YAML Syntax
+### Invalid Configuration File
 
 **Symptoms:**
-- "YAML parse error" on startup
+- "parse error" on startup
 - Configuration not loading
-- Agent fails to start
+- CLI commands fail with unexpected errors
 
 **Solutions:**
 
-1. **Validate Configuration**
-   Use an online YAML validator like [yamllint.com](https://yamllint.com).
+`mftctl` uses a JSON config file (`~/.mftctl/config.json`) and the headless agent uses TOML (`~/.config/mft-agent/config.toml`). If you edited either by hand:
 
-2. **Common YAML Mistakes**
-   
-   ```yaml
-   # WRONG: Tabs instead of spaces
-   server:
-  	url: http://localhost:8080
-   
-   # RIGHT: Use spaces for indentation
-   server:
-     url: http://localhost:8080
-   
-   # WRONG: Missing colon after key
-   server url http://localhost:8080
-   
-   # RIGHT: Colon after key
-   server: http://localhost:8080
+1. **Validate JSON Syntax**
+   ```bash
+   # Parse errors are reported with line numbers
+   python3 -m json.tool ~/.mftctl/config.json > /dev/null && echo OK
    ```
 
-3. **Use Online YAML Validator**
-   
-   Copy your config to [yamllint.com](https://yamllint.com) to validate syntax.
+2. **Common JSON Mistakes**
+    ```json
+    // WRONG: trailing comma
+    { "serverURL": "...", }
+
+    // RIGHT: no trailing commas, double quotes only
+    { "serverURL": "https://dashboard.mftplus.co.za" }
+    ```
+
+3. **Let the CLI Fix It**
+
+   The safest option is to manage values through `mftctl config set / get / unset`, or start fresh:
+   ```bash
+   mftctl logout        # clears stored credentials
+   mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
+   ```
 
 ### Wrong Server URL
 
@@ -538,25 +513,25 @@ mftctl config list
 **Solutions:**
 
 1. **Verify URL Format**
-   ```yaml
-   # Include protocol
-   server:
-     url: https://dashboard.example.com  # RIGHT
-   
-   # Missing protocol
-   server:
-     url: dashboard.example.com  # WRONG
+   ```bash
+   # Check what's currently saved
+   mftctl config get server-url
+
+   # RIGHT: includes protocol
+   mftctl config set server-url https://dashboard.mftplus.co.za
+
+   # WRONG: missing protocol
+   mftctl config set server-url dashboard.mftplus.co.za
    ```
 
 2. **Test URL in Browser**
-   
+    
    Open the server URL in a web browser. It should load the dashboard.
 
 3. **Check for Trailing Slashes**
-   ```yaml
-   server:
-     url: https://dashboard.example.com/api  # RIGHT
-     url: https://dashboard.example.com/api/  # MAY CAUSE ISSUES
+   ```bash
+   # Use the plain base URL — no path, no trailing slash
+   mftctl config set server-url https://dashboard.mftplus.co.za
    ```
 
 ### Incorrect File Paths
@@ -569,22 +544,20 @@ mftctl config list
 **Solutions:**
 
 1. **Use Absolute Paths**
-   ```yaml
-   # More reliable
-   source: /var/log/app/*.log
-   
-   # May fail depending on working directory
-   source: ./logs/*.log
-   ```
+    ```text
+    # More reliable (job source setting)
+    /var/log/app/*.log
+
+    # May fail depending on working directory
+    ./logs/*.log
+    ```
 
 2. **Windows Path Separators**
-   ```yaml
-   # Use forward slashes (works on all platforms)
-   source: C:/Logs/*.log
-   
-   # Or escape backslashes
-   source: C:\\Logs\\*.log
-   ```
+    ```text
+    # Use forward slashes (works on all platforms)
+    C:/Logs/*.log
+    ```
+   When creating the job via the CLI, quote paths containing spaces.
 
 3. **Verify Path Exists**
    ```bash
@@ -608,7 +581,7 @@ MFTPlus offers a Community tier for small-scale use. For enterprise features and
 
 **3. Can I run multiple agents on the same machine?**
 
-Yes, but you must configure each agent with a unique configuration directory. Copy the config and update the server URL:
+Yes. Each machine that runs `mftctl connect` registers as its own agent with a unique agent ID, so you can connect as many machines as you need to the same account.
 
 **4. How do I upgrade MFTPlus?**
 
@@ -646,8 +619,8 @@ Check file permissions and verify the agent's user account has access.
 **10. How do I enable debug logging?**
 
 ```bash
-# Run with debug output
-mftctl --debug status
+# Run any command with debug output
+mftctl --debug agents list
 
 # View logs
 tail -f ~/.config/mft-agent/logs/agent.log
@@ -655,10 +628,11 @@ tail -f ~/.config/mft-agent/logs/agent.log
 
 **11. The agent shows as offline in the dashboard. What do I do?**
 
-1. Check that the agent process is running: `mftctl status`
-2. Verify server URL: `mftctl config get server-url`
-3. Test connectivity: `curl -v https://dashboard.yourcompany.com/health`
-4. Check firewall rules allow outbound HTTPS
+1. Check that `mftctl connect` is running on the machine: it should show an active connection
+2. List your agents and their online state: `mftctl agents list`
+3. Verify server URL: `mftctl config get server-url`
+4. Test connectivity: `curl -v https://dashboard.mftplus.co.za/api/health`
+5. Check firewall rules allow outbound HTTPS
 
 **12. Why are my scheduled jobs not running?**
 
@@ -671,10 +645,11 @@ tail -f ~/.config/mft-agent/logs/agent.log
 
 ```bash
 # Backup current config first
-cp ~/.config/mft-agent/config.yaml ~/.config/mft-agent/config.yaml.backup
+cp ~/.mftctl/config.json ~/.mftctl/config.json.backup
 
-# Reinitialize
-mftctl config init
+# Clear stored credentials, then log in again
+mftctl logout
+mftctl login sk_xxxxxxxxxxxxxxxx --server https://dashboard.mftplus.co.za
 ```
 
 **14. Can I recover from a failed transfer?**
@@ -698,8 +673,8 @@ If you've tried the solutions above and still can't resolve your issue:
    # Export configuration
    mftctl config export
 
-   # Show agent status
-   mftctl status
+   # Show your registered agents and their state
+   mftctl agents list
    ```
 
 2. **Contact Support**
