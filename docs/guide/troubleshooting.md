@@ -152,6 +152,16 @@ mftctl config list
 
    Scheduled jobs support configurable retry attempts and backoff — set them when creating the job in the dashboard, or with `mft-agent-cli jobs create --max-retries --initial-backoff`. One-off failures can be re-sent from the dashboard or with `mftctl send`.
 
+   There is no global retry tuning in `~/.config/mft-agent/config.toml` — the agent retries failed transfers automatically with exponential backoff, and transfers that fail after all retries move to the dead-letter queue:
+
+   ```bash
+   # List transfers that failed after max retries
+   mft-agent-cli dead-letters
+
+   # Retry a specific transfer
+   mft-agent-cli retry --transfer-id <transfer-id>
+   ```
+
 3. **Check Network Stability**
    
    Monitor for packet loss or high latency:
@@ -304,6 +314,16 @@ mftctl config list
    find ~/.config/mft-agent/logs -name "*.log" -mtime +30 -delete
    ```
 
+4. **Adjust Log Verbosity**
+
+   Log rotation is handled automatically and is not configurable, but you
+   can set the verbosity via `log_level` in `~/.config/mft-agent/config.toml`:
+
+   ```toml
+   # config.toml
+   log_level = "warn"  # Reduce log volume (e.g., "error", "warn", "info", "debug")
+   ```
+
 ### File Not Found
 
 **Symptoms:**
@@ -323,14 +343,14 @@ mftctl config list
 
 2. **Check Pattern Syntax**
     
-   Ensure the source patterns you configured for the job are correct:
-    ```text
-    # Correct
-    /var/log/*.log
+   Ensure glob patterns used in jobs and triggers are correct:
+   ```text
+   # Correct
+   /var/log/*.log
 
-    # Incorrect (missing extension)
-    /var/log/*.
-    ```
+   # Incorrect (missing extension)
+   /var/log/*.
+   ```
 
 3. **Case Sensitivity**
    
@@ -355,6 +375,17 @@ mftctl config list
    Interrupted transfers can be retried from the dashboard (**Transfers** → retry), or simply re-sent:
    ```bash
    mftctl send largefile.bin --to sftp://user@host/path --agent <agent-id>
+   ```
+
+   The agent resumes incomplete transfers on the next retry; transfers that
+   exhaust retries land in the dead-letter queue:
+
+   ```bash
+   # List dead letters
+   mft-agent-cli dead-letters
+
+   # Retry a specific transfer
+   mft-agent-cli retry --transfer-id <transfer-id>
    ```
 
 2. **Verify Destination Space**
@@ -471,6 +502,10 @@ mftctl config list
 
 ### Invalid Configuration File
 
+The headless agent reads its configuration from `~/.config/mft-agent/config.toml`
+(TOML format) and `mftctl` uses a JSON config file (`~/.mftctl/config.json`).
+A malformed file prevents the agent from starting or breaks CLI commands.
+
 **Symptoms:**
 - "parse error" on startup
 - Configuration not loading
@@ -480,13 +515,15 @@ mftctl config list
 
 `mftctl` uses a JSON config file (`~/.mftctl/config.json`) and the headless agent uses TOML (`~/.config/mft-agent/config.toml`). If you edited either by hand:
 
-1. **Validate JSON Syntax**
+1. **Validate Syntax**
    ```bash
-   # Parse errors are reported with line numbers
+   # JSON (mftctl): parse errors are reported with line numbers
    python3 -m json.tool ~/.mftctl/config.json > /dev/null && echo OK
    ```
 
-2. **Common JSON Mistakes**
+   For the agent's TOML config, use a TOML validator (most editors have built-in TOML linting).
+
+2. **Common Mistakes**
     ```json
     // WRONG: trailing comma
     { "serverURL": "...", }
@@ -494,6 +531,21 @@ mftctl config list
     // RIGHT: no trailing commas, double quotes only
     { "serverURL": "https://dashboard.mftplus.co.za" }
     ```
+
+   ```toml
+   # WRONG: Missing quotes around a string value
+   dashboard_url = https://dashboard.example.com
+   
+   # RIGHT: Quote string values
+   dashboard_url = "https://dashboard.example.com"
+   
+   # WRONG: Duplicate keys in the same table
+   log_level = "info"
+   log_level = "debug"
+   
+   # RIGHT: One value per key
+   log_level = "info"
+   ```
 
 3. **Let the CLI Fix It**
 
@@ -556,6 +608,9 @@ mftctl config list
     ```text
     # Use forward slashes (works on all platforms)
     C:/Logs/*.log
+
+    # Or escape backslashes
+    C:\\Logs\\*.log
     ```
    When creating the job via the CLI, quote paths containing spaces.
 
@@ -646,6 +701,7 @@ tail -f ~/.config/mft-agent/logs/agent.log
 ```bash
 # Backup current config first
 cp ~/.mftctl/config.json ~/.mftctl/config.json.backup
+cp ~/.config/mft-agent/config.toml ~/.config/mft-agent/config.toml.backup
 
 # Clear stored credentials, then log in again
 mftctl logout

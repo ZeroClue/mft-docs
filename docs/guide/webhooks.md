@@ -9,9 +9,8 @@ When an event occurs in your MFTPlus deployment (such as a transfer completing o
 ### Use Cases
 
 - **Transfer Notifications**: Alert teams when file transfers complete or fail
-- **Agent Monitoring**: Trigger alerts when agents go offline or certificates expire
-- **Audit Integration**: Stream events to SIEM systems for compliance
-- **Automation**: Chain additional workflows based on transfer status
+- **Pipeline Automation**: Kick off downstream processing as soon as files land
+- **Audit Integration**: Stream transfer events to SIEM systems for compliance
 - **Custom Notifications**: Send alerts to Slack, Microsoft Teams, or other services
 
 ## Configuration
@@ -38,54 +37,28 @@ curl -X POST https://api.mftplus.co.za/api/webhooks \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <admin-token>" \
   -d '{
-    "name": "Transfer Alerts",
     "url": "https://your-app.com/webhooks/mftplus",
-    "events": ["transfer.completed", "transfer.failed"],
+    "events": ["TRANSFER_COMPLETED", "TRANSFER_FAILED"],
     "secret": "your-signing-secret",
-    "active": true
+    "enabled": true
   }'
 ```
 
 ## Event Types
 
-MFTPlus sends webhook notifications for the following events:
-
-### Transfer Events
+MFTPlus sends webhook notifications for the following transfer events:
 
 | Event | Description | Trigger |
 |-------|-------------|---------|
-| `transfer.created` | A new transfer was initiated | Transfer job starts |
-| `transfer.progress` | Transfer progress update | Every 10% progress |
-| `transfer.completed` | Transfer completed successfully | File transfer finishes |
-| `transfer.failed` | Transfer failed | Error during transfer |
-| `transfer.cancelled` | Transfer was cancelled | Manual or automatic cancellation |
+| `TRANSFER_CREATED` | A new transfer was created | Transfer is queued |
+| `TRANSFER_STARTED` | Transfer started | Agent begins transferring |
+| `TRANSFER_COMPLETED` | Transfer completed successfully | File transfer finishes |
+| `TRANSFER_FAILED` | Transfer failed | Error during transfer |
+| `TRANSFER_RETRYING` | Failed transfer is retrying | Automatic retry starts |
 
-### Agent Events
-
-| Event | Description | Trigger |
-|-------|-------------|---------|
-| `agent.registered` | New agent registered | Agent joins deployment |
-| `agent.connected` | Agent came online | Agent connects after offline |
-| `agent.disconnected` | Agent went offline | Agent loses connection |
-| `agent.certificate.expiring` | Certificate expiring soon | 30 days before expiration |
-| `agent.certificate.expired` | Certificate expired | Certificate no longer valid |
-
-### Job Events
-
-| Event | Description | Trigger |
-|-------|-------------|---------|
-| `job.started` | Scheduled job started | Job execution begins |
-| `job.completed` | Job completed successfully | All transfers in job finish |
-| `job.failed` | Job failed | One or more transfers fail |
-| `job.skipped` | Job skipped | Schedule conditions not met |
-
-### System Events
-
-| Event | Description | Trigger |
-|-------|-------------|---------|
-| `system.health.degraded` | System performance degraded | Resource thresholds exceeded |
-| `system.storage.warning` | Storage capacity warning | Disk usage above 80% |
-| `system.error` | System error occurred | Unexpected system failure |
+::: tip
+Webhook subscriptions are limited to transfer lifecycle events. Agent and job status changes are not available as webhook events.
+:::
 
 ## Payload Format
 
@@ -94,7 +67,7 @@ All webhook payloads follow this structure:
 ```json
 {
   "id": "whevt_1a2b3c4d5e6f7g8h",
-  "event": "transfer.completed",
+  "eventType": "TRANSFER_COMPLETED",
   "timestamp": "2026-04-29T15:30:00Z",
   "data": {
     // Event-specific data
@@ -102,102 +75,50 @@ All webhook payloads follow this structure:
 }
 ```
 
-### Transfer Event Payloads
+### Data Fields
 
-**transfer.completed:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `transferId` | string | ID of the related transfer |
+| `source` | string | Source path or URL |
+| `destination` | string | Destination path or URL |
+| `protocol` | string | Protocol used (e.g., `sftp`) |
+| `status` | string | Current transfer status |
+| `bytesTransferred` | number | Optional — bytes transferred so far |
+| `bytesTotal` | number | Optional — total bytes to transfer |
+| `errorMessage` | string | Optional — present when a transfer fails |
+
+**TRANSFER_COMPLETED:**
 ```json
 {
   "id": "whevt_1a2b3c4d5e6f7g8h",
-  "event": "transfer.completed",
+  "eventType": "TRANSFER_COMPLETED",
   "timestamp": "2026-04-29T15:30:00Z",
   "data": {
     "transferId": "trf_1a2b3c4d5e6f",
-    "agentId": "agent_1a2b3c4d",
-    "agentName": "production-server-1",
-    "sourceUrl": "sftp://ftp.example.com/files/data.csv",
-    "destinationPath": "/local/data.csv",
-    "direction": "pull",
+    "source": "/local/data.csv",
+    "destination": "sftp://ftp.example.com/files/data.csv",
     "protocol": "sftp",
-    "size": 1048576,
+    "status": "completed",
     "bytesTransferred": 1048576,
-    "duration": 45,
-    "speed": 23303,
-    "status": "completed"
+    "bytesTotal": 1048576
   }
 }
 ```
 
-**transfer.failed:**
+**TRANSFER_FAILED:**
 ```json
 {
   "id": "whevt_2b3c4d5e6f7g8h9i",
-  "event": "transfer.failed",
+  "eventType": "TRANSFER_FAILED",
   "timestamp": "2026-04-29T15:31:00Z",
   "data": {
     "transferId": "trf_2b3c4d5e6f",
-    "agentId": "agent_1a2b3c4d",
-    "agentName": "production-server-1",
-    "sourceUrl": "sftp://ftp.example.com/files/data.csv",
-    "error": "Authentication failed: Invalid credentials",
-    "errorCode": "AUTH_FAILED",
-    "retryCount": 3,
-    "status": "failed"
-  }
-}
-```
-
-### Agent Event Payloads
-
-**agent.disconnected:**
-```json
-{
-  "id": "whevt_3c4d5e6f7g8h9i0j",
-  "event": "agent.disconnected",
-  "timestamp": "2026-04-29T15:32:00Z",
-  "data": {
-    "agentId": "agent_1a2b3c4d",
-    "agentName": "production-server-1",
-    "hostname": "server1.example.com",
-    "lastSeen": "2026-04-29T15:30:00Z",
-    "status": "offline"
-  }
-}
-```
-
-**agent.certificate.expiring:**
-```json
-{
-  "id": "whevt_4d5e6f7g8h9i0j1k",
-  "event": "agent.certificate.expiring",
-  "timestamp": "2026-04-29T15:33:00Z",
-  "data": {
-    "agentId": "agent_1a2b3c4d",
-    "agentName": "production-server-1",
-    "certificateId": "cert_1a2b3c4d",
-    "expiresAt": "2026-05-29T00:00:00Z",
-    "daysRemaining": 30
-  }
-}
-```
-
-### Job Event Payloads
-
-**job.completed:**
-```json
-{
-  "id": "whevt_5e6f7g8h9i0j1k2l",
-  "event": "job.completed",
-  "timestamp": "2026-04-29T15:34:00Z",
-  "data": {
-    "jobId": "job_1a2b3c4d",
-    "jobName": "Daily Backup",
-    "agentId": "agent_1a2b3c4d",
-    "schedule": "0 2 * * *",
-    "transfersTotal": 5,
-    "transfersCompleted": 5,
-    "transfersFailed": 0,
-    "duration": 320,
-    "status": "completed"
+    "source": "sftp://ftp.example.com/files/data.csv",
+    "destination": "/local/data.csv",
+    "protocol": "sftp",
+    "status": "failed",
+    "errorMessage": "Authentication failed: Invalid credentials"
   }
 }
 ```
@@ -322,7 +243,7 @@ app.post('/webhooks/mftplus', async (req, res) => {
     return res.status(401).send('Invalid signature');
   }
 
-  const { id, event, data } = req.body;
+  const { id, eventType, data } = req.body;
 
   // Check for duplicate
   if (await Event.exists({ id })) {
@@ -330,10 +251,10 @@ app.post('/webhooks/mftplus', async (req, res) => {
   }
 
   // Process asynchronously
-  processEvent(event, data).catch(console.error);
+  processEvent(eventType, data).catch(console.error);
 
   // Save event ID for deduplication
-  await Event.create({ id, event, data });
+  await Event.create({ id, eventType, data });
 
   // Respond immediately
   res.status(200).send('OK');
@@ -451,16 +372,16 @@ curl https://api.mftplus.co.za/api/webhooks/{id}/deliveries \
 
 ```javascript
 app.post('/webhooks/mftplus', (req, res) => {
-  const { event, data } = req.body;
+  const { eventType, data } = req.body;
 
-  if (event === 'transfer.failed') {
+  if (eventType === 'TRANSFER_FAILED') {
     axios.post(process.env.SLACK_WEBHOOK_URL, {
-      text: `Transfer failed: ${data.sourceUrl}`,
+      text: `Transfer failed: ${data.source} -> ${data.destination}`,
       attachments: [{
         color: 'danger',
         fields: [
-          { title: 'Agent', value: data.agentName },
-          { title: 'Error', value: data.error }
+          { title: 'Transfer', value: data.transferId },
+          { title: 'Error', value: data.errorMessage || 'Unknown error' }
         ]
       }]
     });
@@ -477,7 +398,7 @@ app.post('/webhooks/mftplus', (req, res) => {
 def webhook_handler():
     payload = request.get_json()
 
-    if payload['event'] == 'transfer.completed':
+    if payload['eventType'] == 'TRANSFER_COMPLETED':
         # Update transfer record in database
         db.transfers.update_one(
             {'transfer_id': payload['data']['transferId']},
@@ -494,15 +415,15 @@ def webhook_handler():
 
 ```javascript
 app.post('/webhooks/mftplus', async (req, res) => {
-  const { event, data } = req.body;
+  const { eventType, data } = req.body;
 
-  if (event === 'agent.disconnected') {
+  if (eventType === 'TRANSFER_FAILED') {
     await axios.post(
       `https://api.pagerduty.com/incidents`,
       {
         incident: {
           type: 'incident',
-          title: `MFTPlus Agent Offline: ${data.agentName}`,
+          title: `MFTPlus Transfer Failed: ${data.transferId}`,
           service: { id: process.env.PAGERDUTY_SERVICE_ID },
           urgency: 'high'
         }

@@ -106,7 +106,7 @@ mftctl connections create \
   --host backup.example.com \
   --port 22 \
   --username deploy \
-  --auth key
+  --ssh-key-path ~/.ssh/id_ed25519
 
 mftctl connections test backup-server
 ```

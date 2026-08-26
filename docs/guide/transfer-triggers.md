@@ -56,7 +56,7 @@ mftctl trigger create \
   --watch /data/incoming \
   --glob "*.csv" \
   --dest "sftp://partner.inbox.com/{&#8203;{filename}&#8203;}" \
-  --debounce 5 \
+  --agent ag-2x8mK9nR \
   --recursive
 ```
 
@@ -170,25 +170,18 @@ mftctl trigger list
 
 ### Path Validation
 
-- **Restricted directories**: Triggers can only watch paths within allowed directories
-- **Path traversal prevention**: Templates cannot escape allowed directories
-- **Credential isolation**: Each trigger uses isolated credential sets
+- **Explicit watch paths**: Each trigger watches exactly the directory configured for it
+- **Scoped triggers**: Agents only receive the triggers assigned to them in the dashboard
+- **Per-trigger credentials**: Each trigger stores its own destination connection settings
 
 ### Allowed Directories
 
-Configure allowed watch directories in agent config:
+Watch directories are configured per trigger in the dashboard (or via
+`mftctl trigger create --watch`). The agent watches exactly the paths
+configured on its triggers.
 
-```yaml
-agent:
-  triggers:
-    allowedPaths:
-      - /data/incoming
-      - /var/uploads
-      - /tmp/transfer
-```
-
-::: warning Security Note
-Triggers cannot watch paths outside the configured `allowedPaths`. This prevents unauthorized file access.
+::: tip Security Note
+Control which directories an agent monitors by managing that agent's triggers in the dashboard.
 :::
 
 ### Credential Management
@@ -201,8 +194,8 @@ Triggers cannot watch paths outside the configured `allowedPaths`. This prevents
 
 ### Trigger Not Firing
 
-1. **Verify path is within allowed directories**
-   Check the `allowedPaths` setting in the agent configuration file at `~/.config/mft-agent/config.yaml`.
+1. **Verify the watch path**
+   Check the trigger's watch directory in the dashboard (**Triggers** → trigger name).
 
 2. **Check file pattern matches**
    - Verify `globPattern` matches your filenames
@@ -218,16 +211,12 @@ Triggers cannot watch paths outside the configured `allowedPaths`. This prevents
 If large files are transferred before completion:
 
 1. **Increase debounce time**
-   ```yaml
-   debounceSeconds: 30  # Wait 30 seconds for file completion
-   ```
+   Edit the trigger in the dashboard and raise **Debounce (seconds)** —
+   for example, 30 seconds to wait for large files to finish writing.
 
 2. **Use filename patterns for completion**
-   ```yaml
-   excludePatterns:
-     - "*.tmp"      # Exclude temporary files
-     - "*.upload"   # Exclude in-progress uploads
-   ```
+   Add temporary-file patterns (for example `*.tmp`, `*.upload`) to the
+   trigger's **Exclude Patterns** in the dashboard.
 
 ### Transfer Failures
 
@@ -266,22 +255,15 @@ If large files are transferred before completion:
 If monitoring large directory trees:
 
 1. **Disable recursive monitoring**
-   ```yaml
-   recursive: false
-   ```
+   Turn off **Recursive** on the trigger in the dashboard (or omit
+   `--recursive` from `mftctl trigger create`).
 
 2. **Use more specific glob patterns**
-   ```yaml
-   globPattern: "2024/*.csv"  # Instead of "*.csv"
-   ```
+   Match a subdirectory, for example `2024/*.csv` instead of `*.csv`.
 
 3. **Add exclude patterns for noise**
-   ```yaml
-   excludePatterns:
-     - "*.log"
-     - "*.tmp"
-     - ".*"
-   ```
+   Add patterns such as `*.log`, `*.tmp`, and `.*` to the trigger's
+   **Exclude Patterns** in the dashboard.
 
 ## Best Practices
 
@@ -315,8 +297,7 @@ mftctl trigger create \
   --watch /data/incoming \
   --glob "*.csv" \
   --dest "sftp://data-warehouse.example.com/ingest/{&#8203;{date()}&#8203;}/{&#8203;{filename}&#8203;}" \
-  --credentials warehouse-creds \
-  --debounce 10
+  --agent ag-2x8mK9nR
 ```
 
 ### Backup Trigger
@@ -327,7 +308,7 @@ mftctl trigger create \
   --watch /etc/app/config \
   --glob "*.yaml" \
   --dest "file:///var/backups/config/{&#8203;{datetime()}&#8203;}/{&#8203;{filename}&#8203;}" \
-  --debounce 2
+  --agent ag-2x8mK9nR
 ```
 
 ### Multi-Destination Routing
@@ -336,12 +317,14 @@ Use multiple triggers for different file types:
 
 ```bash
 # CSV files to SFTP
-mftctl trigger create csv-sftp --watch /data/incoming --glob "*.csv" \
-  --dest "sftp://sftp.example.com/csv/{&#8203;{filename}&#8203;}"
+mftctl trigger create --name csv-sftp --watch /data/incoming --glob "*.csv" \
+  --dest "sftp://sftp.example.com/csv/{&#8203;{filename}&#8203;}" \
+  --agent ag-2x8mK9nR
 
 # JSON files to local archive
-mftctl trigger create json-archive --watch /data/incoming --glob "*.json" \
-  --dest "file:///var/archive/json/{&#8203;{basename}&#8203;}_{&#8203;{datetime()}&#8203;}{&#8203;{extension}&#8203;}"
+mftctl trigger create --name json-archive --watch /data/incoming --glob "*.json" \
+  --dest "file:///var/archive/json/{&#8203;{basename}&#8203;}_{&#8203;{datetime()}&#8203;}{&#8203;{extension}&#8203;}" \
+  --agent ag-2x8mK9nR
 ```
 
 ## Next Steps
