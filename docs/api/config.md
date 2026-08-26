@@ -1,11 +1,14 @@
 ---
 title: Configuration Options - MFTPlus Documentation
-description: "Configure MFTPlus agent behavior: server URLs, credentials, retry policies, logging levels, and security settings. Complete configuration reference."
+description: "Configure MFTPlus: mftctl CLI settings in ~/.mftctl/config.json and agent runtime settings in ~/.config/mft-agent/config.toml."
 ---
 
 # MFTPlus Configuration
 
-MFTPlus configuration options for `mftctl` CLI.
+There are two configuration surfaces:
+
+- **`mftctl` CLI** — your saved dashboard connection and credentials
+- **Agent runtime** — settings for the headless agent daemon (`mft-agent-cli`)
 
 ## mftctl CLI Configuration
 
@@ -18,57 +21,89 @@ MFTPlus configuration options for `mftctl` CLI.
 
 ```json
 {
-  "server-url": "https://dashboard.mftplus.co.za",
-  "api-key": "",
-  "jwt": ""
+  "serverURL": "https://dashboard.mftplus.co.za",
+  "apiKey": "",
+  "jwtToken": ""
 }
 ```
+
+You normally don't edit this file by hand — use the commands below.
 
 ## Configuration via CLI
 
 Use `mftctl config` commands to manage settings:
 
 ```bash
-# Initialize config file
+# Initialize an empty config file
 mftctl config init
 
 # Set server URL
 mftctl config set server-url https://dashboard.mftplus.co.za
 
-# View all config values
+# View all config values (secrets are masked)
 mftctl config list
 
 # Get a specific value
 mftctl config get server-url
 
+# Remove a value
+mftctl config unset server-url
+
 # Export configuration
 mftctl config export
 ```
+
+::: tip Fastest path
+Running `mftctl login <api-key> --server https://dashboard.mftplus.co.za` validates your key against the dashboard and writes both values to the config file in one step.
+:::
 
 ### Configuration Keys
 
 | Key | Description | Default |
 |-----|-------------|---------|
-| `server_url` | MFTPlus dashboard server URL | `http://localhost:3001` |
-| `api_key` | Admin API key for authentication | (empty) |
-| `jwt_token` | JWT token for session-based auth | (empty) |
+| `server-url` | Dashboard/API base URL used by all mftctl commands | Falls back to `http://localhost:3001` when unset |
+| `api-key` | API key for authentication (`sk_...`, created in the dashboard) | (empty) |
+| `jwt` | JWT token for session-based auth | (empty) |
 
-### Configuration via CLI
+There are no environment-variable overrides — configure via these commands or pass flags per command (for example `mftctl connect --server <url> --token <key>`).
 
-```bash
-# Server
-MFTPLUS_SERVER_URL=https://dashboard.mftplus.co.za
-MFTPLUS_API_KEY=pc-api-xxxxxxxxxxxxxxxx
-```
+## Agent Runtime Configuration
 
-## MFTPlus Agent Configuration
-
-The agent runtime uses a separate configuration file in TOML format.
+The headless agent (`mft-agent-cli`) uses a separate TOML file.
 
 ### Config File Location
+
+- **Linux**: `~/.config/mft-agent/config.toml`
+- **macOS**: `~/Library/Application Support/mft-agent/config.toml`
+- **Windows**: `%APPDATA%\mft-agent\config.toml`
+
+### Key Settings
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `dashboard_url` | Dashboard/API base URL the agent connects to | `https://dashboard.mftplus.co.za` |
+| `api_key` | Dashboard API key (`sk_...`) | (empty) |
+| `telemetry_enabled` | Send anonymous usage telemetry | `true` |
+| `receiver_enabled` | Allow incoming transfers on this agent | `true` |
+| `bandwidth_limit_mbps` | Cap transfer bandwidth | unlimited |
+
+### Configure via CLI
+
+```bash
+# Point the agent at the dashboard and authenticate it
+mft-agent-cli configure --dashboard-api-url https://dashboard.mftplus.co.za --dashboard-api-key sk_xxxxxxxxxxxxxxxx
+
+# Check the running agent
+mft-agent-cli status
+
+# Run the agent engine in the foreground
+mft-agent-cli run
+```
+
+For installation of the headless agent on servers, see [Install Agent](../guide/install-agent).
 
 ## Next Steps
 
 - [CLI Commands](./cli) - CLI reference for managing configuration
+- [Quick Start](../guide/quick-start) - Connect and send your first transfer
 - [Plugin API](../plugins/api) - Plugin development
-- [Installation](../guide/installation) - Setup guide for new deployments
