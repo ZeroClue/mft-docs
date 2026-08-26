@@ -100,6 +100,93 @@ Examples:
   mftctl agents jobs ag-2x8mK9nR
 ```
 
+## Audit Logs
+
+Inspect the cryptographic audit log chain. Each entry's hash includes the
+previous entry's hash (SHA-256), forming a tamper-evident chain.
+
+All `audit` commands support these global flags:
+
+```bash
+Global Flags:
+  -k, --api-key string   API key (overrides logged-in config)
+  -j, --json             Output in JSON format
+      --server string    Server URL (overrides logged-in config)
+```
+
+### audit verify
+
+Verify the SHA-256 hash chain integrity of the audit log.
+Walks all entries and recomputes hashes to detect tampering.
+Exits with code 0 if the chain is valid, 1 if broken.
+
+```bash
+mftctl audit verify [flags]
+
+Examples:
+  mftctl audit verify
+  mftctl audit verify --json
+```
+
+### audit chain status
+
+Show the current status of the audit log hash chain:
+total entries, last sequence number, and last hash.
+
+```bash
+mftctl audit chain status [flags]
+
+Example:
+  mftctl audit chain status
+```
+
+### audit chain export
+
+Export audit logs in CSV or PDF format.
+
+```bash
+mftctl audit chain export [flags]
+
+Flags:
+  -f, --format string   Export format: csv or pdf (default "csv")
+
+Examples:
+  mftctl audit chain export
+  mftctl audit chain export --format pdf
+```
+
+### audit entry get
+
+Get a single audit log entry by ID with full details,
+including cryptographic hashes for manual verification.
+
+```bash
+mftctl audit entry get [entry-id] [flags]
+
+Example:
+  mftctl audit entry get aud-abc123
+```
+
+### audit log list
+
+List audit log entries with optional filters.
+
+```bash
+mftctl audit log list [flags]
+
+Flags:
+  -c, --category string   Filter by category (authentication, authorization,
+                          admin, agent, transfer, job, system)
+      --customer string   Filter by customer ID (admin only)
+  -l, --limit int         Max results (max 1000) (default 100)
+  -o, --offset int        Pagination offset
+  -s, --severity string   Filter by severity (info, warning, error, critical)
+
+Examples:
+  mftctl audit log list --category transfer --severity error
+  mftctl audit log list --limit 50 --offset 100
+```
+
 ## Transfer Management
 
 ### transfers list

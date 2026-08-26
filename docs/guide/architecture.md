@@ -22,7 +22,7 @@ The core MFTPlus component. A Rust-based CLI agent that runs on your servers and
 
 ```bash
 mft-agent-cli --version
-mft-agent-cli run
+mft-agent-cli start
 ```
 
 ### Dashboard
