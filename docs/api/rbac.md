@@ -45,34 +45,12 @@ GET /api/users/team
 }
 ```
 
-## Get Team Member
-
-Returns details for a specific team member.
-
-```http
-GET /api/users/team/{userId}
-```
-
-**Response:**
-
-```json
-{
-  "id": "user_abc123",
-  "email": "alice@example.com",
-  "name": "Alice",
-  "role": "OWNER",
-  "joinedAt": "2025-06-01T00:00:00Z",
-  "lastActiveAt": "2025-07-01T12:00:00Z",
-  "status": "active"
-}
-```
-
 ## Update User Role
 
-Changes a team member's role. Requires ADMIN or OWNER role.
+Changes a team member's role. Requires **ADMIN** role.
 
 ```http
-PATCH /api/users/team/{userId}/role
+POST /api/users/team/:id/role
 ```
 
 **Request body:**
@@ -83,12 +61,12 @@ PATCH /api/users/team/{userId}/role
 }
 ```
 
-Valid roles: `OWNER`, `ADMIN`, `MEMBER`, `VIEWER`.
+Valid roles: `ADMIN`, `MEMBER`.
 
 **Constraints:**
-- Only OWNERs can assign the OWNER role to another user
-- At least one OWNER must always remain on the team
-- ADMINs can only assign ADMIN, MEMBER, or VIEWER roles
+- Requires ADMIN role (enforced at server/src/routes/team.ts:423)
+- Assignable roles are `ADMIN` and `MEMBER` only (per `changeRoleSchema`)
+- Demoting the last remaining ADMIN is not allowed (at least one ADMIN must remain)
 
 ## Invite User
 
@@ -142,16 +120,6 @@ GET /api/users/invitations
   ]
 }
 ```
-
-## Resend Invitation
-
-Resends a pending invitation email.
-
-```http
-POST /api/users/invitations/{invitationId}/resend
-```
-
-**Response:** `204 No Content`
 
 ## Revoke Invitation
 
