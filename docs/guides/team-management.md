@@ -42,13 +42,13 @@ The previous OWNER will be demoted to ADMIN.
 You can also manage team members programmatically. See the [RBAC API Reference](../api/rbac) for endpoint details.
 
 ```bash
-# List team members
-curl -H "Authorization: Bearer <token>" \
-  https://dashboard.mftplus.co.za/api/team/members
+# List team members (authenticated with the user's Bearer JWT, not an API key)
+curl -H "Authorization: Bearer <your-user-jwt>" \
+  https://dashboard.mftplus.co.za/api/users/team
 
-# Update user role
-curl -X PATCH https://dashboard.mftplus.co.za/api/team/members/<user-id> \
-  -H "Authorization: Bearer <token>" \
+# Update a user's role
+curl -X PATCH https://dashboard.mftplus.co.za/api/users/team/<user-id>/role \
+  -H "Authorization: Bearer <your-user-jwt>" \
   -H "Content-Type: application/json" \
   -d '{"role": "ADMIN"}'
 ```

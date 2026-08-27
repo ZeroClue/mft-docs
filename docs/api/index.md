@@ -63,8 +63,8 @@ mftctl config list
 The MFTPlus Dashboard exposes a REST API for programmatic access.
 
 ```bash
-# List agents (requires admin API key)
-curl -H "X-Admin-API-Key: your-key" \
+# List agents (requires an admin key or admin Bearer JWT)
+curl -H "X-Admin-Key: your-key" \
   https://dashboard.mftplus.co.za/api/agents
 
 # Create transfer (agent auth required)

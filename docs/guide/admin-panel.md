@@ -20,7 +20,7 @@ The admin panel uses separate authentication from the main dashboard:
 
 ### Authentication Methods
 
-1. **Admin API Key**: Use your organization's admin API key
+1. **Admin API Key (`X-Admin-Key`) or Bearer JWT**: Send your admin key as the `X-Admin-Key` header, or authenticate with a Bearer JWT for an admin user
 2. **SSO Integration**: Single sign-on through your identity provider (if configured)
 
 ### Session Management
@@ -234,10 +234,10 @@ The admin panel exposes a REST API for automation.
 
 ### Authentication
 
-Include your admin API key in requests:
+Include your admin API key (or a Bearer JWT for an admin user) in requests:
 
 ```bash
-curl -H "X-Admin-API-Key: your-key" \
+curl -H "X-Admin-Key: your-key" \
   https://dashboard.mftplus.co.za/api/admin/agents
 ```
 

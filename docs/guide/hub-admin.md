@@ -8,34 +8,34 @@ This guide covers the MFTPlus cloud dashboard and hub management — user roles,
 
 ## User Roles
 
-MFTPlus cloud dashboards support three role levels that control access to features and settings.
+MFTPlus uses a four-role model that controls access to dashboard, hub, and team features. These are the same roles described in [User Roles & Permissions](../guides/user-roles).
 
-| Role | Description | Permissions |
+| Role | Intended For | Permissions |
 |------|-------------|-------------|
-| **Admin** | Full access to all dashboard features | Manage users, manage hubs, manage deploy keys, view all agents and transfers, change billing and settings |
-| **User** | Standard operational access | View hubs, manage agents within assigned hubs, create and view transfers, view health metrics |
-| **Viewer** | Read-only access | View hubs, agents, transfers, and health metrics — no create, edit, or delete actions |
+| **OWNER** | Account owner / billing admin | Full access — manage users, hubs, and deploy keys; change billing and settings; delete hubs |
+| **ADMIN** | Team managers, hub operators | Manage users, hubs, and deploy keys; view all agents and transfers; change settings (no billing or hub deletion) |
+| **MEMBER** | Regular operators | View hubs, manage agents within assigned hubs, create and view transfers, view health metrics |
+| **VIEWER** | Auditors / stakeholders | Read-only — view hubs, agents, transfers, and health metrics; no create, edit, or delete actions |
 
 ### Role Assignment
 
-Admins invite users and assign roles from the dashboard **Settings → Users** page. When a new user accepts an invitation, they inherit the role assigned by the admin. Roles can be changed at any time.
+OWNERs and ADMINs invite users and assign roles from the dashboard **Settings → Team** page. When a new user accepts an invitation, they inherit the role assigned by the inviter. Roles can be changed at any time.
 
 ### Permission Breakdown
 
-| Feature | Viewer | User | Admin |
-|---------|--------|------|-------|
-| View agents | ✅ | ✅ | ✅ |
-| View transfers | ✅ | ✅ | ✅ |
-| View hub health | ✅ | ✅ | ✅ |
-| Create transfer jobs | ❌ | ✅ | ✅ |
-| Manage agents | ❌ | ✅ | ✅ |
-| Manage deploy keys | ❌ | ❌ | ✅ |
-| Invite users | ❌ | ❌ | ✅ |
-| Change billing | ❌ | ❌ | ✅ |
-| Delete hub | ❌ | ❌ | ✅ |
+| Feature | OWNER | ADMIN | MEMBER | VIEWER |
+|---------|-------|-------|--------|--------|
+| View hubs / agents / transfers | ✅ | ✅ | ✅ | ✅ |
+| View hub health | ✅ | ✅ | ✅ | ✅ |
+| Create transfer jobs | ✅ | ✅ | ✅ | ❌ |
+| Manage agents | ✅ | ✅ | ✅ | ❌ |
+| Manage deploy keys | ✅ | ✅ | ❌ | ❌ |
+| Invite users | ✅ | ✅ | ❌ | ❌ |
+| Change billing | ✅ | ❌ | ❌ | ❌ |
+| Delete hub | ✅ | ❌ | ❌ | ❌ |
 
 ::: tip Least-Privilege Access
-Assign the **Viewer** role for auditors and compliance reviews. Use the **User** role for operators who need to create and manage transfers. Reserve **Admin** for a small number of system administrators.
+Assign the **VIEWER** role for auditors and compliance reviews. Use the **MEMBER** role for operators who need to create and manage transfers. Reserve **ADMIN** for hub operators, and keep **OWNER** to 2–3 trusted individuals.
 :::
 
 ## Cloud Dashboard: Hubs Section
@@ -90,8 +90,7 @@ Deploy keys authenticate agents when they connect to a hub. Each hub has its own
 1. Open the hub's **Settings** tab
 2. In the **Deploy Keys** section, click **Generate Key**
 3. Optionally enter a **Label** to identify the key's purpose (e.g., `production-agents`, `staging-agents`)
-4. Select an **Expiration** period (30 days, 90 days, 1 year, or no expiry)
-5. Click **Generate**
+4. Click **Generate**
 
 The key is displayed once. Copy it immediately and store it securely.
 
@@ -136,7 +135,7 @@ Rotating keys is a security best practice. The rotation process introduces a new
 4. **Revoke** the old deploy key once no agents depend on it
 
 ::: tip Rotation Schedule
-Rotate deploy keys every 90 days for production hubs. Use short-lived keys (30 days) for ephemeral or test environments.
+Rotate deploy keys regularly — every 90 days is a good baseline for production hubs.
 :::
 
 ## Hub Dashboard Tour
@@ -236,7 +235,7 @@ The Settings tab contains hub-level configuration and management actions.
 ### Deploy Key Hygiene
 
 - Label every deploy key so you know its purpose at a glance
-- Set expiration dates — prefer 90-day keys for production
+- Rotate keys regularly — every 90 days is a good baseline for production
 - Rotate keys immediately if a key is accidentally exposed
 - Audit active keys monthly and revoke unused ones
 
