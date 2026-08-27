@@ -91,8 +91,8 @@ After enabling 2FA, the sign-in process changes slightly:
 
 The code changes every 30 seconds. If a code expires before you enter it, wait for your authenticator to generate a new one.
 
-::: tip Stay Signed In
-MFTPlus remembers your device for 30 days, so you won't need to enter a 2FA code every time you sign in from a trusted device.
+::: warning Session ends on sign-out
+Signing out terminates your login immediately, and the session stays ended even if the server restarts. You will be asked for your password and a fresh 2FA code on your next sign-in. Only you can end your own session — administrators can revoke gateway API keys, deploy keys, and certificates, but cannot end a user's auth session.
 :::
 
 ## Using Backup Codes
@@ -196,36 +196,6 @@ If you switch devices frequently, consider using Authy, 1Password, or Bitwarden 
 - **Store backup codes in plain text** — Keep them encrypted or physically secure
 - **Disable 2FA "temporarily"** — It's easy to forget to re-enable it
 - **Use SMS 2FA if possible** — TOTP apps are more secure than SMS-based 2FA
-
-## Organizational 2FA Policies
-
-If you're an administrator managing an MFTPlus deployment:
-
-### Requiring 2FA for All Users
-
-1. Go to **Admin → Organization Settings**
-2. Find the **Security Policies** section
-3. Enable **Require 2FA for all users**
-4. Existing users will be prompted to enable 2FA on their next sign-in
-5. New users must enable 2FA during account creation
-
-### Exempting Service Accounts
-
-Service accounts and API keys may be exempt from 2FA requirements:
-
-1. Go to **Admin → Service Accounts**
-2. Create a service account with API key authentication
-3. Service accounts use API keys instead of username/password + 2FA
-
-### Auditing 2FA Status
-
-View which users have 2FA enabled:
-
-1. Go to **Admin → Users**
-2. The **2FA Status** column shows:
-   - **Enabled** — User has 2FA active
-   - **Disabled** — User does not have 2FA
-3. Export the user list for compliance reporting
 
 ## Next Steps
 
