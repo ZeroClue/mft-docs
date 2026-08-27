@@ -1,276 +1,211 @@
 ---
-title: Plugin API Reference - MFTPlus Documentation
-description: "API reference for MFTPlus plugins. Interfaces, hooks, and patterns for building custom transfer handlers and extending platform functionality."
+title: Plugin API Reference - MFTPlus WASM Plugin SDK
+description: "MFTPlus plugin API: the mft_plugin Rust SDK, host functions (module 'mft'), transfer-event hooks, and the permission model. Field-for-field against source."
 ---
 
 # MFTPlus Plugin API
 
-Complete API reference for plugin development.
+This reference documents the **actual** plugin surface shipped in the product: the Rust
+`mft_plugin` SDK crate, the host functions the runtime links into every plugin (WebAssembly
+module `"mft"`), and the transfer-event hooks the loader invokes. Nothing here is invented —
+every symbol maps to a definition in the plugin runtime source.
 
-## Plugin Interface
+## Architecture at a glance
 
-### Base Plugin
+- A plugin is a WASM module. The runtime (wasmtime) instantiates it and links the `mft` host
+  functions.
+- Only imports from module `"mft"` and `"wasi_snapshot_preview1"` are permitted; all other
+  imports are rejected.
+- The plugin exports hook functions by name; the loader calls each hook when the corresponding
+  transfer event occurs. Missing hooks are treated as no-ops.
+- Privileged operations (network, file, clipboard) are gated by the plugin's declared
+  `permissions` and enforced deny-by-default.
 
-All plugins implement the base interface:
+## Host functions
 
-```go
-type Plugin interface {
-    // Initialize plugin with configuration
-    Init(ctx context.Context, config map[string]string) error
-    
-    // Cleanup plugin resources
-    Shutdown(ctx context.Context) error
-    
-    // Return plugin metadata
-    Metadata() Metadata
-}
+These are the functions a plugin may `import` from module `"mft"`. Signatures are taken
+verbatim from `crates/mft-plugin-runtime/src/host.rs` (and the app linker in
+`src/plugins/wasm.rs`).
 
-type Metadata struct {
-    Name        string
-    Version     string
-    Description string
-    Type        PluginType
-    Author      string
-    License     string
-}
-```
+| Host function | Import | Signature | Status |
+|---------------|--------|-----------|--------|
+| Log | `mft.log` | `(param i32 ptr, i32 len) -> i32` | Callable; writes the UTF-8 message at `ptr..ptr+len` to the agent log. |
+| HTTP request | `mft.http_request` | `(param i32 url_ptr, i32 url_len, i32 body_ptr, i32 body_len) -> i32` | Stub in current source (returns `1`); network calls are not yet wired. |
+| Transfer info | `mft.get_transfer_info` | `(param i32 transfer_id_ptr, i32 transfer_id_len) -> i32` | Stub in current source (returns `0`). |
+| Timestamp | `mft.get_timestamp` | `(param) -> i32` | Stub in current source (returns `1`). |
 
-### Plugin Types
+Return value convention: `0` indicates success; non-zero indicates a host-side failure or
+"not implemented" for the stubbed functions.
 
-```go
-type PluginType string
+> Strings are passed by pointer + length into the plugin's exported linear `memory`. The host
+> reads `memory.data` at the given offset; the plugin must keep the bytes live for the duration
+> of the call.
 
-const (
-    PluginTypeAuth      PluginType = "auth"
-    PluginTypeStorage   PluginType = "storage"
-    PluginTypeProtocol  PluginType = "protocol"
-    PluginTypeMonitor   PluginType = "monitor"
+### Example: calling `mft.log` from WAT
+
+```wat
+(module
+  (import "mft" "log" (func $log (param i32 i32) (result i32)))
+  (memory (export "memory") 1)
+  (data (i32.const 0) "plugin booted\00")
+  (func (export "on_init") (result i32)
+    i32.const 0
+    i32.const 13
+    call $log
+    i32.const 0
+  )
 )
 ```
 
-## Authentication Plugin API
+## Transfer-event hooks
 
-### Interface
+The loader calls the following exported functions by name. The high-level SDK presents them as
+the `Plugin` trait methods listed below; the runtime invokes the raw WASM exports.
 
-```go
-type AuthPlugin interface {
-    Plugin
-    
-    // Authenticate user credentials
-    Authenticate(ctx context.Context, req AuthRequest) (*AuthResult, error)
-    
-    // Authorize access to resource
-    Authorize(ctx context.Context, token string, resource string, action Action) (bool, error)
-    
-    // Refresh authentication token
-    Refresh(ctx context.Context, token string) (*AuthResult, error)
-    
-    // Revoke authentication token
-    Revoke(ctx context.Context, token string) error
+| Hook (WASM export) | SDK trait method | Called when |
+|--------------------|------------------|-------------|
+| `on_init` | `Plugin::on_init` | Plugin is first loaded. |
+| `on_transfer_start` | `Plugin::on_transfer_start` | A transfer starts. |
+| `on_transfer_progress` | `Plugin::on_transfer_progress` | Transfer progress updates (receives an `f64` progress). |
+| `on_transfer_complete` | `Plugin::on_transfer_complete` | A transfer completes successfully. |
+| `on_transfer_failed` | `Plugin::on_transfer_failed` | A transfer fails (receives an error `&str`). |
+| `on_shutdown` | `Plugin::on_shutdown` | Plugin is unloaded. |
+
+> Current loader behavior: `on_init`, `on_transfer_start`, `on_transfer_complete`, and
+> `on_shutdown` are called with no arguments; `on_transfer_progress` receives an `f64`;
+> `on_transfer_failed`'s string argument is currently skipped (a documented TODO in the
+> runtime). Hooks may be omitted — the loader treats a missing export as a successful no-op.
+
+## The `mft_plugin` SDK crate
+
+Plugins written in Rust depend on the `mft_plugin` crate. Its public surface
+(`crates/mft-plugin/src/lib.rs`):
+
+```rust
+pub use manifest::{PluginManifest, PluginMetadata, Permissions, RuntimeConfig};
+pub use permissions::{PermissionSet, PermissionViolation, ResourceLimits};
+pub use types::{TransferInfo, TransferStatus, HookContext, HookType};
+```
+
+### `Plugin` trait
+
+Implemented by every plugin. All methods have empty default bodies; override only what you need.
+
+```rust
+pub trait Plugin {
+    fn on_init(&mut self, ctx: &HookContext) -> Result<()>;
+    fn on_transfer_start(&mut self, ctx: &HookContext, transfer: &TransferInfo) -> Result<()>;
+    fn on_transfer_progress(&mut self, ctx: &HookContext, transfer: &TransferInfo, progress: f64) -> Result<()>;
+    fn on_transfer_complete(&mut self, ctx: &HookContext, transfer: &TransferInfo) -> Result<()>;
+    fn on_transfer_failed(&mut self, ctx: &HookContext, transfer: &TransferInfo, error: &str) -> Result<()>;
+    fn on_shutdown(&mut self, ctx: &HookContext) -> Result<()>;
 }
 ```
 
-### Types
+The SDK bridges your `Plugin` implementation to the WASM hook exports (`on_init`, …) at build
+time; you do not export the symbols manually when using the trait.
 
-```go
-type AuthRequest struct {
-    Type     AuthType
-    Username string
-    Password string
-    Token    string
-    OIDC     OIDCCredentials
-}
+### `HookContext`
 
-type AuthResult struct {
-    Token      string
-    ExpiresAt  time.Time
-    RefreshTok string
-    User       User
-}
+Passed to every hook.
 
-type Action string
+| Field | Type | Notes |
+|-------|------|-------|
+| `plugin_id` | `String` | This plugin's id (`<name>@<version>`). |
+| `transfer_id` | `Option<String>` | Set for transfer hooks. |
+| `hook_type` | `HookType` | Which hook is firing. |
+| `invoked_at` | `u64` | Unix timestamp (seconds) when the hook was invoked. |
+| `transfer` | `Option<TransferInfo>` | Snapshot of the transfer for transfer hooks. |
 
-const (
-    ActionRead   Action = "read"
-    ActionWrite  Action = "write"
-    ActionDelete Action = "delete"
-    ActionAdmin  Action = "admin"
-)
-```
+### `HookType`
 
-## Storage Plugin API
+`Init`, `TransferStart`, `TransferProgress`, `TransferComplete`, `TransferFailed`, `Shutdown`
+(serde `snake_case`: `init`, `transfer_start`, …).
 
-### Interface
+### `TransferInfo`
 
-```go
-type StoragePlugin interface {
-    Plugin
-    
-    // Store data and return ID
-    Store(ctx context.Context, r io.Reader, metadata Metadata) (string, error)
-    
-    // Retrieve data by ID
-    Retrieve(ctx context.Context, id string) (io.ReadCloser, *Metadata, error)
-    
-    // Delete data by ID
-    Delete(ctx context.Context, id string) error
-    
-    // List stored items
-    List(ctx context.Context, filter ListFilter) ([]Item, error)
-    
-    // Get storage statistics
-    Stats(ctx context.Context) (*StorageStats, error)
-}
-```
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | `String` | Unique transfer id. |
+| `status` | `TransferStatus` | Current status. |
+| `source` | `String` | Source path/URL. |
+| `destination` | `String` | Destination path. |
+| `total_bytes` | `u64` | Total size. |
+| `transferred_bytes` | `u64` | Bytes transferred so far. |
+| `started_at` | `Option<u64>` | Unix timestamp. |
+| `completed_at` | `Option<u64>` | Unix timestamp. |
+| `error` | `Option<String>` | Present when `status == Failed`. |
+| `metadata` | `HashMap<String, serde_json::Value>` | Additional metadata (flattened). |
 
-### Types
+`TransferInfo` also provides `progress() -> f64`, `bytes_per_second() -> Option<u64>`, and
+`eta_seconds() -> Option<u64>`.
 
-```go
-type Metadata struct {
-    Name      string
-    Size      int64
-    MimeType  string
-    CreatedAt time.Time
-    Custom    map[string]string
-}
+### `TransferStatus`
 
-type ListFilter struct {
-    Prefix string
-    Limit  int
-}
+`queued`, `running`, `completed`, `failed`, `cancelled`, `paused` (serde lowercase).
+`*_is_terminal()` is true for `completed`/`failed`/`cancelled`; `is_active()` is true for
+`running`/`paused`.
 
-type Item struct {
-    ID       string
-    Metadata Metadata
-}
+### `Permissions` (manifest)
 
-type StorageStats struct {
-    TotalItems int64
-    TotalSize  int64
-}
-```
+Used in `mft-plugin.toml` under `[permissions]`:
 
-## Protocol Plugin API
+| Field | Type | Notes |
+|-------|------|-------|
+| `network` | `Vec<String>` | Domain glob allowlist. |
+| `file_read` | `Vec<String>` | Path glob patterns. |
+| `file_write` | `Vec<String>` | Path glob patterns. |
+| `transfer_events` | `Vec<String>` | Subscribed event names. |
+| `clipboard` | `bool` | Clipboard access opt-in. |
 
-### Interface
+### `ResourceLimits` (manifest)
 
-```go
-type ProtocolPlugin interface {
-    Plugin
-    
-    // Send file to destination
-    Send(ctx context.Context, req SendRequest) (*Transfer, error)
-    
-    // Receive incoming transfer
-    Receive(ctx context.Context, req ReceiveRequest) (*Transfer, error)
-    
-    // Get transfer status
-    Status(ctx context.Context, id string) (*TransferStatus, error)
-    
-    // Cancel transfer
-    Cancel(ctx context.Context, id string) error
-    
-    // Resume transfer
-    Resume(ctx context.Context, id string) error
-}
-```
+Under `[limits]`; defaults shown:
 
-### Types
+| Field | Type | Default |
+|-------|------|---------|
+| `max_memory_mb` | `usize` | `128` |
+| `max_cpu_percent` | `usize` | `10` |
+| `max_network_requests_per_minute` | `u32` | `60` |
+| `max_execution_time_seconds` | `u64` | `30` |
 
-```go
-type SendRequest struct {
-    File         string
-    Destination  string
-    Options      TransferOptions
-}
+### `PermissionSet` and `PermissionViolation`
 
-type ReceiveRequest struct {
-    TransferID   string
-    OutputDir    string
-    Options      TransferOptions
-}
+At runtime the manifest `Permissions` are compiled into a `PermissionSet` with
+`allows_network(url)`, `allows_file_read(path)`, `allows_file_write(path)`,
+`allows_transfer_event(event)`, and `allows_clipboard()`. A violation is reported as a
+`PermissionViolation`:
 
-type Transfer struct {
-    ID        string
-    Status    TransferStatus
-    Progress  float64
-    StartedAt time.Time
-}
+- `network_denied { url }`
+- `file_read_denied { path }`
+- `file_write_denied { path }`
+- `clipboard_denied`
+- `resource_limit_exceeded { resource, limit }`
 
-type TransferStatus string
+## Signing & verification — current status
 
-const (
-    StatusPending   TransferStatus = "pending"
-    StatusActive    TransferStatus = "active"
-    StatusCompleted TransferStatus = "completed"
-    StatusFailed    TransferStatus = "failed"
-    StatusCancelled TransferStatus = "cancelled"
-)
-```
+> [!IMPORTANT]
+> **The current product does NOT perform signature verification on plugins.** There is no
+> key-generation or verification step in the loader, the install path, or the manifest parser.
+> The only reference to plugin signing in the source tree is `ARCHITECTURE.md`, which lists
+> "Plugin Signing: Signature verification for trust" as a **future enhancement** (not yet
+> implemented). Transfer encryption uses ed25519/x25519 key agreement, but that is unrelated to
+> plugin trust.
+>
+> Therefore: do not ship documentation or tooling that tells users to generate ed25519 keys or
+> sign plugins — there is nowhere for a signature to be checked today. When signing lands, the
+> manifest will gain a signature field and the loader will verify it before `on_init`.
 
-## Monitoring Plugin API
+## Security model summary
 
-### Interface
+- WASM sandbox: memory isolation, no direct OS access.
+- Import validation: only `mft` and `wasi_snapshot_preview1` imports are allowed.
+- Fuel metering: CPU consumption is bounded via wasmtime fuel.
+- Memory caps: per-plugin heap size is constrained.
+- Permission enforcement: deny-by-default network/file/clipboard, with glob allowlists.
+- Rate limiting: network requests are throttled per `max_network_requests_per_minute`.
 
-```go
-type MonitorPlugin interface {
-    Plugin
-    
-    // Record transfer started
-    TransferStarted(ctx context.Context, transfer Transfer)
-    
-    // Record transfer progress
-    TransferProgress(ctx context.Context, transfer Transfer, progress float64)
-    
-    // Record transfer completed
-    TransferCompleted(ctx context.Context, transfer Transfer)
-    
-    // Record transfer failed
-    TransferFailed(ctx context.Context, transfer Transfer, err error)
-    
-    // Record custom metric
-    RecordMetric(ctx context.Context, name string, value float64, tags map[string]string)
-}
-```
+## Next steps
 
-## Plugin Context
-
-### Context Values
-
-```go
-// Transfer ID
-ctx = context.WithValue(ctx, ContextKeyTransferID, "abc123")
-
-// User ID
-ctx = context.WithValue(ctx, ContextKeyUserID, "user-123")
-
-// Request ID
-ctx = context.WithValue(ctx, ContextKeyRequestID, "req-456")
-```
-
-## Plugin Lifecycle
-
-```
-Init() → Active operation → Shutdown()
-   ↓
-Error handling at each stage
-```
-
-## Error Handling
-
-```go
-type PluginError struct {
-    Code    ErrorCode
-    Message string
-    Cause   error
-}
-
-func (e *PluginError) Error() string {
-    return fmt.Sprintf("[%s] %s: %v", e.Code, e.Message, e.Cause)
-}
-```
-
-## Next Steps
-
-- [Creating Plugins](./creating) - Build your first plugin
-- [CLI Commands](../api/cli) - Plugin management commands
+- [Creating Plugins](./creating) — author and install your first plugin.
+- [Plugin System Overview](../plugins/) — how plugins fit into MFTPlus.

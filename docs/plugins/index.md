@@ -1,103 +1,67 @@
 ---
-title: Plugins - Extend MFTPlus | MFTPlus Documentation
-description: "Extend MFTPlus with plugins. Learn about the plugin system, create custom transfer handlers, and integrate with your existing tools and workflows."
+title: Plugins - Extend MFTPlus with WASM | MFTPlus Documentation
+description: "Extend MFTPlus with WebAssembly plugins. Subscribe to transfer-event hooks and call sandboxed host functions to integrate with external systems."
 ---
 
 # MFTPlus Plugin System
 
-Extend MFTPlus functionality with plugins.
+Extend MFTPlus with **WebAssembly plugins**. A plugin is a WASM module plus a TOML manifest; it
+runs inside a sandboxed runtime and extends the product by reacting to transfer events and
+calling host functions.
 
 ## Overview
 
-The MFTPlus plugin system allows you to:
+Plugins let you:
 
-- Add custom authentication providers
-- Integrate with storage backends
-- Implement custom transfer protocols
-- Add monitoring and observability
+- React to transfer lifecycle events (`on_transfer_start`, `on_transfer_progress`,
+  `on_transfer_complete`, `on_transfer_failed`).
+- Call sandboxed host functions (`mft.log`, `mft.http_request`, `mft.get_transfer_info`,
+  `mft.get_timestamp`).
+- Integrate with external systems (for example, post a notification when a transfer finishes)
+  under a declarative permission sandbox.
 
-## Plugin Types
+There is no Go SDK and no shared-library plugin format. See
+[Creating Plugins](./creating) for the authoring pipeline and [Plugin API](./api) for the
+full surface.
 
-### Authentication Plugins
+## How plugins are loaded
 
-Handle user authentication and authorization:
+The runtime discovers plugin directories that contain a manifest and instantiates the declared
+WASM entrypoint. On load it calls `on_init`; as transfers flow through the system it invokes the
+transfer-event hooks the plugin exports. Missing hooks are treated as no-ops.
 
-```bash
-mftctl plugin search auth
-mftctl plugin install auth-oidc
-mftctl plugin install auth-ldap
-```
+## Installing a plugin
 
-### Storage Plugins
-
-Integrate with storage backends:
-
-```bash
-mftctl plugin search s3
-mftctl plugin install s3-storage
-mftctl plugin install azure-storage
-mftctl plugin install gcs-storage
-```
-
-### Protocol Plugins
-
-Implement custom transfer protocols:
+Installation copies a plugin's manifest and WASM entrypoint into the product's plugins
+directory. The current install path reads `plugin.toml` from the source directory and recreates
+the plugin under `<plugins-dir>/<plugin.name>/`.
 
 ```bash
-mftctl plugin search protocol
-mftctl plugin install protocol-sftp
-mftctl plugin install protocol-as2
+mftctl plugin install <plugin-source-directory>
 ```
 
-### Monitoring Plugins
-
-Add monitoring and observability:
-
-```bash
-mftctl plugin search monitor
-mftctl plugin install monitor-prometheus
-mftctl plugin install monitor-datadog
-```
-
-## Plugin Management
-
-### Search for plugins
-
-```bash
-mftctl plugin search <query>
-```
-
-### View plugin details
-
-```bash
-mftctl plugin info <plugin-name>
-```
-
-### Install a plugin
-
-```bash
-mftctl plugin install <plugin-name>
-```
-
-### List installed plugins
+List and remove installed plugins:
 
 ```bash
 mftctl plugin list
-```
-
-### Verify plugin integrity
-
-```bash
-mftctl plugin verify <plugin-name>
-```
-
-### Remove a plugin
-
-```bash
 mftctl plugin remove <plugin-name>
 ```
 
+> The runtime loader currently discovers `mft-plugin.toml` (a stricter schema than the
+> authoring `plugin.toml`). Until the install and load manifests are reconciled, author the
+> loader manifest for execution — see [Creating Plugins](./creating) for both schemas.
+
+## Permissions
+
+Every plugin declares the capabilities it needs in its manifest; the runtime enforces them
+deny-by-default:
+
+- **Network** — domain/glob allowlist.
+- **File read / write** — path glob patterns.
+- **Clipboard** — boolean opt-in.
+- **Transfer events** — the set of events the plugin subscribes to.
+
 ## Next Steps
 
-- [Creating Plugins](./creating) - Build your own plugin
-- [Plugin API](./api) - Plugin API reference
+- [Creating Plugins](./creating) - Build your first plugin.
+- [Plugin API](./api) - Host functions and SDK types.
