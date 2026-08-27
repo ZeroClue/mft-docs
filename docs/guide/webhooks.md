@@ -38,9 +38,8 @@ curl -X POST https://api.mftplus.co.za/api/webhooks \
   -H "Authorization: Bearer <admin-token>" \
   -d '{
     "url": "https://your-app.com/webhooks/mftplus",
-    "events": ["TRANSFER_COMPLETED", "TRANSFER_FAILED"],
-    "secret": "your-signing-secret",
-    "enabled": true
+    "enabledEvents": ["TRANSFER_COMPLETED", "TRANSFER_FAILED"],
+    "secret": "your-signing-secret"
   }'
 ```
 
@@ -348,7 +347,7 @@ curl -X PATCH https://api.mftplus.co.za/api/webhooks/{id} \
   -H "Authorization: Bearer <admin-token>" \
   -d '{
     "url": "https://new-url.com/webhook",
-    "active": false
+    "enabled": false
   }'
 ```
 
