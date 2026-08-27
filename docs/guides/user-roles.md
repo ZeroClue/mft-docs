@@ -20,7 +20,7 @@ MFTPlus uses Role-Based Access Control (RBAC) to manage what users can see and d
 | Send files | ✅ | ✅ | ✅ | ❌ |
 | Receive files | ✅ | ✅ | ✅ | ❌ |
 | Create transfer jobs | ✅ | ✅ | ✅ | ❌ |
-| Manage plugins | ✅ | ✅ | ❌ | ❌ |
+| Manage plugins | ✅ | ✅ | ✅ | ❌ |
 | Invite users | ✅ | ✅ | ❌ | ❌ |
 | Manage roles | ✅ | ✅ | ❌ | ❌ |
 | Remove users | ✅ | ✅ | ❌ | ❌ |
@@ -50,7 +50,7 @@ ADMINs manage day-to-day team operations. They can invite users, change roles (e
 
 ### MEMBER
 
-MEMBERs can send and receive files, create transfer jobs, and view team activity. They cannot manage users or change settings.
+MEMBERs can send and receive files, create transfer jobs, view team activity, and manage plugins. They cannot manage users or change settings.
 
 - Can send and receive files
 - Can create and manage their own transfer jobs

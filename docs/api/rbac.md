@@ -1,21 +1,23 @@
 # RBAC API Reference
 
-REST API endpoints for managing users, roles, and team membership. All RBAC endpoints require authentication with an ADMIN or OWNER API key.
+REST API endpoints for managing users, roles, and team membership in MFTPlus. These endpoints live under `/api/users/*` and are authenticated with the **user's Bearer JWT** — the same token used to authenticate dashboard requests. They do **not** accept API-key headers.
 
 ## Authentication
 
-All requests must include a valid API token in the `Authorization` header:
+Every request must include the authenticated user's session token in the `Authorization` header:
 
 ```bash
-Authorization: Bearer <your-api-token>
+Authorization: Bearer <your-user-jwt>
 ```
+
+> The RBAC endpoints are protected by the user-authentication middleware, not the admin-key or API-key middleware. Use the JWT you receive when logging in to the dashboard (or via `mftctl`).
 
 ## List Team Members
 
 Returns all members of your team.
 
 ```http
-GET /api/team/members
+GET /api/users/team
 ```
 
 **Response:**
@@ -48,7 +50,7 @@ GET /api/team/members
 Returns details for a specific team member.
 
 ```http
-GET /api/team/members/{userId}
+GET /api/users/team/{userId}
 ```
 
 **Response:**
@@ -70,7 +72,7 @@ GET /api/team/members/{userId}
 Changes a team member's role. Requires ADMIN or OWNER role.
 
 ```http
-PATCH /api/team/members/{userId}
+PATCH /api/users/team/{userId}/role
 ```
 
 **Request body:**
@@ -90,10 +92,10 @@ Valid roles: `OWNER`, `ADMIN`, `MEMBER`, `VIEWER`.
 
 ## Invite User
 
-Sends an invitation email to a new team member.
+Sends an invitation email to a new team member. Invitations are valid for **14 days**.
 
 ```http
-POST /api/team/invitations
+POST /api/users/invite
 ```
 
 **Request body:**
@@ -112,7 +114,7 @@ POST /api/team/invitations
   "invitationId": "inv_xyz789",
   "email": "newuser@example.com",
   "role": "MEMBER",
-  "expiresAt": "2025-07-04T00:00:00Z",
+  "expiresAt": "2025-07-15T00:00:00Z",
   "status": "pending"
 }
 ```
@@ -122,7 +124,7 @@ POST /api/team/invitations
 Returns all invitations that have not yet been accepted.
 
 ```http
-GET /api/team/invitations
+GET /api/users/invitations
 ```
 
 **Response:**
@@ -134,7 +136,7 @@ GET /api/team/invitations
       "id": "inv_xyz789",
       "email": "newuser@example.com",
       "role": "MEMBER",
-      "expiresAt": "2025-07-04T00:00:00Z",
+      "expiresAt": "2025-07-15T00:00:00Z",
       "status": "pending"
     }
   ]
@@ -146,7 +148,7 @@ GET /api/team/invitations
 Resends a pending invitation email.
 
 ```http
-POST /api/team/invitations/{invitationId}/resend
+POST /api/users/invitations/{invitationId}/resend
 ```
 
 **Response:** `204 No Content`
@@ -156,7 +158,7 @@ POST /api/team/invitations/{invitationId}/resend
 Cancels a pending invitation.
 
 ```http
-DELETE /api/team/invitations/{invitationId}
+DELETE /api/users/invitations/{invitationId}
 ```
 
 **Response:** `204 No Content`
@@ -166,7 +168,7 @@ DELETE /api/team/invitations/{invitationId}
 Removes a user from the team. Requires ADMIN or OWNER role.
 
 ```http
-DELETE /api/team/members/{userId}
+DELETE /api/users/team/{userId}
 ```
 
 **Response:** `204 No Content`

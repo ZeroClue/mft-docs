@@ -26,7 +26,7 @@ The user will receive an email with an invitation link.
 3. If you do not have an MFTPlus account, you will be prompted to create one
 4. If you already have an account, you will be added to the team automatically
 
-Invitation links expire after 72 hours.
+Invitation links expire after 14 days.
 
 ## Resending an Invitation
 
@@ -45,8 +45,8 @@ If a user did not receive their invitation:
 ## Inviting Users via API
 
 ```bash
-curl -X POST https://dashboard.mftplus.co.za/api/team/invitations \
-  -H "Authorization: Bearer <token>" \
+curl -X POST https://dashboard.mftplus.co.za/api/users/invite \
+  -H "Authorization: Bearer <your-user-jwt>" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "colleague@example.com",
