@@ -92,7 +92,7 @@ After enabling 2FA, the sign-in process changes slightly:
 The code changes every 30 seconds. If a code expires before you enter it, wait for your authenticator to generate a new one.
 
 ::: warning Session ends on sign-out
-Signing out — or an administrator ending your session — terminates your login immediately, and the session stays ended even if the server restarts. You will be asked for your password and a fresh 2FA code on your next sign-in.
+Signing out terminates your login immediately, and the session stays ended even if the server restarts. You will be asked for your password and a fresh 2FA code on your next sign-in. Only you can end your own session — administrators can revoke gateway API keys, deploy keys, and certificates, but cannot end a user's auth session.
 :::
 
 ## Using Backup Codes
