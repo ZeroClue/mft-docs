@@ -82,5 +82,5 @@ Both correctly mark signature files as arriving with "the next tagged release," 
 
 ## 7. Evidence
 
-- Plan PR: _(set on push)_ — branch `feat/COO-883-gtm-coordination` in `ZeroClue/mft-docs`.
+- Plan PR: https://github.com/ZeroClue/mft-docs/pull/81 — branch `feat/COO-883-gtm-coordination` in `ZeroClue/mft-docs`.
 - Customer verify page (already live, referenced above): `https://docs.mftplus.co.za/install/verify`
