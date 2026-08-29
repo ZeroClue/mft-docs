@@ -33,6 +33,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/' },
       { text: 'Admin', link: '/guide/hub-admin' },
       { text: 'API Reference', link: '/api/openapi-reference' },
+      { text: 'Pricing', link: '/pricing' },
       { text: 'Plugins', link: '/plugins/' }
     ],
 
