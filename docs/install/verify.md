@@ -9,8 +9,8 @@ MFTPlus signs release artifacts with [minisign](https://github.com/jedisct1/mini
 
 The one-line habit: **verify before you run**.
 
-::: warning Rollout status
-Signature files start appearing with the **next tagged release**. Releases published before signing went live are checksum-only — they ship no `.minisig` files. Verify those with SHA-256 only, as described in the [Verifying Releases](/guide/verifying-releases) guide. Never treat the absence of a signature file as proof of authenticity.
+::: tip Rollout status — live
+Signing is live. Every release published from now on ships `SHA256SUMS` and `.minisig` signature files alongside the artifacts. Releases published before signing went live are checksum-only — they ship no `.minisig` files. Verify those with SHA-256 only, as described in the [Verifying Releases](/guide/verifying-releases) guide. Never treat the absence of a signature file as proof of authenticity.
 :::
 
 ## Install minisign
